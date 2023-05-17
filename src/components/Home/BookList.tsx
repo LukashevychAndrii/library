@@ -7,7 +7,7 @@ import BookItem from "./BookItem";
 const BookList = () => {
   const books = useLoaderData() as book[];
   return (
-    <ul>
+    <ul className={styles["books-list"]}>
       {books.map((el) => (
         <BookItem key={el.id} book={el}></BookItem>
       ))}

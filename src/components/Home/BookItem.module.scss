@@ -1,0 +1,74 @@
+@use "../../styles/animations";
+
+.book {
+  display: grid;
+  margin: auto;
+  grid-template-columns: min-content 1fr;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 0.5rem 1.5rem rgba($color: #000000, $alpha: 0.3);
+  column-gap: 2.5rem;
+  transition: all 0.2s;
+  background-color: var(--color-white-dark);
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05) translateY(-1rem);
+    box-shadow: 0 1rem 2.5rem rgba($color: #000000, $alpha: 0.5);
+  }
+
+  &__image {
+    width: 30rem;
+    height: 35rem;
+    align-self: center;
+    justify-self: center;
+
+    &:hover {
+    }
+  }
+  &__description {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    & a {
+      align-self: center;
+    }
+  }
+  & a {
+    text-decoration: none;
+  }
+  &__checkbox {
+    display: none;
+  }
+
+  &__heart,
+  &__heart-outlined {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.2s;
+
+    &:hover {
+    }
+  }
+  &__heart-outlined:hover {
+    animation: bounce 1s infinite;
+  }
+  &__heart {
+    visibility: hidden;
+    opacity: 0;
+  }
+  &__checkbox:checked ~ label &__heart {
+    visibility: visible;
+
+    opacity: 1;
+  }
+}
