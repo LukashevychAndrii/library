@@ -1,0 +1,38 @@
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes moveInBottom {
+  0% {
+    transform: translateY(-5rem);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+@keyframes moveInBottom2 {
+  0% {
+    transform: translate(-50%, -15%);
+    opacity: 0;
+    visibility: hidden;
+  }
+  80% {
+    transform: translate(-50%, 25%);
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    transform: translate(-50%, 15%);
+    opacity: 1;
+    visibility: visible;
+  }
+}

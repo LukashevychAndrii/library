@@ -1,3 +1,23 @@
 @import "./styles/base";
 @import "./styles/typography";
 @import "./styles/utilities";
+@import "./styles/components";
+
+:root {
+  --color-white: #fff;
+  --color-white-dark: #f7f7f7;
+  --color-white-dark-rgb: 247, 247, 247;
+  --color-black: #000000;
+  --color-black-light: #363636;
+  --color-black-light-rgb: 54, 54, 54;
+  --color-grey: #777777;
+  --color-grey-light: #babecc;
+  --color-grey-rgb: 119, 119, 119;
+
+  --color-bg: #e2e2e2;
+
+  --color-alert-success: rgb(107, 207, 107);
+  --color-alert-success-rgb: 107, 207, 107;
+  --color-alert-error: rgb(240, 106, 106);
+  --color-alert-error-rgb: 204, 78, 78;
+}
