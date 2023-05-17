@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootPages/RootLayout";
 import HomePage from "./pages/HomePage";
 
+import { loader as BooksLoader } from "./pages/HomePage";
+
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
@@ -14,6 +16,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <HomePage />,
+            loader: BooksLoader,
           },
         ],
       },
