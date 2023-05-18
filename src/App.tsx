@@ -8,6 +8,8 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 
 import { loader as BooksLoader } from "./pages/HomePage";
+import { useAppDispatch } from "./hooks/redux";
+import { autoLogin } from "./store/slices/user-slice";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
   },
 ]);
 function App() {
+  const dispatch = useAppDispatch();
+  React.useEffect(() => {
+    dispatch(autoLogin());
+  }, [dispatch]);
   return <RouterProvider router={router}></RouterProvider>;
 }
 

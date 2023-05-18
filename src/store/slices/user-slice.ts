@@ -3,10 +3,12 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { get, getDatabase, ref, set } from "firebase/database";
 import { NavigateFunction } from "react-router-dom";
+import { app } from "../../firebase";
 
 interface initialStateI {
   userName: string;
@@ -94,7 +96,7 @@ export const signIn = createAsyncThunk<
   },
   {}
 >(
-  "user/createUser",
+  "user/signIn",
   async ({ email, password, userName, navigate }, { dispatch }) => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
@@ -133,6 +135,33 @@ export const signIn = createAsyncThunk<
         const errorCode = error.code;
         const errorMessage = error.message;
       });
+    return undefined;
+  }
+);
+
+export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
+  "user/autoLogin",
+  async (_, { dispatch }) => {
+    console.log("qwe");
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      console.log(user);
+      if (user) {
+        const fetchDATA = async () => {
+          const db = getDatabase(app);
+          const userRef = ref(db, `usersDATA/${user.uid}/userDATA`);
+          await get(userRef).then((snapshot) => {
+            if (snapshot.exists()) {
+              const userDATA = snapshot.val();
+              dispatch(setUserData(userDATA));
+            } else {
+              console.log("no data");
+            }
+          });
+        };
+        fetchDATA();
+      }
+    });
     return undefined;
   }
 );
