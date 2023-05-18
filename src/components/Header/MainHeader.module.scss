@@ -4,6 +4,8 @@
   background-color: var(--color-black-light);
   font-family: "Josefin Sans", sans-serif;
   padding: 2.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
   & svg {
     fill: var(--color-white-dark);
     width: 3rem;
@@ -23,5 +25,9 @@
     &--active {
       opacity: 1;
     }
+  }
+  &__acc {
+    display: flex;
+    gap: 2.5rem;
   }
 }
