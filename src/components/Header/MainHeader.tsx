@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./MainHeader.module.scss";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ReactComponent as BookIcon } from "../../img/SVG/book1.svg";
 import Acc from "./Header-components/Acc/Acc";
 import { useAppSelector } from "../../hooks/redux";
@@ -11,7 +11,7 @@ export const getStyle = ({ isActive }: { isActive: boolean }) =>
     : styles["header__item"];
 
 const MainHeader = () => {
-  const userID = useAppSelector((state) => state.user.userID);
+  const userName = useAppSelector((state) => state.user.userName);
   return (
     <header className={styles["header"]}>
       <NavLink className={getStyle} to="/library">
@@ -19,7 +19,13 @@ const MainHeader = () => {
         <div>Books</div>
       </NavLink>
       <div className={styles["header__acc"]}>
-        {userID ? <div>qwe</div> : <Acc />}
+        {userName ? (
+          <NavLink className={getStyle} to="/">
+            {userName}
+          </NavLink>
+        ) : (
+          <Acc />
+        )}
       </div>
     </header>
   );
