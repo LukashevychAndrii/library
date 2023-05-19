@@ -4,6 +4,11 @@
 @import "./styles/components";
 
 :root {
+  //----------FONT-----------
+  --font-default:1.6rem;
+
+  //----------APP-COLORS-------------
+
   --color-white: #fff;
   --color-white-dark: #f7f7f7;
   --color-white-dark-rgb: 247, 247, 247;
@@ -16,8 +21,21 @@
 
   --color-bg: #e2e2e2;
 
-  --color-alert-success: rgb(107, 207, 107);
-  --color-alert-success-rgb: 107, 207, 107;
-  --color-alert-error: rgb(240, 106, 106);
-  --color-alert-error-rgb: 204, 78, 78;
+  
+  //-------ALERT-WINDOWS-COLORS-----------
+  
+  --color-alert-success: rgba(7, 149, 66, 0.6);
+  --color-border-alert-success:rgba(36, 241, 6, 0.46);
+  --color-text-alert-success: #25ff0b;
+  --color-hover-alert-success:rgba(7, 149, 66, 0.8);
+  --color-shadow-success:#259c08;
+
+  --color-alert-error: rgba(220, 17, 1, .5);
+  --color-border-alert-error:rgba(236, 58, 58, 0.46);
+  --color-text-alert-error: #a02525;
+  --color-hover-alert-error:rgba(255, 0, 0, 0.6);
+  --color-shadow-error:#9c0808;
+  
 }
+
+

@@ -9,6 +9,8 @@ import {
 import { get, getDatabase, ref, set } from "firebase/database";
 import { NavigateFunction } from "react-router-dom";
 import { app } from "../../firebase";
+import { createAlert } from "./alert-slice";
+import getErrorDetails from "../../utils/getErrorDetails";
 
 interface initialStateI {
   userName: string;
@@ -70,7 +72,7 @@ export const createUser = createAsyncThunk<
         };
         set(dbRef, userDATA).then(() => {
           dispatch(setUserData(userDATA));
-
+          dispatch(createAlert({alertTitle:"Success!",alertText:"Successfully created an account!",alertType:"success"}))          
           navigate("/library");
         });
         // ...
@@ -79,8 +81,7 @@ export const createUser = createAsyncThunk<
         const errorCode = error.code;
         const errorMessage = error.message;
 
-        console.log(errorCode);
-        // ..
+        dispatch(createAlert(getErrorDetails(errorCode)))
       });
     return undefined;
   }
@@ -120,22 +121,28 @@ export const signIn = createAsyncThunk<
                   userPhoto: userPhoto,
                 };
                 dispatch(setUserData(userDATA));
-                
+          dispatch(createAlert({alertTitle:"Success!",alertText:"Successfully signed in!",alertType:"success"}))          
+
+
                 navigate("/library")
               } else {
-                console.log("incorrect user name");
+                dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Incorrect user name",alertType:"error"}))
+
               }
             } else {
-              console.log("no data 2");
+              dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Unknown database error!",alertType:"error"}))
+
             }
           } else {
-            console.log("no data");
+            dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Unknown database error!",alertType:"error"}))
           }
         });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        dispatch(createAlert(getErrorDetails(errorCode)))
+
       });
     return undefined;
   }
@@ -157,7 +164,8 @@ export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
               const userDATA = snapshot.val();
               dispatch(setUserData(userDATA));
             } else {
-              console.log("no data");
+              dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Unknown database error!",alertType:"error"}))
+
             }
           });
         };

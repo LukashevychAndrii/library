@@ -1,0 +1,83 @@
+@use "../../styles/animations";
+
+.alert-window{
+    width: 5rem;
+    height: max-content;
+    position: fixed;
+    top: 15%;
+    left: 80%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    overflow: hidden;
+    font-size: var(--font-default);
+    z-index: 1000000;
+    padding: 1.2rem 6.4rem 1.2rem 2rem;
+    border: 1px solid ;
+    cursor: pointer;
+    &--success{
+        border-color:var(--color-border-alert-success);
+        background-color: var(--color-alert-success);
+        color: var(--color-text-alert-success);
+        box-shadow: 0px 0px 2px var(--color-shadow-success);
+
+        &:hover{
+            background-color: var(--color-hover-alert-success)
+        }
+    }
+    &--error{
+        border-color:var(--color-border-alert-error);
+        background-color: var(--color-alert-error);
+        color: var(--color-text-alert-error);
+        box-shadow: 0px 0px 2px #259c08;
+
+        &:hover{
+            background-color: var(--color-hover-alert-error)
+        }
+    }
+    &__content{
+        width: 100%;
+        &::before{
+            content: "";
+            width: 1rem;
+            height: 50%;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-50%,-50%);
+            border-radius: 5px;
+        }
+        &--success{
+            &::before{
+
+                background-color: var(--color-text-alert-success);
+            }
+        }
+        &--error{
+            &::before{
+
+                background-color: var(--color-text-alert-error);
+            }
+        }
+        &--title{
+            display: block;
+            font-weight: 600;
+            margin-right: 2rem;
+
+        }
+        &--close-btn{
+            position: absolute;
+            top: 50%;
+            right: 1.5rem;
+            font-size: 3rem;
+            transform: translate(-50%,-50%);
+            animation: disappearance 1s ease infinite;
+            color: inherit;
+            &:hover{
+                animation: pause;
+            }
+        }
+    }
+}
