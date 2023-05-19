@@ -120,6 +120,8 @@ export const signIn = createAsyncThunk<
                   userPhoto: userPhoto,
                 };
                 dispatch(setUserData(userDATA));
+                
+                navigate("/library")
               } else {
                 console.log("incorrect user name");
               }
