@@ -1,12 +1,23 @@
 .books-list {
-  width: 90vw;
+  width: 90%;
   margin: 0 auto;
   padding: 2.5rem 4rem;
-  padding-top: 5rem;
+  padding-top: 8rem;
   list-style: none;
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(63rem, 1fr));
 
   gap: 4.5rem;
+}
+
+[theme-list="light"] {
+  background-color: var(--color-theme-light) !important;
+  color: var(--color-theme-dark) !important;
+  transition: all 0.4s;
+}
+[theme-list="dark"] {
+  background-color: var(--color-theme-dark) !important;
+  color: var(--color-theme-light) !important;
+  transition: all 0.4s;
 }

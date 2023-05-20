@@ -19,7 +19,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    color: var(--color-white-dark);
     opacity: 0.6;
     text-decoration: none;
     font-size: 2rem;
@@ -34,4 +33,26 @@
     display: flex;
     gap: 2.5rem;
   }
+}
+
+[theme-header="light"] {
+  background-color: var(--color-theme-light) !important;
+  color: var(--color-theme-dark) !important;
+  a {
+    color: var(--color-theme-dark) !important;
+  }
+  svg {
+    fill: var(--color-theme-dark) !important;
+  }
+  transition: all 0.4s;
+}
+[theme-header="dark"] {
+  background-color: var(--color-theme-dark) !important;
+  color: var(--color-theme-light) !important;
+  a {
+    color: var(--color-theme-light) !important;
+  }
+  fill: var(--color-theme-light) !important;
+
+  transition: all 0.4s;
 }

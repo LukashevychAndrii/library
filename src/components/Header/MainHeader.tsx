@@ -13,8 +13,13 @@ export const getStyle = ({ isActive }: { isActive: boolean }) =>
 
 const MainHeader = () => {
   const userName = useAppSelector((state) => state.user.userName);
+
+  const theme = useAppSelector((state) => state.theme.theme);
+  React.useEffect(() => {
+    console.log(theme);
+  }, [theme]);
   return (
-    <header className={styles["header"]}>
+    <header theme-header={theme} className={styles["header"]}>
       <NavLink end className={getStyle} to="/library">
         <BookIcon />
         <div>Books</div>
