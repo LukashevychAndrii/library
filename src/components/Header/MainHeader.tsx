@@ -14,13 +14,13 @@ const MainHeader = () => {
   const userName = useAppSelector((state) => state.user.userName);
   return (
     <header className={styles["header"]}>
-      <NavLink className={getStyle} to="/library">
+      <NavLink end className={getStyle} to="/library">
         <BookIcon />
         <div>Books</div>
       </NavLink>
       <div className={styles["header__acc"]}>
         {userName ? (
-          <NavLink className={getStyle} to="/">
+          <NavLink className={getStyle} to="/library/acc-details">
             {userName}
           </NavLink>
         ) : (

@@ -10,6 +10,7 @@ import SignUpPage from "./pages/SignUpPage";
 import { loader as BooksLoader } from "./pages/HomePage";
 import { useAppDispatch } from "./hooks/redux";
 import { autoLogin } from "./store/slices/user-slice";
+import AccDetailsPage from "./pages/AccDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       },
       { path: "sign-in", element: <SignInPage /> },
       { path: "sign-up", element: <SignUpPage /> },
+      {path:"acc-details",element:<AccDetailsPage/>}
     ],
   },
 ]);
