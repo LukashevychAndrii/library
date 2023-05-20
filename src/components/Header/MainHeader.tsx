@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { ReactComponent as BookIcon } from "../../img/SVG/book1.svg";
 import Acc from "./Header-components/Acc/Acc";
 import { useAppSelector } from "../../hooks/redux";
+import Theme from "./Header-components/Theme/Theme";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -18,14 +19,17 @@ const MainHeader = () => {
         <BookIcon />
         <div>Books</div>
       </NavLink>
-      <div className={styles["header__acc"]}>
-        {userName ? (
-          <NavLink className={getStyle} to="/library/acc-details">
-            {userName}
-          </NavLink>
-        ) : (
-          <Acc />
-        )}
+      <div className={styles["header__right-content"]}>
+        <Theme />
+        <div className={styles["header__acc"]}>
+          {userName ? (
+            <NavLink className={getStyle} to="/library/acc-details">
+              {userName}
+            </NavLink>
+          ) : (
+            <Acc />
+          )}
+        </div>
       </div>
     </header>
   );

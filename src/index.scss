@@ -5,7 +5,7 @@
 
 :root {
   //----------FONT-----------
-  --font-default:1.6rem;
+  --font-default: 1.6rem;
 
   //----------APP-COLORS-------------
 
@@ -19,23 +19,22 @@
   --color-grey-light: #babecc;
   --color-grey-rgb: 119, 119, 119;
 
-  --color-bg: #e2e2e2;
+  //-------THEME-COLORS--------------
 
-  
+  --color-theme-light: #e9e8de;
+  --color-theme-dark: #333;
+
   //-------ALERT-WINDOWS-COLORS-----------
-  
+
   --color-alert-success: rgba(7, 149, 66, 0.6);
-  --color-border-alert-success:rgba(36, 241, 6, 0.46);
+  --color-border-alert-success: rgba(36, 241, 6, 0.46);
   --color-text-alert-success: #25ff0b;
-  --color-hover-alert-success:rgba(7, 149, 66, 0.8);
-  --color-shadow-success:#259c08;
+  --color-hover-alert-success: rgba(7, 149, 66, 0.8);
+  --color-shadow-success: #259c08;
 
-  --color-alert-error: rgba(220, 17, 1, .5);
-  --color-border-alert-error:rgba(236, 58, 58, 0.46);
+  --color-alert-error: rgba(220, 17, 1, 0.5);
+  --color-border-alert-error: rgba(236, 58, 58, 0.46);
   --color-text-alert-error: #a02525;
-  --color-hover-alert-error:rgba(255, 0, 0, 0.6);
-  --color-shadow-error:#9c0808;
-  
+  --color-hover-alert-error: rgba(255, 0, 0, 0.6);
+  --color-shadow-error: #9c0808;
 }
-
-
