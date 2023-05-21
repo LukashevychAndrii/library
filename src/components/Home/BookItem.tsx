@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { ReactComponent as Heart } from "../../img/SVG/heart.svg";
 import { ReactComponent as HeartOutlined } from "../../img/SVG/heart-outlined.svg";
-import { book } from "../../pages/HomePage";
+import { book } from "../../store/slices/book-slice";
 
 interface props {
   book: book;

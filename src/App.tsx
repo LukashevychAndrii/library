@@ -11,6 +11,7 @@ import { useAppDispatch } from "./hooks/redux";
 import { autoLogin } from "./store/slices/user-slice";
 import AccDetailsPage from "./pages/AccDetailsPage";
 import { setTheme } from "./store/slices/theme-slice";
+import { getBooksLength } from "./store/slices/book-slice";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ function App() {
     if (theme && theme.length > 0) {
       dispatch(setTheme(theme));
     }
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(getBooksLength());
   }, [dispatch]);
 
   return <RouterProvider router={router}></RouterProvider>;
