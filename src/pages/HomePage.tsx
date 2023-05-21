@@ -1,9 +1,13 @@
 import React from "react";
 import BookList from "../components/Home/BookList";
-import { get, getDatabase, ref } from "firebase/database";
-import { app } from "../firebase";
+import { useAppDispatch } from "../hooks/redux";
+import { fetchBooks } from "../store/slices/book-slice";
 
 const HomePage = () => {
+  const dispatch = useAppDispatch();
+  React.useEffect(() => {
+    dispatch(fetchBooks({ start: "0", end: "9" }));
+  }, [dispatch]);
   return <BookList />;
 };
 
@@ -21,13 +25,3 @@ export interface book {
   id: number;
   liked: boolean;
 }
-
-export const loader = async () => {
-  const db = getDatabase(app);
-  const dbRef = ref(db, `/books`);
-  let booksData: book[] = [];
-  await get(dbRef).then((snapshot) => {
-    booksData = snapshot.val();
-  });
-  return booksData;
-};
