@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Pagination.module.scss";
 import { useAppSelector } from "../../hooks/redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -9,7 +9,18 @@ export const getStyle = ({ isActive }: { isActive: boolean }) =>
     : styles["pagination__item"];
 
 const Pagination = () => {
-  const [current, setCurrent] = React.useState(0);
+  const [current, setCurrent] = React.useState<number>();
+
+  const page = useLocation();
+  React.useEffect(() => {
+    const searchParams = new URLSearchParams(page.search);
+    const pageParam = searchParams.get("page");
+    if (pageParam) {
+      setCurrent(+pageParam);
+    } else {
+      setCurrent(1);
+    }
+  }, [page]);
   const count = useAppSelector((state) => state.book.totalLength);
   const [pages, setPages] = React.useState(0);
 
