@@ -15,9 +15,7 @@ const BookList = () => {
       <ul className={styles["books-list"]}>
         {books.length > 0 &&
           books.map((el, index) => {
-            while (index < 10) {
-              return <BookItem key={el.id} book={el}></BookItem>;
-            }
+            return <BookItem key={el.id} book={el}></BookItem>;
           })}
       </ul>
       <Pagination />

@@ -45,6 +45,10 @@ const bookSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchBooks.fulfilled, (state, action) => {
       state.books = action.payload;
+      console.log("fullfilled");
+    });
+    builder.addCase(fetchBooks.pending, () => {
+      console.log("pending");
     });
     builder.addCase(getBooksLength.fulfilled, (state, action) => {
       state.totalLength = action.payload;

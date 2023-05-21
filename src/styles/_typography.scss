@@ -10,12 +10,17 @@ html {
 }
 
 .heading-1 {
+  &--light {
+    color: #dddccc;
+  }
+  &--dark {
+    color: var(--color-theme-light);
+  }
   &,
   &:visited,
   &:link {
     text-decoration: none;
     font-size: 2.5rem;
-    color: var(--color-white-dark);
     -webkit-text-stroke: 1px var(--color-black-light);
     cursor: pointer;
     transition: all 0.2s;
@@ -31,21 +36,28 @@ html {
     }
   }
 }
+
 .heading-2 {
+  &--dark {
+    -webkit-text-stroke: 0.5px var(--color-item-theme-light);
+  }
+  &--light {
+    -webkit-text-stroke: 1px var(--color-item-theme-dark);
+  }
   &,
   &:link,
   &:visited {
     transition: all 0.2s;
     cursor: pointer;
     background-image: linear-gradient(
-      to right,
-      var(--color-black-light),
+      to top,
+      var(--color-item-theme-light),
       var(--color-white-dark)
     );
     background-clip: text;
+    width: max-content;
     color: transparent;
     text-shadow: 0 0.5rem 1rem rgba($color: #000000, $alpha: 0.2);
-    -webkit-text-stroke: 1px var(--color-black-light);
     letter-spacing: 0.2rem;
     text-decoration: none;
     display: inline-block;

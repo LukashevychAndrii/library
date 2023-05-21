@@ -15,13 +15,13 @@
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.05) translateY(-1rem);
+    transform: scale(1.01) translateY(-0.3rem);
     box-shadow: 0 1rem 2.5rem rgba($color: #000000, $alpha: 0.5);
   }
 
   &__image {
-    width: 30rem;
-    height: 35rem;
+    width: 20rem;
+    height: 25rem;
     align-self: center;
     justify-self: center;
 
@@ -31,11 +31,8 @@
   &__description {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-
-    & a {
-      align-self: center;
-    }
+    justify-content: space-between;
+    height: 100%;
   }
   & a {
     text-decoration: none;
@@ -71,4 +68,17 @@
 
     opacity: 1;
   }
+  &__btn-more {
+    align-self: flex-start;
+  }
+}
+[theme-list-item="light"] {
+  background-color: var(--color-item-theme-light) !important;
+  color: var(--color-theme-dark) !important;
+  transition: all 0.4s;
+}
+[theme-list-item="dark"] {
+  background-color: var(--color-item-theme-dark) !important;
+  color: var(--color-theme-light) !important;
+  transition: all 0.4s;
 }

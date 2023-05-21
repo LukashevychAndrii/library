@@ -6,18 +6,18 @@
   list-style: none;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(63rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(55rem, 1fr));
 
   gap: 4.5rem;
 }
 
 [theme-list="light"] {
   background-color: var(--color-theme-light) !important;
-  color: var(--color-theme-dark) !important;
+  // color: var(--color-theme-dark) !important;
   transition: all 0.4s;
 }
 [theme-list="dark"] {
   background-color: var(--color-theme-dark) !important;
-  color: var(--color-theme-light) !important;
+  // color: var(--color-theme-light) !important;
   transition: all 0.4s;
 }

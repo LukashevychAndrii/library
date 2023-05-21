@@ -72,7 +72,13 @@ export const createUser = createAsyncThunk<
         };
         set(dbRef, userDATA).then(() => {
           dispatch(setUserData(userDATA));
-          dispatch(createAlert({alertTitle:"Success!",alertText:"Successfully created an account!",alertType:"success"}))          
+          dispatch(
+            createAlert({
+              alertTitle: "Success!",
+              alertText: "Successfully created an account!",
+              alertType: "success",
+            })
+          );
           navigate("/library");
         });
         // ...
@@ -81,7 +87,7 @@ export const createUser = createAsyncThunk<
         const errorCode = error.code;
         const errorMessage = error.message;
 
-        dispatch(createAlert(getErrorDetails(errorCode)))
+        dispatch(createAlert(getErrorDetails(errorCode)));
       });
     return undefined;
   }
@@ -121,28 +127,48 @@ export const signIn = createAsyncThunk<
                   userPhoto: userPhoto,
                 };
                 dispatch(setUserData(userDATA));
-          dispatch(createAlert({alertTitle:"Success!",alertText:"Successfully signed in!",alertType:"success"}))          
+                dispatch(
+                  createAlert({
+                    alertTitle: "Success!",
+                    alertText: "Successfully signed in!",
+                    alertType: "success",
+                  })
+                );
 
-
-                navigate("/library")
+                navigate("/library");
               } else {
-                dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Incorrect user name",alertType:"error"}))
-
+                dispatch(
+                  createAlert({
+                    alertTitle: "An error occurred!",
+                    alertText: "Incorrect user name",
+                    alertType: "error",
+                  })
+                );
               }
             } else {
-              dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Unknown database error!",alertType:"error"}))
-
+              dispatch(
+                createAlert({
+                  alertTitle: "An error occurred!",
+                  alertText: "Unknown database error!",
+                  alertType: "error",
+                })
+              );
             }
           } else {
-            dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Unknown database error!",alertType:"error"}))
+            dispatch(
+              createAlert({
+                alertTitle: "An error occurred!",
+                alertText: "Unknown database error!",
+                alertType: "error",
+              })
+            );
           }
         });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        dispatch(createAlert(getErrorDetails(errorCode)))
-
+        dispatch(createAlert(getErrorDetails(errorCode)));
       });
     return undefined;
   }
@@ -151,10 +177,8 @@ export const signIn = createAsyncThunk<
 export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
   "user/autoLogin",
   async (_, { dispatch }) => {
-    console.log("qwe");
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      console.log(user);
       if (user) {
         const fetchDATA = async () => {
           const db = getDatabase(app);
@@ -164,8 +188,13 @@ export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
               const userDATA = snapshot.val();
               dispatch(setUserData(userDATA));
             } else {
-              dispatch(createAlert({alertTitle:"An error occurred!",alertText:"Unknown database error!",alertType:"error"}))
-
+              dispatch(
+                createAlert({
+                  alertTitle: "An error occurred!",
+                  alertText: "Unknown database error!",
+                  alertType: "error",
+                })
+              );
             }
           });
         };

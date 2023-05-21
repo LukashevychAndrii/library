@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ReactComponent as Heart } from "../../img/SVG/heart.svg";
 import { ReactComponent as HeartOutlined } from "../../img/SVG/heart-outlined.svg";
 import { book } from "../../store/slices/book-slice";
+import { useAppSelector } from "../../hooks/redux";
 
 interface props {
   book: book;
@@ -21,22 +22,27 @@ const BookItem: React.FC<props> = ({ book }) => {
   }, [imageSrc, setImageSrc, book.imageLink, setLiked, book.liked]);
 
   const ref = React.useRef<HTMLInputElement>(null);
-
+  const theme = useAppSelector((state) => state.theme.theme);
   return (
-    <li className={styles["book"]}>
+    <li theme-list-item={theme} className={styles["book"]}>
       <img className={styles["book__image"]} src={imageSrc} alt="book" />
       <div className={styles["book__description"]}>
         <h1>
-          <Link className="heading-1" to={`${book.id}`}>
+          <Link className={`heading-1 heading-1--${theme}`} to={`${book.id}`}>
             {book.title}
           </Link>
         </h1>
-        <h2 className="heading-2">{book.author}</h2>
+        <h2 className={`heading-2 heading-2--${theme}`}>{book.author}</h2>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. At molestias
           maiores tempora voluptate.
         </p>
-        <Link to={`${book.id}`} className="btn-more--black">
+        <Link
+          to={`${book.id}`}
+          className={`btn-more--${theme === "light" ? "dark" : "light"} ${
+            styles["book__btn-more"]
+          }`}
+        >
           Details &rarr;
         </Link>
       </div>
