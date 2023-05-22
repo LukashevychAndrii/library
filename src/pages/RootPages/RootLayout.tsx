@@ -3,14 +3,18 @@ import { Outlet } from "react-router-dom";
 import MainHeader from "../../components/Header/MainHeader";
 import Alert from "../../components/Alert/Alert";
 import { useAppSelector } from "../../hooks/redux";
+import LoadingBar from "../../components/LoadingBar/LoadingBar";
 
 const RootLayout = () => {
-  const alert = useAppSelector(state=>state.alert.alertTitle)
+  const alert = useAppSelector((state) => state.alert.alertTitle);
+  const pending = useAppSelector((state) => state.pending.pending);
+
   return (
     <>
-    {alert&&<Alert/>}
+      {pending && <LoadingBar />}
+      {alert && <Alert />}
       <MainHeader />
-      <main >
+      <main>
         <Outlet />
       </main>
     </>

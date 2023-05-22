@@ -4,6 +4,7 @@ import userSlice from "./slices/user-slice";
 import alertSlice from "./slices/alert-slice";
 import themeSlice from "./slices/theme-slice";
 import bookSlice from "./slices/book-slice";
+import pendingSlice from "./slices/pending-slice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     alert: alertSlice,
     theme: themeSlice,
     book: bookSlice,
+    pending: pendingSlice,
   },
 });
 

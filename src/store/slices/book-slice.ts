@@ -12,6 +12,8 @@ import {
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
 import { NavigateFunction } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/redux";
+import { clearPending, setPending } from "./pending-slice";
 
 export interface book {
   author: string;
@@ -52,9 +54,6 @@ const bookSlice = createSlice({
       state.books = action.payload;
       console.log("fullfilled");
     });
-    builder.addCase(fetchBooks.pending, () => {
-      console.log("pending");
-    });
 
     builder.addCase(getBooksLength.fulfilled, (state, action) => {
       state.totalLength = action.payload;
@@ -79,6 +78,7 @@ export const fetchBooks = createAsyncThunk<
   console.log(start, end);
   const db = getDatabase(app);
   const dbRef = ref(db, `/books`);
+  dispatch(setPending());
 
   let booksData: book[] = [];
 
@@ -93,7 +93,18 @@ export const fetchBooks = createAsyncThunk<
         booksData = Object.values(s.val());
       }
     })
-    .then(() => {});
+    .catch(() => {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Database error",
+          alertType: "error",
+        })
+      );
+    })
+    .then(() => {
+      dispatch(clearPending());
+    });
   return booksData;
 });
 
@@ -132,20 +143,34 @@ export const getBookDetails = createAsyncThunk<
     const db = getDatabase(app);
     const dbRef = ref(db, `/books/${bookID}`);
     let bookData: book | undefined = undefined;
+    dispatch(setPending());
 
-    await get(dbRef).then((s) => {
-      if (s.exists()) bookData = s.val();
-      else {
-        navigate("/library");
+    await get(dbRef)
+      .then((s) => {
+        if (s.exists()) bookData = s.val();
+        else {
+          navigate("/library");
+          dispatch(
+            createAlert({
+              alertTitle: "Error!",
+              alertText: "Database error",
+              alertType: "error",
+            })
+          );
+        }
+      })
+      .then(() => {
+        dispatch(clearPending());
+      })
+      .catch(() => {
         dispatch(
           createAlert({
             alertTitle: "Error!",
-            alertText: "Undefined database error!",
+            alertText: "Database error",
             alertType: "error",
           })
         );
-      }
-    });
+      });
     return bookData;
   }
 );
