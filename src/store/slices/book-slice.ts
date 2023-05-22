@@ -11,6 +11,7 @@ import {
 } from "firebase/database";
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
+import { NavigateFunction } from "react-router-dom";
 
 export interface book {
   author: string;
@@ -28,6 +29,7 @@ export interface book {
 interface initialStateI {
   books: book[];
   totalLength: number;
+  currentBookDetails?: book;
 }
 const initialState: initialStateI = {
   books: [],
@@ -41,6 +43,9 @@ const bookSlice = createSlice({
     setBooks(state, action) {
       state.books = action.payload;
     },
+    clearCurrentBookDetails(state) {
+      state.currentBookDetails = undefined;
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchBooks.fulfilled, (state, action) => {
@@ -50,14 +55,21 @@ const bookSlice = createSlice({
     builder.addCase(fetchBooks.pending, () => {
       console.log("pending");
     });
+
     builder.addCase(getBooksLength.fulfilled, (state, action) => {
       state.totalLength = action.payload;
+    });
+
+    builder.addCase(getBookDetails.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.currentBookDetails = action.payload;
+      }
     });
   },
 });
 
 export default bookSlice.reducer;
-export const { setBooks } = bookSlice.actions;
+export const { setBooks, clearCurrentBookDetails } = bookSlice.actions;
 
 export const fetchBooks = createAsyncThunk<
   book[],
@@ -107,5 +119,33 @@ export const getBooksLength = createAsyncThunk<number, undefined, {}>(
         );
       });
     return count;
+  }
+);
+
+export const getBookDetails = createAsyncThunk<
+  book | undefined,
+  { bookID: string; navigate: NavigateFunction },
+  {}
+>(
+  "book/getBookDetails",
+  async function ({ bookID, navigate }, { getState, dispatch }) {
+    const db = getDatabase(app);
+    const dbRef = ref(db, `/books/${bookID}`);
+    let bookData: book | undefined = undefined;
+
+    await get(dbRef).then((s) => {
+      if (s.exists()) bookData = s.val();
+      else {
+        navigate("/library");
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Undefined database error!",
+            alertType: "error",
+          })
+        );
+      }
+    });
+    return bookData;
   }
 );

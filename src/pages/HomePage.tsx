@@ -1,7 +1,10 @@
 import React from "react";
 import BookList from "../components/Home/BookList";
 import { useAppDispatch } from "../hooks/redux";
-import { fetchBooks } from "../store/slices/book-slice";
+import {
+  clearCurrentBookDetails,
+  fetchBooks,
+} from "../store/slices/book-slice";
 import { useLocation } from "react-router-dom";
 
 const HomePage = () => {
@@ -20,6 +23,11 @@ const HomePage = () => {
       dispatch(fetchBooks({ start: "0", end: "9" }));
     }
   }, [pageParam, dispatch]);
+
+  React.useEffect(() => {
+    dispatch(clearCurrentBookDetails());
+  }, [dispatch]);
+
   return <BookList />;
 };
 

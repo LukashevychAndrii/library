@@ -12,6 +12,7 @@ import { autoLogin } from "./store/slices/user-slice";
 import AccDetailsPage from "./pages/AccDetailsPage";
 import { setTheme } from "./store/slices/theme-slice";
 import { getBooksLength } from "./store/slices/book-slice";
+import BookDetailsPage from "./pages/BookDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "sign-in", element: <SignInPage /> },
       { path: "sign-up", element: <SignUpPage /> },
       { path: "acc-details", element: <AccDetailsPage /> },
+      { path: ":bookID", element: <BookDetailsPage /> },
     ],
   },
 ]);

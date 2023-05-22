@@ -1,4 +1,18 @@
 .btn {
+  &--light {
+    background-color: var(--color-theme-light);
+    color: var(--color-theme-dark);
+    &::after {
+      background-color: inherit;
+    }
+  }
+  &--dark {
+    background-color: var(--color-theme-dark);
+    color: var(--color-theme-light);
+    &::after {
+      background-color: inherit;
+    }
+  }
   &,
   &:link,
   &:visited {
@@ -9,12 +23,11 @@
     font-weight: 600;
     font-size: 1.5rem;
     cursor: pointer;
-    background-image: linear-gradient(
-      to right bottom,
-      var(--color-white-dark),
-      var(--color-grey-light)
-    );
-    color: var(--color-dark-light);
+    // background-image: linear-gradient(
+    //   to right bottom,
+    //   var(--color-white-dark),
+    //   var(--color-grey-light)
+    // );
     text-transform: uppercase;
     letter-spacing: 0.05rem;
     box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.2);
@@ -33,7 +46,6 @@
       position: absolute;
       top: 0;
       left: 0;
-      background-image: inherit;
       border-radius: 2rem;
       transition: all 0.4s;
       z-index: -1;
