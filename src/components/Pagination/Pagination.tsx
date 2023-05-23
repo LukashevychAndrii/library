@@ -48,7 +48,9 @@ const Pagination = () => {
         </NavLink>
       );
     }
-    return arr;
+    if (arr.length > 1) {
+      return arr;
+    }
   };
 
   const theme = useAppSelector((state) => state.theme.theme);

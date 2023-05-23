@@ -5,6 +5,7 @@ import { ReactComponent as BookIcon } from "../../img/SVG/book1.svg";
 import Acc from "./Header-components/Acc/Acc";
 import { useAppSelector } from "../../hooks/redux";
 import Theme from "./Header-components/Theme/Theme";
+import SearchBar from "./Header-components/SearchBar/SearchBar";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -24,6 +25,7 @@ const MainHeader = () => {
         <BookIcon />
         <div>Books</div>
       </NavLink>
+      <SearchBar />
       <div className={styles["header__right-content"]}>
         <Theme />
         <div className={styles["header__acc"]}>

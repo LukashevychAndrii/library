@@ -44,10 +44,6 @@ function App() {
     }
   }, [dispatch]);
 
-  React.useEffect(() => {
-    dispatch(getBooksLength());
-  }, [dispatch]);
-
   return <RouterProvider router={router}></RouterProvider>;
 }
 

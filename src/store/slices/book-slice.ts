@@ -8,11 +8,13 @@ import {
   orderByKey,
   startAt,
   endAt,
+  equalTo,
+  orderByChild,
+  orderByValue,
 } from "firebase/database";
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
 import { NavigateFunction } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/redux";
 import { clearPending, setPending } from "./pending-slice";
 
 export interface book {
@@ -59,10 +61,15 @@ const bookSlice = createSlice({
       state.totalLength = action.payload;
     });
 
-    builder.addCase(getBookDetails.fulfilled, (state, action) => {
+    builder.addCase(fetchBookDetails.fulfilled, (state, action) => {
       if (action.payload) {
         state.currentBookDetails = action.payload;
       }
+    });
+    builder.addCase(fetchFilteredBooks.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.books = action.payload;
+      state.totalLength = action.payload.length;
     });
   },
 });
@@ -133,7 +140,7 @@ export const getBooksLength = createAsyncThunk<number, undefined, {}>(
   }
 );
 
-export const getBookDetails = createAsyncThunk<
+export const fetchBookDetails = createAsyncThunk<
   book | undefined,
   { bookID: string; navigate: NavigateFunction },
   {}
@@ -172,5 +179,35 @@ export const getBookDetails = createAsyncThunk<
         );
       });
     return bookData;
+  }
+);
+
+export const fetchFilteredBooks = createAsyncThunk<
+  book[],
+  { filter: string; enteredValue: string },
+  {}
+>(
+  "book/fetchFilteredBooks",
+  async function ({ filter, enteredValue }, { dispatch }) {
+    let filteredBooks: book[] | null = [];
+    const db = getDatabase(app);
+    const dbRef = ref(db, `books`);
+    const dataQuery = query(
+      dbRef,
+      orderByChild(filter),
+      startAt(enteredValue),
+      endAt(`${enteredValue}\uf8ff`)
+    );
+
+    await get(dataQuery)
+      .then((snapshot) => {
+        filteredBooks = Object.values(snapshot.val());
+        console.log(filteredBooks);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return filteredBooks;
   }
 );
