@@ -11,13 +11,17 @@ const SearchBar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const searchParams = React.useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
   React.useEffect(() => {
     const author = searchParams.get("author");
+    console.log(author);
     if (author) {
       setEnteredValue(author);
     }
-  }, []);
+  }, [searchParams]);
 
   const [enteredValue, setEnteredValue] = React.useState("");
   return (

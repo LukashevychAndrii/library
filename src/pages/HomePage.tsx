@@ -1,6 +1,6 @@
 import React from "react";
 import BookList from "../components/Home/BookList";
-import { useAppDispatch } from "../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   clearCurrentBookDetails,
   fetchBooks,
@@ -15,8 +15,7 @@ const HomePage = () => {
   const searchParams = new URLSearchParams(location.search);
   const pageParam = searchParams.get("page");
   const authorParams = searchParams.get("author");
-
-  console.log(searchParams.getAll);
+  const books = useAppSelector((state) => state.book.books);
 
   React.useEffect(() => {
     if (!authorParams) {
@@ -26,8 +25,6 @@ const HomePage = () => {
 
   React.useEffect(() => {
     if (pageParam) {
-      console.log("page changed");
-
       const start: number = +pageParam * 10 - 10;
       const end = start + 9;
       if (typeof start === "number" && typeof end === "number") {
@@ -48,8 +45,9 @@ const HomePage = () => {
   React.useEffect(() => {
     dispatch(clearCurrentBookDetails());
   }, [dispatch]);
+  const count = useAppSelector((state) => state.book.totalLength);
 
-  return <BookList />;
+  return <BookList books={books} count={count} />;
 };
 
 export default HomePage;

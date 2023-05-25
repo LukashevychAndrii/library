@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,700;1,600&display=swap");
 
 .header {
-  background-color: var(--color-black-light);
   font-family: "Josefin Sans", sans-serif;
   padding: 2.5rem 3rem;
   display: flex;
@@ -11,6 +10,7 @@
   &__right-content {
     display: flex;
     gap: 10rem;
+    align-items: center;
   }
   & svg {
     fill: var(--color-white-dark);
@@ -41,7 +41,7 @@
   background-color: var(--color-theme-light) !important;
   color: var(--color-theme-dark) !important;
   a {
-    color: var(--color-theme-dark) !important;
+    color: var(--color-theme-dark);
   }
   svg {
     fill: var(--color-theme-dark) !important;

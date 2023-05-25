@@ -6,6 +6,7 @@ import Acc from "./Header-components/Acc/Acc";
 import { useAppSelector } from "../../hooks/redux";
 import Theme from "./Header-components/Theme/Theme";
 import SearchBar from "./Header-components/SearchBar/SearchBar";
+import Wishlist from "./Header-components/Wishlist/Wishlist";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -16,15 +17,16 @@ const MainHeader = () => {
   const userName = useAppSelector((state) => state.user.userName);
 
   const theme = useAppSelector((state) => state.theme.theme);
-  React.useEffect(() => {
-    console.log(theme);
-  }, [theme]);
+
+  const userID = useAppSelector((state) => state.user.userID);
+
   return (
     <header theme-header={theme} className={styles["header"]}>
       <NavLink end className={getStyle} to="/library">
         <BookIcon />
         <div>Books</div>
       </NavLink>
+      {userID && <Wishlist />}
       <SearchBar />
       <div className={styles["header__right-content"]}>
         <Theme />

@@ -4,22 +4,39 @@ import { Link } from "react-router-dom";
 
 import { ReactComponent as Heart } from "../../img/SVG/heart.svg";
 import { ReactComponent as HeartOutlined } from "../../img/SVG/heart-outlined.svg";
-import { book } from "../../store/slices/book-slice";
-import { useAppSelector } from "../../hooks/redux";
+import {
+  book,
+  addBookToWishlist,
+  removeBookFromWishlist,
+} from "../../store/slices/book-slice";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 interface props {
   book: book;
 }
 const BookItem: React.FC<props> = ({ book }) => {
   const [imageSrc, setImageSrc] = React.useState("");
+  const wishlistIDS = useAppSelector((state) => state.book.wishlistIDs);
+
+  const dispatch = useAppDispatch();
 
   const [liked, setLiked] = React.useState<boolean>(false);
   React.useEffect(() => {
     import(`./${book.imageLink}`).then((module) => {
       setImageSrc(module.default);
     });
-    setLiked(book.liked);
-  }, [imageSrc, setImageSrc, book.imageLink, setLiked, book.liked]);
+  }, [imageSrc, book.imageLink]);
+  React.useEffect(() => {
+    console.log(wishlistIDS);
+    if (
+      wishlistIDS &&
+      wishlistIDS.findIndex((el) => el === book.id.toString()) !== -1
+    ) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  }, [wishlistIDS, book.id]);
 
   const ref = React.useRef<HTMLInputElement>(null);
   const theme = useAppSelector((state) => state.theme.theme);
@@ -47,17 +64,35 @@ const BookItem: React.FC<props> = ({ book }) => {
         </Link>
       </div>
 
-      <input
-        ref={ref}
-        type="checkbox"
-        name="heart"
-        id={`heart-${book.id}`}
-        className={styles["book__checkbox"]}
-        checked={liked}
-        onChange={() => {
-          setLiked(!liked);
-        }}
-      />
+      <form>
+        <input
+          ref={ref}
+          type="checkbox"
+          name="heart"
+          id={`heart-${book.id}`}
+          className={styles["book__checkbox"]}
+          checked={liked}
+          onChange={(e) => {
+            setLiked(!liked);
+            if (e.target.checked) {
+              dispatch(
+                addBookToWishlist({ bookID: `${book.id}`, bookData: book })
+              );
+            } else {
+              dispatch(removeBookFromWishlist({ bookID: `${book.id}` }));
+            }
+          }}
+        />
+        <label htmlFor={`heart-${book.id}`}>
+          {liked ? (
+            <Heart className={styles["book__heart"]} />
+          ) : (
+            <HeartOutlined
+              className={`${styles["book__heart"]} ${styles["book__heart--outlined"]}`}
+            />
+          )}
+        </label>
+      </form>
     </li>
   );
 };

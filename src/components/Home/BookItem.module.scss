@@ -41,28 +41,18 @@
     display: none;
   }
 
-  &__heart,
-  &__heart-outlined {
+  &__heart {
     position: absolute;
-    top: 2rem;
-    right: 2rem;
-    width: 3rem;
-    height: 3rem;
-    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     cursor: pointer;
-    display: inline-block;
-    transition: all 0.2s;
-
-    &:hover {
-    }
   }
-  &__heart-outlined:hover {
+  &__heart--outlined:hover {
     animation: bounce 1s infinite;
   }
-  &__heart {
-    visibility: hidden;
-    opacity: 0;
-  }
+
   &__checkbox:checked ~ label &__heart {
     visibility: visible;
 

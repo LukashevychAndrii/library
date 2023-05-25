@@ -8,7 +8,7 @@ export const getStyle = ({ isActive }: { isActive: boolean }) =>
     ? `${styles["pagination__item--active"]} ${styles["pagination__item"]}`
     : styles["pagination__item"];
 
-const Pagination = () => {
+const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
   const [current, setCurrent] = React.useState<number>();
 
   const page = useLocation();
@@ -21,12 +21,12 @@ const Pagination = () => {
       setCurrent(1);
     }
   }, [page]);
-  const count = useAppSelector((state) => state.book.totalLength);
   const [pages, setPages] = React.useState(0);
 
   React.useEffect(() => {
-    setPages(Math.ceil(count / 10));
-  }, [count]);
+    console.log(Math.ceil(totalLength / 10));
+    setPages(Math.ceil(totalLength / 10));
+  }, [totalLength]);
 
   const renderPagination = () => {
     const arr: any[] = [];

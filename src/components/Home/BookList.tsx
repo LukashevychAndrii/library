@@ -6,9 +6,10 @@ import BookItem from "./BookItem";
 import { useAppSelector } from "../../hooks/redux";
 import Pagination from "../Pagination/Pagination";
 
-const BookList = () => {
-  const books = useAppSelector((state) => state.book.books);
-
+const BookList: React.FC<{ books: book[]; count: number }> = ({
+  books,
+  count,
+}) => {
   const theme = useAppSelector((state) => state.theme.theme);
   return (
     <div theme-list={theme}>
@@ -18,7 +19,7 @@ const BookList = () => {
             return <BookItem key={el.id} book={el}></BookItem>;
           })}
       </ul>
-      <Pagination />
+      <Pagination totalLength={count} />
     </div>
   );
 };
