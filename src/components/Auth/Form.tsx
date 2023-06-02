@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import { ReactComponent as EyeSlash } from "../../img/SVG/eye-slash.svg";
 import { ReactComponent as Eye } from "../../img/SVG/eye.svg";
+import { useAppSelector } from "../../hooks/redux";
 
 interface props {
   title: string;
@@ -92,104 +93,111 @@ const Form = ({ title, handleClick }: props) => {
         break;
     }
   }
+  const theme = useAppSelector((state) => state.theme.theme);
   return (
-    <form
-      className={styles["form"]}
-      onSubmit={(e: FormEvent) => {
-        e.preventDefault();
-      }}
-    >
-      <div className={styles["form__links"]}>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? styles["active"] : undefined
-          }
-          to="/library/sign-in"
-        >
-          Sign in
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? styles["active"] : undefined
-          }
-          to="/library/sign-up"
-        >
-          Sign up
-        </NavLink>
-      </div>
-
-      <div className={styles["form__element"]}>
-        {userNameTouched && userNameError && (
-          <p className={styles["form__error"]}>{userNameError}</p>
-        )}
-        <label htmlFor="userName"></label>
-        <input
-          type="userName"
-          id="userName"
-          name="userName"
-          value={userName}
-          placeholder="User name"
-          required
-          onChange={userNameChangeHandler}
-          onBlur={emailBlurHandler}
-        />
-      </div>
-      <div className={styles["form__element"]}>
-        {emailTouched && emailError && (
-          <p className={styles["form__error"]}>{emailError}</p>
-        )}
-        <label htmlFor="email"></label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          placeholder="Email"
-          required
-          onChange={emailChangeHandler}
-          onBlur={emailBlurHandler}
-        />
-      </div>
-      <div className={styles["form__element"]}>
-        {passTouched && passError && (
-          <p className={styles["form__error"]}>{passError}</p>
-        )}
-        <div className={styles["form__element__wrapper"]}>
-          <label htmlFor="pass"></label>
-          <input
-            type={showPass ? "text" : "password"}
-            id="pass"
-            name="pass"
-            value={pass}
-            required
-            placeholder="Password"
-            onChange={passChangeHandler}
-            onBlur={emailBlurHandler}
-          />
-
-          <EyeSlash
-            onClick={eyeClickHandler}
-            style={{ display: showPass ? "none" : "block" }}
-            className={styles["form__eye-slash"]}
-          />
-          <Eye
-            onClick={eyeClickHandler}
-            style={{ display: showPass ? "block" : "none" }}
-            className={styles["form__eye"]}
-          />
-        </div>
-      </div>
-
-      <button
-        disabled={!formValid}
-        className={`${styles["form__element"]} ${styles["form__btn"]}`}
-        onClick={() => {
-          handleClick(pass, userName, email);
+    <div theme-form={theme} className={styles["form__wrapper"]}>
+      <form
+        className={styles["form"]}
+        onSubmit={(e: FormEvent) => {
+          e.preventDefault();
         }}
       >
-        {title}
-      </button>
-    </form>
+        <div theme-form-links={theme} className={styles["form__links"]}>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? styles["active"] : undefined
+            }
+            to="/library/sign-in"
+          >
+            Sign in
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? styles["active"] : undefined
+            }
+            to="/library/sign-up"
+          >
+            Sign up
+          </NavLink>
+        </div>
+
+        <div className={styles["form__element"]}>
+          {userNameTouched && userNameError && (
+            <p className={styles["form__error"]}>{userNameError}</p>
+          )}
+          <label htmlFor="userName"></label>
+          <input
+            theme-form-input={theme}
+            type="userName"
+            id="userName"
+            name="userName"
+            value={userName}
+            placeholder="User name"
+            required
+            onChange={userNameChangeHandler}
+            onBlur={emailBlurHandler}
+          />
+        </div>
+        <div className={styles["form__element"]}>
+          {emailTouched && emailError && (
+            <p className={styles["form__error"]}>{emailError}</p>
+          )}
+          <label htmlFor="email"></label>
+          <input
+            theme-form-input={theme}
+            type="email"
+            id="email"
+            name="email"
+            value={email}
+            placeholder="Email"
+            required
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
+          />
+        </div>
+        <div className={styles["form__element"]}>
+          {passTouched && passError && (
+            <p className={styles["form__error"]}>{passError}</p>
+          )}
+          <div className={styles["form__element__wrapper"]}>
+            <label htmlFor="pass"></label>
+            <input
+              theme-form-input={theme}
+              type={showPass ? "text" : "password"}
+              id="pass"
+              name="pass"
+              value={pass}
+              required
+              placeholder="Password"
+              onChange={passChangeHandler}
+              onBlur={emailBlurHandler}
+            />
+
+            <EyeSlash
+              onClick={eyeClickHandler}
+              style={{ display: showPass ? "none" : "block" }}
+              className={styles["form__eye-slash"]}
+            />
+            <Eye
+              onClick={eyeClickHandler}
+              style={{ display: showPass ? "block" : "none" }}
+              className={styles["form__eye"]}
+            />
+          </div>
+        </div>
+
+        <button
+          theme-form-sign-in={theme}
+          disabled={!formValid}
+          className={`${styles["form__element"]} ${styles["form__btn"]}`}
+          onClick={() => {
+            handleClick(pass, userName, email);
+          }}
+        >
+          {title}
+        </button>
+      </form>
+    </div>
   );
 };
 
