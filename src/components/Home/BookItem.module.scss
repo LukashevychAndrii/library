@@ -41,7 +41,8 @@
     display: none;
   }
 
-  &__heart {
+  &__heart,
+  &__pin-icon {
     position: absolute;
     top: 1rem;
     right: 1.5rem;
@@ -49,7 +50,30 @@
     height: 3.5rem;
     cursor: pointer;
   }
+
+  &__pin-icon {
+    right: 6rem;
+    transition: none;
+  }
+  &__pin {
+    fill: black;
+    stroke: none !important;
+  }
+  &__unpin {
+    fill: var(--color-item-theme-dark);
+    &:hover {
+      stroke: #000;
+    }
+  }
+
+  &__heart--outlined {
+    fill: var(--color-theme-dark);
+    stroke-width: 1px;
+  }
   &__heart--outlined:hover {
+    transition: none !important;
+    fill: #000;
+
     animation: bounce 1s infinite;
   }
 
@@ -71,4 +95,13 @@
   background-color: var(--color-item-theme-dark) !important;
   color: var(--color-theme-light) !important;
   transition: all 0.4s;
+}
+
+[pin-theme="dark"] {
+  stroke: var(--color-theme-dark);
+  stroke-width: 0.1rem;
+}
+[pin-theme="light"] {
+  stroke: var(--color-theme-dark);
+  stroke-width: 0.1rem;
 }

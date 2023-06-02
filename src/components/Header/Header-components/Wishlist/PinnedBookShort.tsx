@@ -2,21 +2,22 @@ import React from "react";
 import {
   book,
   removeBookFromWishlist,
+  unpinBook,
 } from "../../../../store/slices/book-slice";
 import styles from "./Wishlist.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { Link, useNavigate } from "react-router-dom";
 
-const WishlistItem: React.FC<{ likedBook: book }> = ({ likedBook }) => {
+const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
   const [imageSrc, setImageSrc] = React.useState("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    import(`../../../Home/${likedBook.imageLink}`).then((module) => {
+    import(`../../../Home/${pinnedBook.imageLink}`).then((module) => {
       setImageSrc(module.default);
     });
-  }, [likedBook]);
+  }, [pinnedBook]);
 
   const theme = useAppSelector((state) => state.theme.theme);
   return (
@@ -30,25 +31,25 @@ const WishlistItem: React.FC<{ likedBook: book }> = ({ likedBook }) => {
         <h1>
           <Link
             className={` ${styles["wishlist__heading-1"]}`}
-            to={`${likedBook.id}`}
+            to={`/library/${pinnedBook.id}`}
           >
-            {likedBook.title}
+            {pinnedBook.title}
           </Link>
         </h1>
         <h2>
           <div
             onClick={() => {
               const queryParams = new URLSearchParams();
-              queryParams.set("author", likedBook.author);
+              queryParams.set("author", pinnedBook.author);
               navigate(`?${queryParams}`);
             }}
             className={`${styles["wishlist__heading-2"]}`}
           >
-            {likedBook.author}
+            {pinnedBook.author}
           </div>
         </h2>
         <Link
-          to={`${likedBook.id}`}
+          to={`/library/${pinnedBook.id}`}
           className={`btn-more--${theme === "light" ? "dark" : "light"} ${
             styles["wishlist__details-btn"]
           }`}
@@ -58,7 +59,7 @@ const WishlistItem: React.FC<{ likedBook: book }> = ({ likedBook }) => {
       </div>
       <span
         onClick={() => {
-          dispatch(removeBookFromWishlist({ bookID: `${likedBook.id}` }));
+          dispatch(unpinBook({ bookID: pinnedBook.id }));
         }}
         className={styles["wishlist__remove-btn"]}
       >

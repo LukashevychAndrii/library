@@ -11,7 +11,7 @@ import {
   orderByChild,
   update,
   remove,
-  set,
+  push,
 } from "firebase/database";
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
@@ -39,6 +39,7 @@ interface initialStateI {
   currentBookDetails?: book;
   wishlist: book[];
   wishlistIDs: string[];
+  pinnedBooks: book[];
 }
 const initialState: initialStateI = {
   books: [],
@@ -46,6 +47,7 @@ const initialState: initialStateI = {
   totalWishlistLength: 0,
   wishlist: [],
   wishlistIDs: [],
+  pinnedBooks: [],
 };
 
 const bookSlice = createSlice({
@@ -65,11 +67,9 @@ const bookSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchBooks.fulfilled, (state, action) => {
       state.books = action.payload;
-      console.log("fullfilled");
     });
 
     builder.addCase(getBooksLength.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.totalLength = action.payload;
     });
 
@@ -85,14 +85,15 @@ const bookSlice = createSlice({
     });
 
     builder.addCase(fetchWishlist.fulfilled, (state, action) => {
-      if (action.payload.wishlist) {
+      if (action.payload.wishlist && action.payload.wishlistIDs) {
         state.wishlist = action.payload.wishlist;
+        state.totalWishlistLength = action.payload.wishlist.length;
+        state.wishlistIDs = action.payload.wishlistIDs;
       }
     });
 
     builder.addCase(addBookToWishlist.fulfilled, (state, action) => {
       state.wishlist.push(action.payload.bookData);
-      state.wishlistIDs.push(`${action.payload.bookData.id}`);
     });
 
     builder.addCase(removeBookFromWishlist.fulfilled, (state, action) => {
@@ -100,17 +101,20 @@ const bookSlice = createSlice({
         (el) => el.id.toString() !== action.payload.bookID
       );
 
-      state.wishlistIDs = state.wishlistIDs.filter(
-        (el) => el !== action.payload.bookID
+      state.totalWishlistLength = state.totalWishlistLength - 1;
+    });
+
+    builder.addCase(fetchPinnedBooks.fulfilled, (state, action) => {
+      state.pinnedBooks = action.payload.pinnedBooks;
+    });
+    builder.addCase(pinBook.fulfilled, (state, action) => {
+      if (action.payload?.newPinnedBook)
+        state.pinnedBooks.push(action.payload.newPinnedBook);
+    });
+    builder.addCase(unpinBook.fulfilled, (state, action) => {
+      state.pinnedBooks = state.pinnedBooks.filter(
+        (el) => el.id !== action.payload.bookID
       );
-    });
-
-    builder.addCase(getWishlistLength.fulfilled, (state, action) => {
-      state.totalWishlistLength = action.payload.totalLength;
-    });
-
-    builder.addCase(fetchWishlistIDs.fulfilled, (state, action) => {
-      state.wishlistIDs = action.payload.wishlistIDs;
     });
   },
 });
@@ -124,7 +128,6 @@ export const fetchBooks = createAsyncThunk<
   { start: string; end: string },
   {}
 >("book/fetchBooks", async function ({ start, end }, { getState, dispatch }) {
-  console.log(start, end);
   const db = getDatabase(app);
   const dbRef = ref(db, `/books`);
   dispatch(setPending());
@@ -244,7 +247,6 @@ export const fetchFilteredBooks = createAsyncThunk<
     await get(dataQuery)
       .then((snapshot) => {
         filteredBooks = Object.values(snapshot.val());
-        console.log(filteredBooks);
       })
       .catch((error) => {
         console.log(error);
@@ -265,7 +267,18 @@ export const addBookToWishlist = createAsyncThunk<
     const db = getDatabase(app);
     dispatch(setPending());
     const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
-    if (appState.book.wishlistIDs.indexOf(`${bookData.id}`) !== -1) {
+
+    if (!appState.book.wishlist.find((el) => el.id === bookData.id)) {
+      await push(dbRef, bookData).catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error",
+            alertType: "error",
+          })
+        );
+      });
+    } else {
       dispatch(
         createAlert({
           alertTitle: "Error!",
@@ -273,39 +286,10 @@ export const addBookToWishlist = createAsyncThunk<
           alertType: "error",
         })
       );
-    } else {
-      await update(dbRef, { [bookData.id]: { ...bookData, liked: true } })
-        .then(async () => {
-          const dbRef = ref(
-            db,
-            `usersDATA/${appState.user.userID}/wishlist/totalLength`
-          );
-
-          await get(dbRef).then((s) => {
-            let count: number;
-            if (s.exists()) {
-              count = +s.val().count + 1;
-            } else {
-              count = 1;
-            }
-            update(dbRef, { count }).then(() => {
-              dispatch(clearPending());
-            });
-          });
-        })
-        .catch((e) => {
-          console.log(e);
-          dispatch(
-            createAlert({
-              alertTitle: "Error!",
-              alertText: "Database error",
-              alertType: "error",
-            })
-          );
-        });
     }
 
-    return { bookData: bookData };
+    dispatch(clearPending());
+    return { bookData };
   }
 );
 
@@ -318,127 +302,155 @@ export const removeBookFromWishlist = createAsyncThunk<
   async function ({ bookID }, { getState, dispatch }) {
     const appState = getState() as RootState;
     const db = getDatabase(app);
+
+    const id =
+      appState.book.wishlistIDs[
+        appState.book.wishlist.findIndex((el) => el.id === +bookID)
+      ];
     const dbRef = ref(
       db,
-      `usersDATA/${appState.user.userID}/wishlist/books/${bookID}`
+      `usersDATA/${appState.user.userID}/wishlist/books/${id}`
     );
     dispatch(setPending());
-
-    remove(dbRef)
-      .then(() => {
-        dispatch(clearPending());
-      })
-      .catch(() => {
-        dispatch(
-          createAlert({
-            alertTitle: "Error!",
-            alertText: "Database error",
-            alertType: "error",
-          })
-        );
-      });
+    remove(dbRef).catch(() => {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Database error",
+          alertType: "error",
+        })
+      );
+    });
+    dispatch(clearPending());
     return { bookID: bookID };
   }
 );
 
 export const fetchWishlist = createAsyncThunk<
-  { wishlist: book[] },
-  { start: string; end: string },
-  {}
->(
-  "book/fetchWishlist",
-  async function ({ start, end }, { getState, dispatch }) {
-    const appState = getState() as RootState;
-    const db = getDatabase(app);
-    const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
-    dispatch(setPending());
-    let wishlist: book[] = [];
-    console.log(start, end);
-    const dataQuery = query(dbRef, orderByKey(), startAt(start), endAt(end));
-
-    await get(dataQuery)
-      .then((s) => {
-        window.scrollTo({ top: 0, behavior: "smooth", left: 0 });
-        if (s.exists()) {
-          wishlist = s.val();
-          if (wishlist.length) {
-            wishlist = wishlist.filter((n) => n);
-          } else {
-            wishlist = Object.values(s.val());
-          }
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    dispatch(clearPending());
-
-    return { wishlist };
-  }
-);
-
-export const getWishlistLength = createAsyncThunk<
-  { totalLength: number },
+  { wishlistIDs: string[]; wishlist: book[] },
   undefined,
   {}
->("book/getWishlistLength", async function (_, { getState, dispatch }) {
-  dispatch(setPending());
+>("book/fetchWishlist", async function (_, { getState, dispatch }) {
   const appState = getState() as RootState;
   const db = getDatabase(app);
-  let totalLength: number = 0;
-  const dbRef = ref(
-    db,
-    `usersDATA/${appState.user.userID}/wishlist/totalLength/count`
-  );
+  const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
+  dispatch(setPending());
+  let wishlist: book[] = [];
+  let wishlistIDs: string[] = [];
   await get(dbRef)
     .then((s) => {
-      totalLength = s.val();
-    })
-    .then(() => {
-      dispatch(clearPending());
+      if (s.exists()) {
+        console.log(s.val());
+        wishlistIDs = Object.keys(s.val());
+        wishlist = Object.values(s.val());
+      }
     })
     .catch((e) => {
-      dispatch(
-        createAlert({
-          alertTitle: "Error!",
-          alertText: "Database error",
-          alertType: "error",
-        })
-      );
+      console.log(e);
     });
-  console.log(totalLength);
 
-  return { totalLength };
+  dispatch(clearPending());
+
+  return { wishlistIDs, wishlist };
 });
 
-export const fetchWishlistIDs = createAsyncThunk<
-  { wishlistIDs: string[] },
+export const fetchPinnedBooks = createAsyncThunk<
+  { pinnedBooks: book[] },
   undefined,
   {}
->("book/fetchWishlistIDs", async function (_, { getState, dispatch }) {
-  dispatch(setPending());
+>("book/fetchPinnedBooks", async function (_, { getState, dispatch }) {
+  let pinnedBooks: book[] = [];
+  const db = getDatabase();
   const appState = getState() as RootState;
-  const db = getDatabase(app);
-  let wishlistIDs: string[] = [];
-  const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
+  const dbRef = ref(
+    db,
+    `usersDATA/${appState.user.userID}/wishlist/pinnedBooks`
+  );
+  dispatch(setPending());
   await get(dbRef)
     .then((s) => {
-      wishlistIDs = Object.keys(s.val());
-      console.log(wishlistIDs);
-    })
-    .then(() => {
-      dispatch(clearPending());
+      if (s.exists()) pinnedBooks = Object.values(s.val());
     })
     .catch((e) => {
+      console.log(e);
       dispatch(
         createAlert({
           alertTitle: "Error!",
-          alertText: "Database error",
+          alertText: "An error occured while fetching pinned books",
           alertType: "error",
         })
       );
     });
+  dispatch(clearPending());
+  return { pinnedBooks };
+});
 
-  return { wishlistIDs };
+export const pinBook = createAsyncThunk<
+  { newPinnedBook: book } | null,
+  { bookData: book },
+  {}
+>("book/pinBook", async function ({ bookData }, { getState, dispatch }) {
+  let newPinnedBook: book = bookData;
+  const db = getDatabase();
+  const appState = getState() as RootState;
+  const dbRef = ref(
+    db,
+    `usersDATA/${appState.user.userID}/wishlist/pinnedBooks`
+  );
+
+  dispatch(setPending());
+
+  const pBooksLength = appState.book.pinnedBooks.length;
+
+  if (pBooksLength + 1 > 5) {
+    console.log("BORIS");
+    dispatch(
+      createAlert({
+        alertTitle: "Error!",
+        alertText: "Max count of pinned books is 5!",
+        alertType: "error",
+      })
+    );
+  } else {
+    await update(dbRef, { [bookData.id]: bookData }).catch(() => {
+      createAlert({
+        alertTitle: "Error!",
+        alertText: "Database error",
+        alertType: "error",
+      });
+    });
+  }
+  dispatch(clearPending());
+
+  if (pBooksLength <= 5) {
+    return { newPinnedBook };
+  }
+  return null;
+});
+
+export const unpinBook = createAsyncThunk<
+  { bookID: number },
+  { bookID: number },
+  {}
+>("book/unpinBook", async function ({ bookID }, { getState, dispatch }) {
+  const db = getDatabase();
+  const appState = getState() as RootState;
+  const dbRef = ref(
+    db,
+    `usersDATA/${appState.user.userID}/wishlist/pinnedBooks/${bookID}`
+  );
+
+  dispatch(setPending());
+
+  await remove(dbRef).catch(() => {
+    createAlert({
+      alertTitle: "Error!",
+      alertText: "Database error",
+      alertType: "error",
+    });
+  });
+
+  dispatch(clearPending());
+
+  return { bookID };
 });

@@ -11,14 +11,12 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { autoLogin } from "./store/slices/user-slice";
 import AccDetailsPage from "./pages/AccDetailsPage";
 import { setTheme } from "./store/slices/theme-slice";
-import {
-  fetchWishlist,
-  fetchWishlistIDs,
-  getBooksLength,
-  getWishlistLength,
-} from "./store/slices/book-slice";
+import { fetchPinnedBooks, fetchWishlist } from "./store/slices/book-slice";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import WishlistPage from "./pages/WishlistPage";
+
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const router = createBrowserRouter([
   {
@@ -53,8 +51,8 @@ function App() {
   }, [dispatch]);
   React.useEffect(() => {
     if (userID) {
-      dispatch(getWishlistLength());
-      dispatch(fetchWishlistIDs());
+      dispatch(fetchPinnedBooks());
+      dispatch(fetchWishlist());
     }
   }, [userID, dispatch]);
 
@@ -65,7 +63,11 @@ function App() {
     }
   }, [dispatch]);
 
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <SimpleBar style={{ maxHeight: "100vh" }} autoHide={false}>
+      <RouterProvider router={router}></RouterProvider>;
+    </SimpleBar>
+  );
 }
 
 export default App;

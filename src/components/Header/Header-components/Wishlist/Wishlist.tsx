@@ -2,11 +2,24 @@ import React from "react";
 import styles from "./Wishlist.module.scss";
 import { ReactComponent as Attachment } from "../../../../img/SVG/attachment.svg";
 import { useAppSelector } from "../../../../hooks/redux";
-import WishlistItem from "./WishlistItem";
-import { Link } from "react-router-dom";
+import WishlistItem from "./PinnedBookShort";
+import { Link, useLocation } from "react-router-dom";
+
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
+
 const Wishlist = () => {
   const [hover, setHover] = React.useState(false);
-  const likedBooks = useAppSelector((state) => state.book.wishlist);
+  const [current, setCurrent] = React.useState(false);
+  const pinnedBooks = useAppSelector((state) => state.book.pinnedBooks);
+  const location = useLocation();
+  React.useEffect(() => {
+    if (location.pathname.includes("wishlist")) {
+      setCurrent(true);
+    } else {
+      setCurrent(false);
+    }
+  }, [location]);
 
   const theme = useAppSelector((state) => state.theme.theme);
 
@@ -16,16 +29,38 @@ const Wishlist = () => {
       onMouseLeave={() => setHover(false)}
       className={styles["wishlist--wrapper"]}
     >
-      <Link to="/wishlist" className={styles["wishlist--icon"]}>
+      <Link
+        to="/wishlist"
+        className={`${styles["wishlist__icon"]} ${
+          hover && styles["wishlist--active"]
+        } ${current && styles["wishlist__icon--current"]}`}
+      >
         <Attachment />
-        <span>Wishlist</span>
+        Wishlist
       </Link>
-      {hover && (
-        <ul theme-wishlist={theme} className={styles["wishlist"]}>
-          {/* {likedBooks.map((el) => (
-            <WishlistItem key={el.id} likedBook={el} />
-          ))} */}
-        </ul>
+
+      {pinnedBooks.length > 0 && (
+        <>
+          <div className={hover ? styles["wishlist__wrapper"] : ""}></div>
+
+          <ul
+            theme-wishlist={theme}
+            className={`${styles["wishlist"]} ${
+              hover && styles["wishlist__hover"]
+            }`}
+          >
+            <SimpleBar
+              style={{ maxHeight: "350px", display: "block" }}
+              forceVisible="y"
+              autoHide={false}
+            >
+              <div className={styles["wishlist__heading"]}>Pinned books</div>
+              {pinnedBooks.map((el) => (
+                <WishlistItem key={el.id} pinnedBook={el} />
+              ))}
+            </SimpleBar>
+          </ul>
+        </>
       )}
     </div>
   );

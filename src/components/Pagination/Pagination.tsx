@@ -24,10 +24,10 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
   const [pages, setPages] = React.useState(0);
 
   React.useEffect(() => {
-    console.log(Math.ceil(totalLength / 10));
     setPages(Math.ceil(totalLength / 10));
   }, [totalLength]);
 
+  React.useEffect(() => {}, []);
   const renderPagination = () => {
     const arr: any[] = [];
     for (let i = 1; i < pages + 1; i++) {
