@@ -8,6 +8,7 @@ import { ReactComponent as Copy } from "../../img/SVG/content_copy.svg";
 
 import { getAuth, signOut } from "firebase/auth";
 import { createAlert } from "../../store/slices/alert-slice";
+import { removeUserData } from "../../store/slices/user-slice";
 
 const AccDetails = () => {
   const [copied, SetCopied] = React.useState(false);
@@ -17,7 +18,7 @@ const AccDetails = () => {
 
   const dispatch = useAppDispatch();
   React.useEffect(() => {
-    if (!accDetails) {
+    if (!accDetails.userID) {
       navigate("/library");
     }
   }, [accDetails, navigate]);
@@ -41,13 +42,20 @@ const AccDetails = () => {
         dispatch(
           createAlert({
             alertTitle: "Success!",
-            alertText: "Successfully sign out",
+            alertText: "Successfully signed out",
             alertType: "success",
           })
         );
+        dispatch(removeUserData());
       })
       .catch((error) => {
-        // An error happened.
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Sign out failed",
+            alertType: "error",
+          })
+        );
       });
   }
 
