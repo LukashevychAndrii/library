@@ -3,15 +3,18 @@
   gap: 10rem;
   list-style: none;
   user-select: none;
-  padding: 10rem 6rem;
+  padding: 10rem 0;
+
   &__list-wrapper {
-    max-width: 135rem;
-    margin: 0 auto;
-    position: relative;
-    overflow: hidden;
+    width: 110rem;
+    // background-color: orange;
+    margin: auto;
   }
   &__wrapper {
+    position: relative;
+
     width: 100vw;
+    overflow: hidden;
   }
   &__chevron {
     position: absolute;
@@ -21,6 +24,7 @@
     height: 7rem;
     cursor: pointer;
     transition: none;
+    z-index: 1000;
     &:hover {
       fill: black;
     }
@@ -45,85 +49,85 @@
     }
     &__wrapper {
       // background-color: blue;
-      max-width: 145rem;
+      // max-width: 145rem;
       margin: auto;
       position: relative;
     }
   }
 
-  &__item {
-    height: 45rem;
-    min-width: 35rem;
-    perspective: 150rem;
-    position: relative;
-    -moz-perspective: 150rem;
-    border-radius: 0.3rem;
-    &__side {
-      backface-visibility: hidden;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      transition: all 0.8s ease;
-      border-radius: 0.3rem;
-      box-shadow: 0 1.5rem 2.5rem rgba($color: #000000, $alpha: 0.2);
+  // &__item {
+  //   height: 45rem;
+  //   min-width: 35rem;
+  //   perspective: 150rem;
+  //   position: relative;
+  //   -moz-perspective: 150rem;
+  //   border-radius: 0.3rem;
+  //   &__side {
+  //     backface-visibility: hidden;
+  //     width: 100%;
+  //     height: 100%;
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     transition: all 0.8s ease;
+  //     border-radius: 0.3rem;
+  //     box-shadow: 0 1.5rem 2.5rem rgba($color: #000000, $alpha: 0.2);
 
-      &--back {
-        transform: rotateY(180deg);
-        padding: 1rem 1.5rem;
-        font-size: var(--font-default);
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-      }
-    }
+  //     &--back {
+  //       transform: rotateY(180deg);
+  //       padding: 1rem 1.5rem;
+  //       font-size: var(--font-default);
+  //       display: grid;
+  //       grid-template-columns: 1fr 1fr;
+  //       align-items: center;
+  //     }
+  //   }
 
-    &:hover &__side--front {
-      transform: rotateY(-180deg);
-    }
-    &:hover &__side--back {
-      transform: rotateY(0);
-    }
-    &__image {
-      width: 100%;
-      height: 100%;
-      border-radius: 0.3rem;
-    }
-    &__title {
-      cursor: pointer;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      grid-column: 1/3;
-      grid-row: 1/2;
-    }
-    &__author {
-      cursor: pointer;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      grid-column: 1/3;
-      grid-row: 2/3;
-    }
-    &__description {
-      grid-column: 1/3;
-      grid-row: 3/4;
-      padding: 1.5rem 0;
-    }
-    &__language {
-    }
-    &__pages {
-      justify-self: flex-end;
-    }
-    &__link {
-      grid-row: 5/6;
-      grid-column: 1/3;
-      align-self: center;
-    }
-  }
+  //   &:hover &__side--front {
+  //     transform: rotateY(-180deg);
+  //   }
+  //   &:hover &__side--back {
+  //     transform: rotateY(0);
+  //   }
+  //   &__image {
+  //     width: 100%;
+  //     height: 100%;
+  //     border-radius: 0.3rem;
+  //   }
+  //   &__title {
+  //     cursor: pointer;
+  //     display: block;
+  //     white-space: nowrap;
+  //     overflow: hidden;
+  //     text-overflow: ellipsis;
+  //     grid-column: 1/3;
+  //     grid-row: 1/2;
+  //   }
+  //   &__author {
+  //     cursor: pointer;
+  //     display: block;
+  //     white-space: nowrap;
+  //     overflow: hidden;
+  //     text-overflow: ellipsis;
+  //     grid-column: 1/3;
+  //     grid-row: 2/3;
+  //   }
+  //   &__description {
+  //     grid-column: 1/3;
+  //     grid-row: 3/4;
+  //     padding: 1.5rem 0;
+  //   }
+  //   &__language {
+  //   }
+  //   &__pages {
+  //     justify-self: flex-end;
+  //   }
+  //   &__link {
+  //     grid-row: 5/6;
+  //     grid-column: 1/3;
+  //     align-self: center;
+  //   }
+  // }
 }
 
 [theme-pinned-books="light"] {

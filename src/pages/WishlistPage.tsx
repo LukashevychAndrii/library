@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { useLocation } from "react-router-dom";
 import { book } from "../store/slices/book-slice";
 import PinnedBooks from "../components/Header/Header-components/Wishlist/PinnedBooks";
+import Testbook from "../components/Header/Header-components/Wishlist/PinnedBook";
 
 const WishlistPage = () => {
   const books = useAppSelector((state) => state.book.wishlist);
@@ -28,6 +29,7 @@ const WishlistPage = () => {
 
   return (
     <>
+      {/* <Testbook /> */}
       <PinnedBooks />
       <BookList books={slicedBooks} count={count} />
     </>
