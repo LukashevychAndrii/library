@@ -1,52 +1,88 @@
 import React from "react";
-import styles from "./PinnedBooks.module.scss";
+import styles from "./PinnedBook.module.scss";
 import { book } from "../../../../store/slices/book-slice";
-import { useAppSelector } from "../../../../hooks/redux";
 
-const PinnedBook: React.FC<{ pBook: book }> = ({ pBook }) => {
+let FIRST_RENDER = true;
+
+interface props {
+  pBook: book;
+  index: number;
+  shown: number[];
+  getWidth: (width: number) => void;
+  newB: number;
+}
+
+const PinnedBook: React.FC<props> = ({
+  pBook,
+  shown,
+  index,
+  getWidth,
+  newB,
+}) => {
   const [image, setImage] = React.useState("");
+
   React.useEffect(() => {
     import(`../../../Home/${pBook.imageLink}`).then((module) => {
       setImage(module.default);
     });
   }, [pBook]);
 
-  const theme = useAppSelector((state) => state.theme.theme);
+  const widthRef = React.useRef<HTMLLIElement>(null);
+
+  React.useEffect(() => {
+    if (widthRef.current) getWidth(widthRef.current.clientWidth);
+  }, [widthRef.current?.clientWidth, getWidth]);
+  React.useEffect(() => {
+    console.log(newB);
+  }, [newB]);
 
   return (
-    <li className={styles["pinned-books__item"]}>
-      <div
-        className={`${styles["pinned-books__item__side"]} ${styles["pinned-books__item__side--front"]}`}
+    <>
+      <li
+        ref={widthRef}
+        className={`${styles["pinned-books__item"]} ${
+          shown.indexOf(index) === -1 && styles["pinned-books__item__hide"]
+        } ${
+          FIRST_RENDER &&
+          shown.indexOf(index) === -1 && [
+            styles["pinned-books__item__hide--hard"],
+          ]
+        } `}
       >
-        <img
-          className={styles["pinned-books__item__image"]}
-          src={image}
-          alt="pinned book"
-        />
-      </div>
-      <div
-        theme-pinned-book={theme}
-        className={`${styles["pinned-books__item__side"]} ${styles["pinned-books__item__side--back"]}`}
-      >
-        <h1 className={styles["pinned-books__item__title"]}>{pBook.title}</h1>
-        <h2 className={styles["pinned-books__item__author"]}>{pBook.author}</h2>
-        <p className={styles["pinned-books__item__description"]}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ea
-          sunt ducimus corporis nemo labore, corrupti qui consequuntur magni
-          debitis, explicabo maxime a totam dolorem!
-        </p>
-        <div className={styles["pinned-books__item__language"]}>
-          {pBook.language}
+        <div className={styles["card"]}>
+          <div className={styles["card__front"]}>
+            <img
+              className={styles["card__front__front"]}
+              src={image}
+              alt="pinned book"
+            ></img>
+
+            <div className={styles["card__front__back"]}></div>
+          </div>
+          <div className={styles["card__back"]}>
+            <div className={styles["card__back__headings"]}>
+              <h1 className={styles["card__back__title"]}>{pBook.title}</h1>
+              <h2 className={styles["card__back__author"]}>{pBook.author}</h2>
+            </div>
+            <p className={styles["card__back__description"]}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit
+              illum impedit id modi temporibus reprehenderit. Nisi dolor ullam
+              in, unde voluptatibus ducimus placeat explicabo deserunt
+              cupiditate ratione quaerat omnis, sint a, necessitatibus
+              temporibus. Reiciendis, quam.
+            </p>
+            <div className={styles["card__back__extra-info"]}>
+              <div className={styles["card__back__language"]}>
+                Language: {pBook.language}
+              </div>
+              <div className={styles["card__back__pages"]}>
+                Pages: {pBook.pages}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className={styles["pinned-books__item__pages"]}>{pBook.pages}</div>
-        <div className={styles["pinned-books__item__link"]}>
-          For more information -{" "}
-          <a target="_blank" rel="noreferrer" href={pBook.link}>
-            read this
-          </a>
-        </div>
-      </div>
-    </li>
+      </li>
+    </>
   );
 };
 

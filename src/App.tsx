@@ -65,7 +65,7 @@ function App() {
 
   return (
     <SimpleBar style={{ maxHeight: "100vh" }} autoHide={false}>
-      <RouterProvider router={router}></RouterProvider>;
+      <RouterProvider router={router}></RouterProvider>
     </SimpleBar>
   );
 }

@@ -38,12 +38,19 @@ const userSlice = createSlice({
       state.password = action.payload.password;
       state.userID = action.payload.userID;
     },
+    removeUserData(state) {
+      state.email = "";
+      state.password = "";
+      state.userID = "";
+      state.userName = "";
+      state.userPhoto = "";
+    },
   },
 });
 
 export default userSlice.reducer;
 
-export const { setUserData } = userSlice.actions;
+export const { setUserData, removeUserData } = userSlice.actions;
 
 export const createUser = createAsyncThunk<
   undefined,

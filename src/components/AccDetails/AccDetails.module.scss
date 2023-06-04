@@ -1,0 +1,76 @@
+@use "../../styles/animations";
+
+.acc-details {
+  padding: 2rem 2.5rem;
+  max-width: 65rem;
+  margin: 0 auto;
+  border-radius: 0.3rem;
+  font-size: var(--font-default);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  &__wrapper {
+    width: 100vw;
+    height: 90vh;
+    padding-top: 5.5rem;
+  }
+  &__row {
+    &__wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr min-content;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+  }
+
+  &__btn {
+    align-self: center;
+    margin-top: 2rem;
+  }
+  &__copy {
+    width: max-content;
+    font-size: var(--font-default);
+    padding: 1rem 2rem;
+    border-radius: 0.3rem;
+    position: absolute;
+    bottom: 3.5rem;
+    left: 2rem;
+    opacity: 0;
+    &__animation {
+      animation: 5s linear moveInTop;
+    }
+  }
+}
+
+[theme-acc-details__wrapper="light"] {
+  background-color: var(--color-theme-light);
+  color: var(--color-theme-dark);
+}
+
+[theme-acc-details__wrapper="dark"] {
+  background-color: var(--color-theme-dark);
+  color: var(--color-light-dark);
+}
+
+[theme-acc-details="light"] {
+  background-color: var(--color-item-theme-light);
+  color: var(--color-theme-dark);
+}
+
+[theme-acc-details="dark"] {
+  background-color: var(--color-item-theme-dark);
+  color: var(--color-theme-light);
+}
+
+[theme-acc-details__row="light"] {
+  &:hover {
+    background-color: var(--color-theme-light);
+  }
+}
+
+[theme-acc-details__row="dark"] {
+  &:hover {
+    background-color: var(--color-theme-dark);
+  }
+}
