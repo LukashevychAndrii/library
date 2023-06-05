@@ -4,6 +4,10 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  updateEmail,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 
 import { get, getDatabase, ref, set } from "firebase/database";
@@ -11,6 +15,8 @@ import { NavigateFunction } from "react-router-dom";
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
 import getErrorDetails from "../../utils/getErrorDetails";
+import { clearPending, setPending } from "./pending-slice";
+import { RootState } from "..";
 
 interface initialStateI {
   userName: string;
@@ -45,6 +51,19 @@ const userSlice = createSlice({
       state.userName = "";
       state.userPhoto = "";
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(changeUsername.fulfilled, (state, action) => {
+      if (action.payload?.newUsername)
+        state.userName = action.payload.newUsername;
+    });
+    builder.addCase(changeUserPassword.fulfilled, (state, action) => {
+      if (action.payload?.newPassword)
+        state.password = action.payload.newPassword;
+    });
+    builder.addCase(changeUserEmail.fulfilled, (state, action) => {
+      if (action.payload?.newEmail) state.email = action.payload.newEmail;
+    });
   },
 });
 
@@ -186,6 +205,8 @@ export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
   async (_, { dispatch }) => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
+      console.log(user?.email);
+      console.log(user?.providerData);
       if (user) {
         const fetchDATA = async () => {
           const db = getDatabase(app);
@@ -193,12 +214,13 @@ export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
           await get(userRef).then((snapshot) => {
             if (snapshot.exists()) {
               const userDATA = snapshot.val();
+              console.log(userDATA);
               dispatch(setUserData(userDATA));
             } else {
               dispatch(
                 createAlert({
                   alertTitle: "An error occurred!",
-                  alertText: "Unknown database error!",
+                  alertText: "Could not find your account data!",
                   alertType: "error",
                 })
               );
@@ -209,5 +231,208 @@ export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
       }
     });
     return undefined;
+  }
+);
+
+export const changeUserEmail = createAsyncThunk<
+  { newEmail: string } | null,
+  { newEmail: string },
+  {}
+>(
+  "user/changeUserEmail",
+  async function ({ newEmail }, { dispatch, getState }) {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const appState = getState() as RootState;
+    const currentEmail = appState.user.email;
+    dispatch(setPending());
+    if (currentEmail === newEmail) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Entered email and your current are the same!",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+      return null;
+    }
+    if (user) {
+      if (user?.email) {
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          appState.user.password
+        );
+        await reauthenticateWithCredential(user, credential)
+          .then(() => {
+            updateEmail(user, newEmail)
+              .then(() => {
+                const db = getDatabase();
+                const dbRef = ref(
+                  db,
+                  `usersDATA/${appState.user.userID}/userDATA/email`
+                );
+                set(dbRef, newEmail).then(() => {
+                  dispatch(
+                    createAlert({
+                      alertTitle: "Success!",
+                      alertText: "Email successfully changed!",
+                      alertType: "success",
+                    })
+                  );
+                });
+              })
+              .catch(() => {
+                dispatch(
+                  createAlert({
+                    alertTitle: "Database error!",
+                    alertText: "Changing Email failed!",
+                    alertType: "error",
+                  })
+                );
+              });
+          })
+          .catch((e) => {
+            console.log(e.code);
+          });
+      }
+    } else {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Auth error!",
+          alertType: "error",
+        })
+      );
+    }
+    dispatch(clearPending());
+    return { newEmail };
+  }
+);
+
+export const changeUserPassword = createAsyncThunk<
+  { newPassword: string } | null,
+  { newPassword: string },
+  {}
+>(
+  "user/changeUserPassword",
+  async function ({ newPassword }, { dispatch, getState }) {
+    const appState = getState() as RootState;
+    dispatch(setPending());
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    const currentPassword = appState.user.password;
+
+    if (currentPassword === newPassword) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Entered password and your current are the same!",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+
+      return null;
+    } else {
+      if (user?.email) {
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          currentPassword
+        );
+        await reauthenticateWithCredential(user, credential).then(() => {
+          updatePassword(user, newPassword)
+            .then(() => {
+              const db = getDatabase();
+              const dbRef = ref(
+                db,
+                `usersDATA/${appState.user.userID}/userDATA/password`
+              );
+              set(dbRef, newPassword);
+            })
+            .then(() => {
+              dispatch(
+                createAlert({
+                  alertTitle: "Success!",
+                  alertText: "Password successfully changed!",
+                  alertType: "success",
+                })
+              );
+            })
+            .catch((e) => {
+              console.log(e.message);
+              dispatch(
+                createAlert({
+                  alertTitle: "Database error!",
+                  alertText: "Changing Password failed!",
+                  alertType: "error",
+                })
+              );
+            });
+        });
+      } else {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Auth error!",
+            alertType: "error",
+          })
+        );
+      }
+    }
+
+    dispatch(clearPending());
+    return { newPassword };
+  }
+);
+
+export const changeUsername = createAsyncThunk<
+  { newUsername: string } | null,
+  { newUsername: string },
+  {}
+>(
+  "user/changeUsername",
+  async function ({ newUsername }, { dispatch, getState }) {
+    const appState = getState() as RootState;
+    const userID = appState.user.userID;
+    if (appState.user.userName === newUsername) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Entered Username and your current are the same!",
+          alertType: "error",
+        })
+      );
+      return null;
+    }
+    const db = getDatabase();
+    const dbRef = ref(db, `usersDATA/${userID}/userDATA/userName`);
+    if (userID) {
+      dispatch(setPending());
+      set(dbRef, newUsername)
+        .then(() => {
+          dispatch(
+            createAlert({
+              alertTitle: "Success!",
+              alertText: "Username successfully changed!",
+              alertType: "success",
+            })
+          );
+        })
+        .catch(() => {
+          dispatch(
+            createAlert({
+              alertTitle: "Database error!",
+              alertText: "Changing Username failed!",
+              alertType: "error",
+            })
+          );
+        });
+    }
+
+    dispatch(clearPending());
+    return { newUsername };
   }
 );
