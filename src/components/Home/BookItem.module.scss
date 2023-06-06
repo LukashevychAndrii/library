@@ -58,18 +58,17 @@
     transition: none;
   }
   &__pin {
-    fill: black;
     stroke: none !important;
+    fill: inherit !important;
   }
   &__unpin {
-    fill: var(--color-item-theme-dark);
     &:hover {
       stroke: #000;
     }
   }
 
   &__heart--outlined {
-    fill: var(--color-theme-dark);
+    // fill: var(--color-theme-dark);
     stroke-width: 1px;
   }
   &__heart--outlined:hover {
@@ -106,4 +105,5 @@
 [pin-theme="light"] {
   stroke: var(--color-theme-dark);
   stroke-width: 0.1rem;
+  fill: var(--color-item-theme-light);
 }
