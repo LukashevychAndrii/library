@@ -277,6 +277,29 @@ export const changeUserEmail = createAsyncThunk<
     const appState = getState() as RootState;
     const currentEmail = appState.user.email;
     dispatch(setPending());
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(newEmail)) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Please enter a valid  email!",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+      return null;
+    } else if (newEmail.trim().length > 30) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max length of email is 30!",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+      return null;
+    }
     if (currentEmail === newEmail) {
       dispatch(
         createAlert({
@@ -356,6 +379,28 @@ export const changeUserPassword = createAsyncThunk<
 
     const currentPassword = appState.user.password;
 
+    if (newPassword.trim().length < 6) {
+      dispatch(
+        createAlert({
+          alertTitle: "Database error!",
+          alertText: "Min length of password is 6",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+
+      return null;
+    } else if (newPassword.trim().length > 20) {
+      dispatch(
+        createAlert({
+          alertTitle: "Database error!",
+          alertText: "Max length of password is 20",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+      return null;
+    }
     if (currentPassword === newPassword) {
       dispatch(
         createAlert({
@@ -428,6 +473,28 @@ export const changeUsername = createAsyncThunk<
   async function ({ newUsername }, { dispatch, getState }) {
     const appState = getState() as RootState;
     const userID = appState.user.userID;
+
+    if (newUsername.trim().length < 4) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Min length of userName is 4",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+      return null;
+    } else if (newUsername.trim().length > 10) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max length of userName is 10",
+          alertType: "error",
+        })
+      );
+      dispatch(clearPending());
+      return null;
+    }
     if (appState.user.userName === newUsername) {
       dispatch(
         createAlert({
@@ -436,6 +503,7 @@ export const changeUsername = createAsyncThunk<
           alertType: "error",
         })
       );
+      dispatch(clearPending());
       return null;
     }
     const db = getDatabase();
@@ -451,6 +519,7 @@ export const changeUsername = createAsyncThunk<
               alertType: "success",
             })
           );
+          dispatch(clearPending());
         })
         .catch(() => {
           dispatch(
@@ -460,10 +529,10 @@ export const changeUsername = createAsyncThunk<
               alertType: "error",
             })
           );
+          dispatch(clearPending());
         });
     }
 
-    dispatch(clearPending());
     return { newUsername };
   }
 );
