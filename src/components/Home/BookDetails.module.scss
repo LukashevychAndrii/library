@@ -44,6 +44,17 @@
   &__info {
     font-weight: 800;
   }
+  &__more-info {
+    grid-column: 1/3;
+    &__link {
+      color: inherit;
+      display: inline-block;
+      &:hover {
+        transform: translateY(-0.2rem) scale(1.05);
+        text-decoration: none;
+      }
+    }
+  }
 }
 [book-details-theme="light"] {
   background-color: var(--color-item-theme-light);

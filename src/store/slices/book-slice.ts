@@ -97,11 +97,13 @@ const bookSlice = createSlice({
     });
 
     builder.addCase(removeBookFromWishlist.fulfilled, (state, action) => {
-      state.wishlist = state.wishlist.filter(
-        (el) => el.id.toString() !== action.payload.bookID
-      );
+      if (action.payload && action.payload?.bookID) {
+        state.wishlist = state.wishlist.filter(
+          (el) => el.id.toString() !== action.payload?.bookID
+        );
 
-      state.totalWishlistLength = state.totalWishlistLength - 1;
+        state.totalWishlistLength = state.totalWishlistLength - 1;
+      }
     });
 
     builder.addCase(fetchPinnedBooks.fulfilled, (state, action) => {
@@ -267,22 +269,31 @@ export const addBookToWishlist = createAsyncThunk<
     const db = getDatabase(app);
     dispatch(setPending());
     const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
-
-    if (!appState.book.wishlist.find((el) => el.id === bookData.id)) {
-      await push(dbRef, bookData).catch(() => {
+    if (appState.user.userID) {
+      if (!appState.book.wishlist.find((el) => el.id === bookData.id)) {
+        await push(dbRef, bookData).catch(() => {
+          dispatch(
+            createAlert({
+              alertTitle: "Error!",
+              alertText: "Database error",
+              alertType: "error",
+            })
+          );
+        });
+      } else {
         dispatch(
           createAlert({
             alertTitle: "Error!",
-            alertText: "Database error",
+            alertText: "This book is already in wishlist",
             alertType: "error",
           })
         );
-      });
+      }
     } else {
       dispatch(
         createAlert({
           alertTitle: "Error!",
-          alertText: "This book is already in wishlist",
+          alertText: "You must have an account to add books to wishlist",
           alertType: "error",
         })
       );
@@ -294,7 +305,7 @@ export const addBookToWishlist = createAsyncThunk<
 );
 
 export const removeBookFromWishlist = createAsyncThunk<
-  { bookID: string },
+  { bookID: string } | null,
   { bookID: string },
   {}
 >(
@@ -302,27 +313,30 @@ export const removeBookFromWishlist = createAsyncThunk<
   async function ({ bookID }, { getState, dispatch }) {
     const appState = getState() as RootState;
     const db = getDatabase(app);
-
-    const id =
-      appState.book.wishlistIDs[
-        appState.book.wishlist.findIndex((el) => el.id === +bookID)
-      ];
-    const dbRef = ref(
-      db,
-      `usersDATA/${appState.user.userID}/wishlist/books/${id}`
-    );
-    dispatch(setPending());
-    remove(dbRef).catch(() => {
-      dispatch(
-        createAlert({
-          alertTitle: "Error!",
-          alertText: "Database error",
-          alertType: "error",
-        })
+    if (appState.user.userID) {
+      const id =
+        appState.book.wishlistIDs[
+          appState.book.wishlist.findIndex((el) => el.id === +bookID)
+        ];
+      const dbRef = ref(
+        db,
+        `usersDATA/${appState.user.userID}/wishlist/books/${id}`
       );
-    });
-    dispatch(clearPending());
-    return { bookID: bookID };
+      dispatch(setPending());
+      remove(dbRef).catch(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Database error",
+            alertType: "error",
+          })
+        );
+      });
+      dispatch(clearPending());
+      return { bookID: bookID };
+    } else {
+      return null;
+    }
   }
 );
 
@@ -401,30 +415,40 @@ export const pinBook = createAsyncThunk<
   dispatch(setPending());
 
   const pBooksLength = appState.book.pinnedBooks.length;
+  if (appState.user.userID) {
+    if (pBooksLength + 1 > 5) {
+      dispatch(
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Max count of pinned books is 5!",
+          alertType: "error",
+        })
+      );
+    } else {
+      await update(dbRef, { [bookData.id]: bookData }).catch(() => {
+        createAlert({
+          alertTitle: "Error!",
+          alertText: "Database error",
+          alertType: "error",
+        });
+      });
+    }
+    dispatch(clearPending());
 
-  if (pBooksLength + 1 > 5) {
-    console.log("BORIS");
+    if (pBooksLength <= 5) {
+      return { newPinnedBook };
+    }
+  } else {
     dispatch(
       createAlert({
         alertTitle: "Error!",
-        alertText: "Max count of pinned books is 5!",
+        alertText: "You must have an account to pin book",
         alertType: "error",
       })
     );
-  } else {
-    await update(dbRef, { [bookData.id]: bookData }).catch(() => {
-      createAlert({
-        alertTitle: "Error!",
-        alertText: "Database error",
-        alertType: "error",
-      });
-    });
   }
   dispatch(clearPending());
 
-  if (pBooksLength <= 5) {
-    return { newPinnedBook };
-  }
   return null;
 });
 

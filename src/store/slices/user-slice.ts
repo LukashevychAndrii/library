@@ -170,6 +170,8 @@ export const signIn = createAsyncThunk<
                     alertType: "error",
                   })
                 );
+                auth.signOut();
+                dispatch(removeUserData());
               }
             } else {
               dispatch(
@@ -224,6 +226,7 @@ export const autoLogin = createAsyncThunk<undefined, undefined, {}>(
                   alertType: "error",
                 })
               );
+              auth.signOut();
             }
           });
         };

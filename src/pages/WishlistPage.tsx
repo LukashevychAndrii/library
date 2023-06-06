@@ -1,10 +1,9 @@
 import React from "react";
 import BookList from "../components/Home/BookList";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { book } from "../store/slices/book-slice";
 import PinnedBooks from "../components/Header/Header-components/Wishlist/PinnedBooks";
-import Testbook from "../components/Header/Header-components/Wishlist/PinnedBook";
 
 const WishlistPage = () => {
   const books = useAppSelector((state) => state.book.wishlist);
@@ -25,11 +24,17 @@ const WishlistPage = () => {
       setSlicesBooks(books.slice(0, 10));
     }
   }, [pageParam, books, count]);
-  console.log(slicedBooks);
+
+  const userID = useAppSelector((state) => state.user.userID);
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (!userID) {
+      navigate("/library");
+    }
+  }, [userID, navigate]);
 
   return (
     <>
-      {/* <Testbook /> */}
       <PinnedBooks />
       <BookList books={slicedBooks} count={count} />
     </>

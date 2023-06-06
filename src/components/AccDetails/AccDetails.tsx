@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as Edit } from "../../img/SVG/write.svg";
 import { ReactComponent as Copy } from "../../img/SVG/content_copy.svg";
+import { ReactComponent as Eye } from "../../img/SVG/eye.svg";
+import { ReactComponent as EyeSlash } from "../../img/SVG/eye-slash.svg";
 
 import { getAuth, signOut } from "firebase/auth";
 import { createAlert } from "../../store/slices/alert-slice";
@@ -14,6 +16,7 @@ import {
   changeUsername,
   removeUserData,
 } from "../../store/slices/user-slice";
+import { stringToAsterisc } from "../../utils/stringToAsterisc";
 
 const AccDetails = () => {
   const [copied, SetCopied] = React.useState(false);
@@ -26,6 +29,8 @@ const AccDetails = () => {
   const [newEmail, setNewEmail] = React.useState(accDetails.email);
   const [changePassword, setChangePassword] = React.useState(false);
   const [newPassword, setNewPassword] = React.useState(accDetails.password);
+
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const dispatch = useAppDispatch();
   React.useEffect(() => {
@@ -108,6 +113,7 @@ const AccDetails = () => {
                 id="new_name"
                 name="new_name"
                 type="text"
+                autoFocus
               />
             </form>
           ) : (
@@ -173,6 +179,7 @@ const AccDetails = () => {
                 id="new_email"
                 name="new_email"
                 type="text"
+                autoFocus
               />
             </form>
           ) : (
@@ -224,12 +231,15 @@ const AccDetails = () => {
                 dispatch(changeUserPassword({ newPassword: newPassword }));
                 setChangePassword(false);
               }}
+              style={{ position: "relative" }}
             >
               <label htmlFor="new_password"></label>
               <input
                 theme-acc-details__input={theme}
                 className={styles["acc-details__input"]}
-                value={newPassword}
+                value={
+                  showPassword ? newPassword : stringToAsterisc(newPassword)
+                }
                 placeholder="Enter new password..."
                 onChange={(e) => {
                   setNewPassword(e.target.value);
@@ -237,11 +247,27 @@ const AccDetails = () => {
                 id="new_password"
                 name="new_password"
                 type="text"
+                autoFocus
               />
+              {showPassword ? (
+                <Eye
+                  className={`${styles["acc-details__eye"]} ${styles["acc-details__edit-btn"]}`}
+                  onClick={() => {
+                    setShowPassword(false);
+                  }}
+                />
+              ) : (
+                <EyeSlash
+                  className={`${styles["acc-details__eye"]} ${styles["acc-details__edit-btn"]}`}
+                  onClick={() => {
+                    setShowPassword(true);
+                  }}
+                />
+              )}
             </form>
           ) : (
             <div className={styles["acc-details__data"]}>
-              {accDetails.password}
+              {stringToAsterisc(accDetails.password)}
             </div>
           )}
           {changePassword ? (

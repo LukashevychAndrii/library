@@ -20,7 +20,7 @@ interface props {
 }
 const BookItem: React.FC<props> = ({ book }) => {
   const dispatch = useAppDispatch();
-
+  const userID = useAppSelector((state) => state.user.userID);
   const [imageSrc, setImageSrc] = React.useState("");
 
   const [liked, setLiked] = React.useState<boolean>(false);
@@ -84,61 +84,63 @@ const BookItem: React.FC<props> = ({ book }) => {
         </Link>
       </div>
 
-      <form>
-        <input
-          type="checkbox"
-          name={`pin-${book.id}`}
-          id={`pin-${book.id}`}
-          style={{ display: "none" }}
-          checked={pinned}
-          onChange={(e) => {
-            if (e.target.checked) {
-              dispatch(pinBook({ bookData: book }));
-            } else {
-              dispatch(unpinBook({ bookID: book.id }));
+      {userID && (
+        <form>
+          <input
+            type="checkbox"
+            name={`pin-${book.id}`}
+            id={`pin-${book.id}`}
+            style={{ display: "none" }}
+            checked={pinned}
+            onChange={(e) => {
+              if (e.target.checked) {
+                dispatch(pinBook({ bookData: book }));
+              } else {
+                dispatch(unpinBook({ bookID: book.id }));
+              }
+            }}
+          />
+          <label htmlFor={`pin-${book.id}`}>
+            {
+              <Pin
+                pin-theme={theme}
+                className={`${styles["book__pin-icon"]} ${
+                  styles[`book__${pinned ? "pin" : "unpin"}`]
+                }`}
+              />
             }
-          }}
-        />
-        <label htmlFor={`pin-${book.id}`}>
-          {
-            <Pin
-              pin-theme={theme}
-              className={`${styles["book__pin-icon"]} ${
-                styles[`book__${pinned ? "pin" : "unpin"}`]
-              }`}
-            />
-          }
-        </label>
-        <input
-          ref={ref}
-          type="checkbox"
-          name={`heart-${book.id}`}
-          id={`heart-${book.id}`}
-          className={styles["book__checkbox"]}
-          checked={liked}
-          onChange={(e) => {
-            setLiked(!liked);
-            if (e.target.checked) {
-              dispatch(
-                addBookToWishlist({ bookID: `${book.id}`, bookData: book })
-              );
-            } else {
-              dispatch(removeBookFromWishlist({ bookID: `${book.id}` }));
-            }
-          }}
-        />
-        <label htmlFor={`heart-${book.id}`}>
-          {liked ? (
-            <>
-              <Heart className={styles["book__heart"]} />
-            </>
-          ) : (
-            <HeartOutlined
-              className={`${styles["book__heart"]} ${styles["book__heart--outlined"]}`}
-            />
-          )}
-        </label>
-      </form>
+          </label>
+          <input
+            ref={ref}
+            type="checkbox"
+            name={`heart-${book.id}`}
+            id={`heart-${book.id}`}
+            className={styles["book__checkbox"]}
+            checked={liked}
+            onChange={(e) => {
+              setLiked(!liked);
+              if (e.target.checked) {
+                dispatch(
+                  addBookToWishlist({ bookID: `${book.id}`, bookData: book })
+                );
+              } else {
+                dispatch(removeBookFromWishlist({ bookID: `${book.id}` }));
+              }
+            }}
+          />
+          <label htmlFor={`heart-${book.id}`}>
+            {liked ? (
+              <>
+                <Heart className={styles["book__heart"]} />
+              </>
+            ) : (
+              <HeartOutlined
+                className={`${styles["book__heart"]} ${styles["book__heart--outlined"]}`}
+              />
+            )}
+          </label>
+        </form>
+      )}
     </li>
   );
 };
