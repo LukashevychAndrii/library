@@ -105,7 +105,7 @@ const Form = ({ title, handleClick }: props) => {
         <div theme-form-links={theme} className={styles["form__links"]}>
           <NavLink
             className={({ isActive }) =>
-              isActive ? styles["active"] : undefined
+              isActive ? styles["active"] : styles["inactive"]
             }
             to="/library/sign-in"
           >
@@ -113,7 +113,7 @@ const Form = ({ title, handleClick }: props) => {
           </NavLink>
           <NavLink
             className={({ isActive }) =>
-              isActive ? styles["active"] : undefined
+              isActive ? styles["active"] : styles["inactive"]
             }
             to="/library/sign-up"
           >

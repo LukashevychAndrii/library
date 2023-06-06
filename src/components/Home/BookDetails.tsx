@@ -68,6 +68,17 @@ const BookDetails = () => {
           et rerum possimus fugiat dolore rem!
         </p>
 
+        <div className={styles["book-details__more-info"]}>
+          If you want more informaion -{" "}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            className={styles["book-details__more-info__link"]}
+            href={bookDATA?.link}
+          >
+            Read this
+          </a>
+        </div>
         <Link
           to="/library"
           className={`btn btn--${theme} ${styles["book-details__btn-back"]}`}

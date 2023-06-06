@@ -16,8 +16,10 @@
   }
   &__row {
     &__wrapper {
+      position: relative;
       display: grid;
       grid-template-columns: 1fr 1fr min-content;
+      align-items: center;
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
       cursor: pointer;
@@ -40,6 +42,63 @@
     &__animation {
       animation: 5s linear moveInTop;
     }
+  }
+  &__btns {
+    display: flex;
+    gap: 1rem;
+    // background-color: orange;
+    position: absolute;
+    right: 1rem;
+  }
+  &__close-btn,
+  &__change-btn {
+    font-size: 2.8rem;
+    font-weight: 600;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__edit-btn {
+    opacity: 0.4;
+    width: 18px;
+    height: 18px;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__copy-btn {
+    opacity: 0.4;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__input {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    outline: none;
+    font-size: var(--font-default);
+    width: 82%;
+    margin-left: -1.2rem;
+  }
+  &__data {
+    height: 2.9rem;
+    display: flex;
+    align-items: center;
+  }
+  &__eye {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -67,10 +126,26 @@
   &:hover {
     background-color: var(--color-theme-light);
   }
+  &:hover .acc-details__input {
+    background-color: var(--color-item-theme-light) !important;
+  }
 }
 
 [theme-acc-details__row="dark"] {
   &:hover {
     background-color: var(--color-theme-dark);
   }
+  &:hover .acc-details__input {
+    background-color: var(--color-item-theme-dark) !important;
+  }
+}
+
+[theme-acc-details__input="light"] {
+  background-color: var(--color-theme-light);
+  color: var(--color-theme-dark);
+}
+
+[theme-acc-details__input="dark"] {
+  background-color: var(--color-theme-dark);
+  color: var(--color-theme-light);
 }
