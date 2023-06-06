@@ -15,6 +15,7 @@ import {
   changeUserPassword,
   changeUsername,
   removeUserData,
+  userSignOut,
 } from "../../store/slices/user-slice";
 import { stringToAsterisc } from "../../utils/stringToAsterisc";
 
@@ -55,30 +56,6 @@ const AccDetails = () => {
   function copyClickHandler() {
     if (userIDRef.current)
       navigator.clipboard.writeText(userIDRef.current.innerText);
-  }
-
-  function signOutClickHandler() {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        dispatch(
-          createAlert({
-            alertTitle: "Success!",
-            alertText: "Successfully signed out",
-            alertType: "success",
-          })
-        );
-        dispatch(removeUserData());
-      })
-      .catch((error) => {
-        dispatch(
-          createAlert({
-            alertTitle: "Error!",
-            alertText: "Sign out failed",
-            alertType: "error",
-          })
-        );
-      });
   }
 
   const theme = useAppSelector((state) => state.theme.theme);
@@ -322,7 +299,9 @@ const AccDetails = () => {
           className={`btn ${theme === "dark" ? "btn--dark" : "btn--light"} ${
             styles["acc-details__btn"]
           }`}
-          onClick={signOutClickHandler}
+          onClick={() => {
+            dispatch(userSignOut());
+          }}
         >
           Sign Out
         </button>

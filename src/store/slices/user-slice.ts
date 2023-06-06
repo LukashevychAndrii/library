@@ -8,6 +8,7 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  signOut,
 } from "firebase/auth";
 
 import { get, getDatabase, ref, set } from "firebase/database";
@@ -119,7 +120,7 @@ export const createUser = createAsyncThunk<
   }
 );
 
-export const signIn = createAsyncThunk<
+export const userSignIn = createAsyncThunk<
   undefined,
   {
     email: string;
@@ -199,6 +200,33 @@ export const signIn = createAsyncThunk<
         dispatch(createAlert(getErrorDetails(errorCode)));
       });
     return undefined;
+  }
+);
+export const userSignOut = createAsyncThunk<null, undefined, {}>(
+  "user/signOut",
+  async function (_, { dispatch }) {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        dispatch(
+          createAlert({
+            alertTitle: "Success!",
+            alertText: "Successfully signed out",
+            alertType: "success",
+          })
+        );
+        dispatch(removeUserData());
+      })
+      .catch((error) => {
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Sign out failed",
+            alertType: "error",
+          })
+        );
+      });
+    return null;
   }
 );
 
