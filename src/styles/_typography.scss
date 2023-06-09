@@ -12,28 +12,82 @@ html {
 .heading-1 {
   &--light {
     color: var(--color-item-theme-light) !important;
+    -webkit-text-stroke: 1px var(--color-item-theme-dark);
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      max-width: 0;
+      color: var(--color-item-theme-dark);
+      content: attr(data-hover);
+      white-space: nowrap;
+    }
+    &::before {
+      content: "";
+      width: 100%;
+      height: 0.1rem;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: var(--color-item-theme-dark);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
   }
   &--dark {
-    color: var(--color-theme-light) !important;
+    color: var(--color-theme-dark) !important;
+    -webkit-text-stroke: 1px var(--color-item-theme-light);
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      max-width: 0;
+      color: var(--color-item-theme-light);
+      content: attr(data-hover);
+      white-space: nowrap;
+    }
+    &::before {
+      content: "";
+      width: 100%;
+      height: 0.1rem;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: var(--color-item-theme-light);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
   }
+
+  width: 0;
   &,
   &:visited,
   &:link {
     text-decoration: none;
     font-size: 2.5rem;
-    -webkit-text-stroke: 1px var(--color-black-light);
     cursor: pointer;
     transition: all 0.2s;
     display: inline-block;
     text-shadow: 0 0.5rem 1.5rem rgba($color: #000000, $alpha: 0.3);
+    position: relative;
+    width: max-content !important;
     @media screen and (max-width: 600px) {
       font-size: 2rem;
       text-align: center;
     }
-    &:hover {
-      transform: translateY(-0.4rem) scale(1.1);
-      text-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.4);
+
+    &:hover::after {
+      max-width: 100%;
     }
+    &:hover::before {
+      transform: scaleX(1);
+    }
+    // &:hover {
+    //   transform: translateY(-0.4rem) scale(1.1);
+    //   text-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.4);
+    // }
   }
 }
 
@@ -64,10 +118,10 @@ html {
       font-size: 1.6rem;
       text-align: center;
     }
-    &:hover {
-      transform: skewY(2deg) scale(1.1);
-      text-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.5);
-    }
+    // &:hover {
+    //   transform: skewY(2deg) scale(1.1);
+    //   text-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.5);
+    // }
   }
 }
 

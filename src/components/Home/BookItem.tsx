@@ -74,6 +74,7 @@ const BookItem: React.FC<props> = ({ book }) => {
             style={{ width: "80%" }}
             className={`heading-1 heading-1--${theme}`}
             to={`/library/${book.id}`}
+            data-hover={`${book.title}`}
           >
             {book.title}
           </Link>
