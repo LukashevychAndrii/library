@@ -6,7 +6,7 @@ import {
 } from "../../../../store/slices/book-slice";
 import styles from "./Wishlist.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
   const [imageSrc, setImageSrc] = React.useState("");
@@ -18,6 +18,15 @@ const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
       setImageSrc(module.default);
     });
   }, [pinnedBook]);
+  const location = useLocation();
+  function authorClickHandle({ name }: { name: string | null }) {
+    if (name) {
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set("categorie", "author");
+      searchParams.set("enteredValue", name);
+      navigate(`/library?${searchParams}`);
+    }
+  }
 
   const theme = useAppSelector((state) => state.theme.theme);
   return (
@@ -40,8 +49,10 @@ const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
           <div
             onClick={() => {
               const queryParams = new URLSearchParams();
-              queryParams.set("author", pinnedBook.author);
-              navigate(`?${queryParams}`);
+              queryParams.set("categorie", "author");
+              queryParams.set("enteredValue", pinnedBook.author);
+
+              navigate(`/library?${queryParams}`);
             }}
             className={`${styles["wishlist__heading-2"]}`}
           >

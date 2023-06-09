@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./BookItem.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { ReactComponent as Heart } from "../../img/SVG/heart.svg";
 import { ReactComponent as HeartOutlined } from "../../img/SVG/heart-outlined.svg";
@@ -52,6 +52,16 @@ const BookItem: React.FC<props> = ({ book }) => {
       setPinned(false);
     }
   }, [book.id, pinnedBooks]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  function authorClickHandle({ name }: { name: string | null }) {
+    if (name) {
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set("categorie", "author");
+      searchParams.set("enteredValue", name);
+      navigate(`/library?${searchParams}`);
+    }
+  }
 
   const ref = React.useRef<HTMLInputElement>(null);
   const theme = useAppSelector((state) => state.theme.theme);
@@ -63,18 +73,25 @@ const BookItem: React.FC<props> = ({ book }) => {
           <Link
             style={{ width: "80%" }}
             className={`heading-1 heading-1--${theme}`}
-            to={`${book.id}`}
+            to={`/library/${book.id}`}
           >
             {book.title}
           </Link>
         </h1>
-        <h2 className={`heading-2 heading-2--${theme}`}>{book.author}</h2>
+        <h2
+          onClick={(e) => {
+            authorClickHandle({ name: e.currentTarget.textContent });
+          }}
+          className={`heading-2 heading-2--${theme}`}
+        >
+          {book.author}
+        </h2>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. At molestias
           maiores tempora voluptate.
         </p>
         <Link
-          to={`${book.id}`}
+          to={`/library/${book.id}`}
           className={`btn-more--${theme === "light" ? "dark" : "light"} ${
             styles["book__btn-more"]
           }`}
