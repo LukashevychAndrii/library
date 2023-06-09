@@ -51,6 +51,10 @@
     width: 3.5rem;
     height: 3.5rem;
     cursor: pointer;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &__pin-icon {
@@ -60,9 +64,11 @@
   &__pin {
     stroke: none !important;
     fill: inherit !important;
+    opacity: 1;
   }
   &__unpin {
     &:hover {
+      animation: bounce 1s infinite;
       stroke: #000;
     }
   }
@@ -99,8 +105,9 @@
 }
 
 [pin-theme="dark"] {
-  stroke: var(--color-theme-dark);
+  stroke: var(--color-black);
   stroke-width: 0.1rem;
+  fill: var(--color-item-theme-dark);
 }
 [pin-theme="light"] {
   stroke: var(--color-theme-dark);

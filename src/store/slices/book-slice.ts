@@ -80,8 +80,12 @@ const bookSlice = createSlice({
     });
 
     builder.addCase(fetchFilteredBooks.fulfilled, (state, action) => {
-      state.books = action.payload;
-      state.totalLength = action.payload.length;
+      const end = action.payload.page * 10;
+      const start = end - 10;
+      const fetchedBooks = action.payload.books.filter((el) => el);
+      console.log(fetchedBooks);
+      state.books = fetchedBooks.slice(start, end);
+      state.totalLength = fetchedBooks.length;
     });
 
     builder.addCase(fetchWishlist.fulfilled, (state, action) => {
@@ -230,15 +234,58 @@ export const fetchBookDetails = createAsyncThunk<
 );
 
 export const fetchFilteredBooks = createAsyncThunk<
-  book[],
-  { filter: string; enteredValue: string },
+  { books: book[]; page: number },
+  { filter: string; enteredValue: string; comparison?: string; page: number },
   {}
 >(
   "book/fetchFilteredBooks",
-  async function ({ filter, enteredValue }, { dispatch }) {
+  async function ({ filter, enteredValue, comparison, page }, { dispatch }) {
     let filteredBooks: book[] | null = [];
     const db = getDatabase(app);
     const dbRef = ref(db, `books`);
+
+    if (comparison) {
+      if (comparison === "less" || comparison === "earlier") {
+        if (filter === "year" || filter === "pages") {
+          const filteredBooksQuery = query(
+            dbRef,
+            orderByChild(filter),
+            endAt(+enteredValue)
+          );
+          await get(filteredBooksQuery).then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log(snapshot.val());
+              if (snapshot.val().length) {
+                filteredBooks = snapshot.val();
+              } else {
+                filteredBooks = Object.values(snapshot.val());
+              }
+            }
+          });
+          return { books: filteredBooks, page: page };
+        }
+      } else if (comparison === "more" || comparison === "later") {
+        if (filter === "year" || filter === "pages") {
+          const filteredBooksQuery = query(
+            dbRef,
+            orderByChild(filter),
+            startAt(+enteredValue)
+          );
+          await get(filteredBooksQuery).then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log(snapshot.val());
+              if (snapshot.val().length) {
+                filteredBooks = snapshot.val();
+              } else {
+                filteredBooks = Object.values(snapshot.val());
+              }
+            }
+          });
+          return { books: filteredBooks, page: page };
+        }
+      }
+    }
+
     const dataQuery = query(
       dbRef,
       orderByChild(filter),
@@ -248,13 +295,19 @@ export const fetchFilteredBooks = createAsyncThunk<
 
     await get(dataQuery)
       .then((snapshot) => {
-        filteredBooks = Object.values(snapshot.val());
+        if (snapshot.exists()) filteredBooks = Object.values(snapshot.val());
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(
+          createAlert({
+            alertTitle: "Error!",
+            alertText: "Fetching filtered books failed",
+            alertType: "error",
+          })
+        );
       });
 
-    return filteredBooks;
+    return { books: filteredBooks, page: page };
   }
 );
 

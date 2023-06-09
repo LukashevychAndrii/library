@@ -43,7 +43,6 @@ const BookItem: React.FC<props> = ({ book }) => {
   }, [wishlist, book.id]);
 
   React.useEffect(() => {
-    console.log(pinnedBooks.length);
     if (
       pinnedBooks &&
       pinnedBooks.findIndex((el) => el.id === book.id) !== -1

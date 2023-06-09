@@ -7,6 +7,7 @@ import { useAppSelector } from "../../hooks/redux";
 import Theme from "./Header-components/Theme/Theme";
 import SearchBar from "./Header-components/SearchBar/SearchBar";
 import Wishlist from "./Header-components/Wishlist/Wishlist";
+import Filter from "./Header-components/ Filter/Filter";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -22,12 +23,17 @@ const MainHeader = () => {
 
   return (
     <header theme-header={theme} className={styles["header"]}>
-      <NavLink end className={getStyle} to="/library">
-        <BookIcon />
-        <div>Books</div>
-      </NavLink>
-      {userID && <Wishlist />}
-      <SearchBar />
+      <div className={styles["header__left-content"]}>
+        <NavLink end className={getStyle} to="/library">
+          <BookIcon />
+          <div>Books</div>
+        </NavLink>
+        {userID && <Wishlist />}
+      </div>
+      <div className={styles["header__center-content"]}>
+        <SearchBar />
+        <Filter />
+      </div>
       <div className={styles["header__right-content"]}>
         <Theme />
         <div className={styles["header__acc"]}>

@@ -27,7 +27,13 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
     setPages(Math.ceil(totalLength / 10));
   }, [totalLength]);
 
-  React.useEffect(() => {}, []);
+  const setPage = ({ current }: { current: number }): string => {
+    const searchParams = new URLSearchParams(page.search);
+    if (current) {
+      searchParams.set("page", `${current}`);
+    }
+    return searchParams.toString();
+  };
   const renderPagination = () => {
     const arr: any[] = [];
     for (let i = 1; i < pages + 1; i++) {
@@ -36,7 +42,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
           onClick={() => {
             setCurrent(i);
           }}
-          to={{ search: `?page=${i}` }}
+          to={{ search: setPage({ current: i }) }}
           className={
             i === current
               ? `${styles["pagination__item--active"]} ${styles["pagination__item"]}`
