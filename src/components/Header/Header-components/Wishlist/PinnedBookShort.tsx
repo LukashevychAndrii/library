@@ -1,14 +1,10 @@
 import React from "react";
-import {
-  book,
-  removeBookFromWishlist,
-  unpinBook,
-} from "../../../../store/slices/book-slice";
+import { book, unpinBook } from "../../../../store/slices/book-slice";
 import styles from "./Wishlist.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
+const PinnedBookShort: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
   const [imageSrc, setImageSrc] = React.useState("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -18,15 +14,6 @@ const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
       setImageSrc(module.default);
     });
   }, [pinnedBook]);
-  const location = useLocation();
-  function authorClickHandle({ name }: { name: string | null }) {
-    if (name) {
-      const searchParams = new URLSearchParams(location.search);
-      searchParams.set("categorie", "author");
-      searchParams.set("enteredValue", name);
-      navigate(`/library?${searchParams}`);
-    }
-  }
 
   const theme = useAppSelector((state) => state.theme.theme);
   return (
@@ -39,25 +26,25 @@ const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
       <div className={styles["wishlist__description"]}>
         <h1>
           <Link
+            theme-heading-border={theme}
             className={` ${styles["wishlist__heading-1"]}`}
             to={`/library/${pinnedBook.id}`}
           >
             {pinnedBook.title}
           </Link>
         </h1>
-        <h2>
-          <div
-            onClick={() => {
-              const queryParams = new URLSearchParams();
-              queryParams.set("categorie", "author");
-              queryParams.set("enteredValue", pinnedBook.author);
+        <h2
+          onClick={() => {
+            const queryParams = new URLSearchParams();
+            queryParams.set("categorie", "author");
+            queryParams.set("enteredValue", pinnedBook.author);
 
-              navigate(`/library?${queryParams}`);
-            }}
-            className={`${styles["wishlist__heading-2"]}`}
-          >
-            {pinnedBook.author}
-          </div>
+            navigate(`/library?${queryParams}`);
+          }}
+          theme-heading-border={theme}
+          className={`${styles["wishlist__heading-2"]}`}
+        >
+          {pinnedBook.author}
         </h2>
         <Link
           to={`/library/${pinnedBook.id}`}
@@ -80,4 +67,4 @@ const WishlistItem: React.FC<{ pinnedBook: book }> = ({ pinnedBook }) => {
   );
 };
 
-export default WishlistItem;
+export default PinnedBookShort;

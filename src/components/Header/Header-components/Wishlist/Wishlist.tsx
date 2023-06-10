@@ -2,11 +2,11 @@ import React from "react";
 import styles from "./Wishlist.module.scss";
 import { ReactComponent as Attachment } from "../../../../img/SVG/attachment.svg";
 import { useAppSelector } from "../../../../hooks/redux";
-import WishlistItem from "./PinnedBookShort";
 import { Link, useLocation } from "react-router-dom";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import PinnedBookShort from "./PinnedBookShort";
 
 const Wishlist = () => {
   const [hover, setHover] = React.useState(false);
@@ -56,7 +56,7 @@ const Wishlist = () => {
             >
               <div className={styles["wishlist__heading"]}>Pinned books</div>
               {pinnedBooks.map((el) => (
-                <WishlistItem key={el.id} pinnedBook={el} />
+                <PinnedBookShort key={el.id} pinnedBook={el} />
               ))}
             </SimpleBar>
           </ul>

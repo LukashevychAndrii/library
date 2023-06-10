@@ -69,6 +69,21 @@
     width: 200px;
     font-family: "Times New Roman", Times, serif;
     font-size: var(--font-default);
+    position: relative;
+    &::before {
+      display: block;
+      content: "";
+      width: 100%;
+      height: 0.1rem;
+      position: absolute;
+      top: 98%;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    &:hover::before {
+      transform: scaleX(1);
+    }
   }
 
   &__details-btn {
@@ -117,4 +132,15 @@
 }
 [theme-wishlist-item="dark"] {
   background-color: var(--color-item-theme-dark);
+}
+
+[theme-heading-border="light"] {
+  &::before {
+    background-color: var(--color-item-theme-dark);
+  }
+}
+[theme-heading-border="dark"] {
+  &::before {
+    background-color: var(--color-item-theme-light);
+  }
 }
