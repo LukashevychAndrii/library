@@ -40,6 +40,7 @@ interface initialStateI {
   wishlist: book[];
   wishlistIDs: string[];
   pinnedBooks: book[];
+  scrollTop: boolean;
 }
 const initialState: initialStateI = {
   books: [],
@@ -48,6 +49,7 @@ const initialState: initialStateI = {
   wishlist: [],
   wishlistIDs: [],
   pinnedBooks: [],
+  scrollTop: false,
 };
 
 const bookSlice = createSlice({
@@ -62,6 +64,9 @@ const bookSlice = createSlice({
     },
     setBooksLength(state, action) {
       state.totalLength = action.payload.totalLength;
+    },
+    scrollTop(state, action) {
+      state.scrollTop = action.payload;
     },
   },
   extraReducers(builder) {
@@ -126,7 +131,7 @@ const bookSlice = createSlice({
 });
 
 export default bookSlice.reducer;
-export const { setBooks, clearCurrentBookDetails, setBooksLength } =
+export const { setBooks, clearCurrentBookDetails, setBooksLength, scrollTop } =
   bookSlice.actions;
 
 export const fetchBooks = createAsyncThunk<

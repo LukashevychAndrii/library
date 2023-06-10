@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Pagination.module.scss";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { NavLink, useLocation } from "react-router-dom";
+import { scrollTop } from "../../store/slices/book-slice";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -34,6 +35,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
     }
     return searchParams.toString();
   };
+  const dispatch = useAppDispatch();
   const renderPagination = () => {
     const arr: any[] = [];
     for (let i = 1; i < pages + 1; i++) {
@@ -41,6 +43,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
         <NavLink
           onClick={() => {
             setCurrent(i);
+            dispatch(scrollTop(true));
           }}
           to={{ search: setPage({ current: i }) }}
           className={
