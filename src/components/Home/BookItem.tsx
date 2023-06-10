@@ -72,7 +72,7 @@ const BookItem: React.FC<props> = ({ book }) => {
         <h1>
           <Link
             style={{ width: "80%" }}
-            className={`heading-1 heading-1--${theme}`}
+            className={`heading-1 heading-1--${theme} ${styles["book__heading-1"]}`}
             to={`/library/${book.id}`}
             data-hover={`${book.title}`}
           >
@@ -92,6 +92,7 @@ const BookItem: React.FC<props> = ({ book }) => {
           maiores tempora voluptate.
         </p>
         <Link
+          data-hover={`Details \u2192`}
           to={`/library/${book.id}`}
           className={`btn-more--${theme === "light" ? "dark" : "light"} ${
             styles["book__btn-more"]
