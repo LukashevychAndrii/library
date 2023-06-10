@@ -7,7 +7,6 @@
 
   &__list-wrapper {
     width: 110rem;
-    // background-color: orange;
     margin: auto;
   }
   &__wrapper {
@@ -36,20 +35,13 @@
       right: 0;
     }
     &--last {
-      opacity: 0.3;
-      &:hover {
-        fill: var(--color-item-theme-dark) !important;
-      }
+      opacity: 0.2 !important;
     }
     &--first {
-      opacity: 0.3;
-      &:hover {
-        fill: var(--color-item-theme-dark) !important;
-      }
+      opacity: 0.2 !important;
     }
     &__wrapper {
-      // background-color: blue;
-      // max-width: 145rem;
+      max-width: 130rem;
       margin: auto;
       position: relative;
     }
@@ -146,12 +138,13 @@
   }
 }
 [theme-chevron="dark"] {
-  fill: var(--color-item-theme-dark);
-  stroke: var(--color-item-theme-light);
-  stroke-width: 0.1px;
+  fill: var(--color-item-theme-light);
+  opacity: 0.6;
+  transition: all 0.4s;
 
   &:hover {
-    fill: var(--color-theme-dark);
+    opacity: 1;
+    fill: var(--color-item-theme-light);
   }
 }
 

@@ -8,11 +8,11 @@ import PinnedBook from "./PinnedBook";
 const PinnedBooks = () => {
   const pinnedBooks = useAppSelector((state) => state.book.pinnedBooks);
   const [bookWidth, setBookWidth] = React.useState(0);
-  const maxOffset = React.useRef<number>(0);
+  const [maxOffset, setMaxOffset] = React.useState(0);
   const [newB, setNewB] = React.useState(-1);
   React.useEffect(() => {
-    maxOffset.current = -bookWidth * (pinnedBooks.length - 2);
-  }, [pinnedBooks, bookWidth]);
+    setMaxOffset(-bookWidth * (pinnedBooks.length - 2) + bookWidth);
+  }, [pinnedBooks, bookWidth, setMaxOffset]);
 
   const [offset, setOffset] = React.useState<number>(0);
 
@@ -90,7 +90,7 @@ const PinnedBooks = () => {
               <RightArrow
                 onClick={() => {
                   setOffset((prev) => {
-                    if (prev - bookWidth <= maxOffset.current) {
+                    if (prev - bookWidth < maxOffset) {
                       return prev;
                     }
                     return (prev -= bookWidth);
@@ -113,8 +113,7 @@ const PinnedBooks = () => {
                 className={`${styles["pinned-books__chevron"]} ${
                   styles["pinned-books__chevron--next"]
                 } ${
-                  offset <= maxOffset.current &&
-                  styles["pinned-books__chevron--last"]
+                  offset <= maxOffset && styles["pinned-books__chevron--last"]
                 }`}
               />
             )}
