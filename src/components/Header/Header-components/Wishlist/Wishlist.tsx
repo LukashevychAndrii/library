@@ -7,12 +7,14 @@ import { Link, useLocation } from "react-router-dom";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import PinnedBookShort from "./PinnedBookShort";
+import useClickOutside from "../../../../hooks/useClickOutside";
 
 const Wishlist = () => {
   const [hover, setHover] = React.useState(false);
   const [current, setCurrent] = React.useState(false);
   const pinnedBooks = useAppSelector((state) => state.book.pinnedBooks);
   const location = useLocation();
+
   React.useEffect(() => {
     if (location.pathname.includes("wishlist")) {
       setCurrent(true);
@@ -25,8 +27,16 @@ const Wishlist = () => {
 
   return (
     <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => {
+        if (!("ontouchstart" in window)) {
+          setHover(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!("ontouchstart" in window)) {
+          setHover(false);
+        }
+      }}
       className={styles["wishlist--wrapper"]}
     >
       <Link
