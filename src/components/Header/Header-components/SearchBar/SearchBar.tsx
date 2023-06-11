@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./SearchBar.module.scss";
-import { useAppDispatch } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import {
   fetchBooks,
   fetchFilteredBooks,
@@ -47,6 +47,8 @@ const SearchBar = () => {
       }
     }
   }, [location]);
+
+  const theme = useAppSelector((state) => state.theme.theme);
   return (
     <form
       onSubmit={(e) => {
@@ -96,11 +98,24 @@ const SearchBar = () => {
       <input
         className={styles["search-bar__input"]}
         type="text"
-        placeholder={placeholder}
+        placeholder=" "
         value={enteredValue}
         onChange={(e) => setEnteredValue(e.target.value)}
+        id="searchbar"
       />
-      <label htmlFor=""></label>
+      <span
+        theme-searchbar-border={theme}
+        className={styles["search-bar__border"]}
+      >
+        <i></i>
+      </span>
+      <label
+        theme-searchbar-label={theme}
+        className={styles["search-bar__label"]}
+        htmlFor="searchbar"
+      >
+        {placeholder}
+      </label>
     </form>
   );
 };
