@@ -10,6 +10,7 @@ import { ReactComponent as CountryIcon } from "../../../../img/SVG/country.svg";
 import { ReactComponent as LanguageIcon } from "../../../../img/SVG/language.svg";
 import { ReactComponent as PagesIcon } from "../../../../img/SVG/pages.svg";
 import { useLocation, useNavigate } from "react-router-dom";
+import useClickOutside from "../../../../hooks/useClickOutside";
 
 interface currentFilterI {
   categorieImg: ReactElement;
@@ -21,6 +22,7 @@ const Filter = () => {
   const [currentFilter, setCurrentFilter] =
     React.useState<currentFilterI | null>(null);
   const location = useLocation();
+  const [hover, setHover] = React.useState(false);
 
   React.useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -31,8 +33,15 @@ const Filter = () => {
   }, []);
 
   const [showFilter, setShowFilter] = React.useState(false);
-  const [showPageCountFilter, setShowPageCountFilter] = React.useState(false);
+
   const navigate = useNavigate();
+
+  const filterRef = React.useRef<HTMLDivElement>(null);
+  const handleClickOutside = useClickOutside({ ref: filterRef });
+
+  if (showFilter && handleClickOutside && !hover) {
+    setShowFilter(false);
+  }
 
   function setURLParams({ categorie }: { categorie: string }): void {
     const transformedCategorieName =
@@ -115,12 +124,32 @@ const Filter = () => {
     setSelectedYearRadioBtn(e.currentTarget.value);
     setYearExtraParameters({ extraParams: e.target.value });
   };
-
+  React.useEffect(() => {
+    console.log(showFilter);
+  }, [showFilter]);
   return (
-    <div theme-filter={theme} className={styles["filter"]}>
+    <div
+      onMouseEnter={() => {
+        if (!("ontouchstart" in window)) {
+          setShowFilter(true);
+          setHover(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!("ontouchstart" in window)) {
+          setShowFilter(false);
+          setHover(false);
+        }
+      }}
+      ref={filterRef}
+      theme-filter={theme}
+      className={styles["filter"]}
+    >
       <div
         onClick={() => {
-          setShowFilter(!showFilter);
+          if (!hover) {
+            setShowFilter(!showFilter);
+          }
         }}
         className={styles["filter__icon"]}
       >
