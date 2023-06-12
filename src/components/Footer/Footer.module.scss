@@ -1,0 +1,168 @@
+.footer {
+  padding-bottom: 5rem;
+  padding-top: 10rem;
+  &__content-wrapper {
+    width: 80rem;
+    margin: auto;
+    font-size: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  &__top-content {
+    display: grid;
+    grid-template-columns: 1fr min-content min-content;
+    gap: 3.5rem;
+    &__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      & > li {
+        cursor: pointer;
+        position: relative;
+        opacity: 0.6;
+        &:hover {
+          opacity: 1;
+        }
+        &::before {
+          content: "";
+          width: 100%;
+          height: 0.1rem;
+          display: block;
+          transform: scaleX(0);
+          position: absolute;
+          transform-origin: left;
+          top: 100%;
+        }
+      }
+      & > li:hover::before {
+        transform: scaleX(1);
+      }
+    }
+  }
+  &__heading {
+    white-space: nowrap;
+    padding-bottom: 1rem;
+    cursor: pointer;
+    opacity: 0.6;
+    width: max-content;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__center-line {
+    width: 100%;
+    height: 0.1rem;
+  }
+  &__bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+      & > li {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        padding: 1rem;
+        cursor: pointer;
+        position: relative;
+        border: 0.2rem solid;
+        overflow: hidden;
+      }
+      &__link {
+        width: 100%;
+        height: 100%;
+        &--facebook {
+          &::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: #3b5998;
+            position: absolute;
+            top: 100%;
+            left: 0;
+          }
+        }
+        &--twitter {
+          &::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: #1da1f2;
+            position: absolute;
+            top: 100%;
+            left: 0;
+          }
+        }
+        &--instagram {
+          &::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+              circle at 30% 107%,
+              #fdf497 0%,
+              #fdf497 5%,
+              #fd5949 45%,
+              #d6249f 60%,
+              #285aeb 90%
+            );
+            position: absolute;
+            top: 100%;
+            left: 0;
+          }
+        }
+        &--linkedin {
+          &::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: #0a66c2;
+            position: absolute;
+            top: 100%;
+            left: 0;
+          }
+        }
+      }
+
+      & > li:hover &__link {
+        transform: rotateY(360deg);
+      }
+      & > li:hover::before {
+        top: 0;
+      }
+    }
+  }
+}
+
+[theme-footer="dark"] {
+  background-color: var(--color-theme-dark);
+  fill: var(--color-theme-light);
+  color: var(--color-theme-light);
+}
+[theme-footer="light"] {
+  background-color: var(--color-theme-light);
+  color: var(--color-theme-dark);
+}
+
+[theme-footer-center-line="dark"] {
+  background-color: var(--color-theme-light);
+}
+[theme-footer-center-line="light"] {
+  background-color: var(--color-theme-dark);
+}
+
+[theme-footer-list-item="light"] {
+  & > li::before {
+    background-color: var(--color-item-theme-dark);
+  }
+}
+[theme-footer-list-item="dark"] {
+  & > li::before {
+    background-color: var(--color-item-theme-light);
+  }
+}
