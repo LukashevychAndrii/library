@@ -30,15 +30,14 @@
     position: absolute;
     background-color: inherit;
     left: 0;
-    padding: inherit;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.5rem;
     transform-origin: top;
     top: 100%;
     opacity: 0;
     visibility: hidden;
-    transform: translate(2.5rem, -2.5rem);
+    transform: translate(0.5rem, -1rem);
 
     &__visible {
       opacity: 1;
@@ -57,31 +56,55 @@
       opacity: 0.6;
       white-space: nowrap;
       position: relative;
+      padding: 0.5rem 1rem;
       &:hover {
         opacity: 1;
       }
+      &::before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: scaleX(0.01);
+        transform-origin: left;
+        z-index: -1;
+      }
+      &:hover::before {
+        transform: scaleX(100%);
+      }
     }
-    // &__line {
-    //   width: 100%;
-    //   height: 1px;
-    // }
   }
   &__chevron {
     opacity: 0.6;
     justify-self: flex-end;
   }
-
   &__page-count,
   &__year-count {
+    z-index: 100;
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    transform: translate(0.5rem, -1rem);
+    opacity: 0;
+    visibility: hidden;
+
+    &--visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(0);
+    }
     &__options {
       &__option {
+        padding: 1rem 1.5rem;
         &:not(:last-of-type) {
           padding-bottom: 1rem;
         }
         &__radio-btn {
           width: 1.4rem;
           height: 1.4rem;
-          background-color: white;
+          background-color: var(--color-theme-light);
           border-radius: 50%;
           position: relative;
           display: inline-block;
@@ -90,7 +113,7 @@
             width: 75%;
             height: 75%;
             border-radius: 50%;
-            background-color: black;
+            background-color: var(--color-item-theme-dark);
             position: absolute;
             top: 50%;
             left: 50%;
@@ -106,9 +129,8 @@
       }
       &__option > label {
         display: grid;
-        padding-left: 4rem;
         grid-template-columns: min-content 1fr;
-        justify-items: flex-end;
+        justify-items: flex-start;
         gap: 2.5rem;
         cursor: pointer;
         align-items: center;
@@ -138,4 +160,16 @@
 
 [theme-filter__border="light"] {
   background-color: var(--color-item-theme-dark);
+}
+
+[theme-filter-option="light"] {
+  &::before {
+    background-color: var(--color-theme-light);
+  }
+}
+
+[theme-filter-option="dark"] {
+  &::before {
+    background-color: var(--color-theme-dark);
+  }
 }

@@ -22,15 +22,11 @@ const Filter = () => {
   const [currentFilter, setCurrentFilter] =
     React.useState<currentFilterI | null>(null);
   const location = useLocation();
-  const [hover, setHover] = React.useState(false);
+  const [hoverFilter, setHoverFilter] = React.useState(false);
 
-  React.useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.forEach((value, key) => {
-      console.log(value);
-      console.log(key);
-    });
-  }, []);
+  const [showPageCount, setShowPageCount] = React.useState(false);
+
+  const [showYear, setShowYear] = React.useState(false);
 
   const [showFilter, setShowFilter] = React.useState(false);
 
@@ -39,7 +35,7 @@ const Filter = () => {
   const filterRef = React.useRef<HTMLDivElement>(null);
   const handleClickOutside = useClickOutside({ ref: filterRef });
 
-  if (showFilter && handleClickOutside && !hover) {
+  if (showFilter && handleClickOutside && !hoverFilter) {
     setShowFilter(false);
   }
 
@@ -90,8 +86,7 @@ const Filter = () => {
     searchParams.set("comparison", extraParams);
     navigate(`?${searchParams}`);
   }
-  const [selectedBookRadioBtn, setSelectedBookRadioBtn] =
-    React.useState("less");
+  const [selectedBookRadioBtn, setSelectedBookRadioBtn] = React.useState("");
 
   const isPageRadioSelected = (value: string): boolean =>
     value === selectedBookRadioBtn;
@@ -124,21 +119,18 @@ const Filter = () => {
     setSelectedYearRadioBtn(e.currentTarget.value);
     setYearExtraParameters({ extraParams: e.target.value });
   };
-  React.useEffect(() => {
-    console.log(showFilter);
-  }, [showFilter]);
   return (
     <div
       onMouseEnter={() => {
         if (!("ontouchstart" in window)) {
           setShowFilter(true);
-          setHover(true);
+          setHoverFilter(true);
         }
       }}
       onMouseLeave={() => {
         if (!("ontouchstart" in window)) {
           setShowFilter(false);
-          setHover(false);
+          setHoverFilter(false);
         }
       }}
       ref={filterRef}
@@ -146,8 +138,8 @@ const Filter = () => {
       className={styles["filter"]}
     >
       <div
-        onClick={() => {
-          if (!hover) {
+        onPointerDown={(e) => {
+          if (!(e.pointerType === "mouse")) {
             setShowFilter(!showFilter);
           }
         }}
@@ -169,15 +161,12 @@ const Filter = () => {
           showFilter && styles["filter__options__visible"]
         }`}
       >
-        <span
-          theme-filter__border={theme}
-          className={styles["filter__options__line"]}
-        ></span>
         <div
           onClick={() => {
             setURLParams({ categorie: "title" });
           }}
           className={styles["filter__options__option"]}
+          theme-filter-option={theme}
         >
           <TitleIcon className={styles["filter__img"]} />
           <div>Title</div>
@@ -187,164 +176,198 @@ const Filter = () => {
             setURLParams({ categorie: "author" });
           }}
           className={styles["filter__options__option"]}
+          theme-filter-option={theme}
         >
           <AuthorIcon className={styles["filter__img"]} />
           <div>Author</div>
         </div>
 
         <div
-          onClick={() => {
-            setURLParams({ categorie: "pages" });
-            setPagesExtraParameters({ extraParams: selectedBookRadioBtn });
+          onMouseEnter={() => {
+            if (!("ontouchstart" in window)) {
+              setShowPageCount(true);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!("ontouchstart" in window)) {
+              setShowPageCount(false);
+            }
+          }}
+          onPointerDown={(e) => {
+            if (!(e.pointerType === "mouse")) {
+              setShowPageCount(!showPageCount);
+            }
           }}
           className={styles["filter__options__option"]}
+          theme-filter-option={theme}
         >
           <PagesIcon className={styles["filter__img"]} />
           <div>Page Count</div>
           <ChevronDown className={styles["filter__chevron"]} />
-        </div>
-
-        <div className={styles["filter__page-count"]}>
-          <div className={styles["filter__page-count__options"]}>
-            <form>
-              <div className={styles["filter__page-count__options__option"]}>
-                <input
-                  type="radio"
-                  name="page-count"
-                  id="less"
-                  value="less"
-                  checked={isPageRadioSelected("less")}
-                  onChange={(e) => {
-                    handlePageRadioClick(e);
-                  }}
-                />
-                <label htmlFor="less">
-                  <div
-                    className={
-                      styles["filter__page-count__options__option__radio-btn"]
-                    }
-                  ></div>
-                  <div
-                    className={
-                      styles[
-                        "filter__page-count__options__option__radio-btn__text"
-                      ]
-                    }
-                  >
-                    Less than
-                  </div>
-                </label>
-              </div>
-              <div className={styles["filter__page-count__options__option"]}>
-                <input
-                  type="radio"
-                  name="page-count"
-                  id="more"
-                  value="more"
-                  checked={isPageRadioSelected("more")}
-                  onChange={(e) => {
-                    handlePageRadioClick(e);
-                  }}
-                />
-                <label htmlFor="more">
-                  <div
-                    className={
-                      styles["filter__page-count__options__option__radio-btn"]
-                    }
-                  ></div>
-                  <div
-                    className={
-                      styles[
-                        "filter__page-count__options__option__radio-btn__text"
-                      ]
-                    }
-                  >
-                    More than
-                  </div>
-                </label>
-              </div>
-            </form>
+          <div
+            className={`${styles["filter__page-count"]} ${
+              showPageCount && styles["filter__page-count--visible"]
+            }`}
+          >
+            <div className={styles["filter__page-count__options"]}>
+              <form theme-filter={theme}>
+                <div className={styles["filter__page-count__options__option"]}>
+                  <input
+                    type="radio"
+                    name="page-count"
+                    id="less"
+                    value="less"
+                    checked={isPageRadioSelected("less")}
+                    onChange={(e) => {
+                      handlePageRadioClick(e);
+                    }}
+                  />
+                  <label htmlFor="less">
+                    <div
+                      className={
+                        styles["filter__page-count__options__option__radio-btn"]
+                      }
+                    ></div>
+                    <div
+                      className={
+                        styles[
+                          "filter__page-count__options__option__radio-btn__text"
+                        ]
+                      }
+                    >
+                      Less than
+                    </div>
+                  </label>
+                </div>
+                <div className={styles["filter__page-count__options__option"]}>
+                  <input
+                    type="radio"
+                    name="page-count"
+                    id="more"
+                    value="more"
+                    checked={isPageRadioSelected("more")}
+                    onChange={(e) => {
+                      handlePageRadioClick(e);
+                    }}
+                  />
+                  <label htmlFor="more">
+                    <div
+                      className={
+                        styles["filter__page-count__options__option__radio-btn"]
+                      }
+                    ></div>
+                    <div
+                      className={
+                        styles[
+                          "filter__page-count__options__option__radio-btn__text"
+                        ]
+                      }
+                    >
+                      More than
+                    </div>
+                  </label>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
 
         <div
-          onClick={() => {
-            setURLParams({ categorie: "year" });
-            setYearExtraParameters({ extraParams: selectedYearRadioBtn });
+          onPointerDown={(e) => {
+            if (!(e.pointerType === "mouse")) {
+              setShowYear(!showYear);
+            }
+          }}
+          onMouseEnter={() => {
+            if (!("ontouchstart" in window)) {
+              setShowYear(true);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!("ontouchstart" in window)) {
+              setShowYear(false);
+            }
           }}
           className={styles["filter__options__option"]}
+          theme-filter-option={theme}
         >
           <CalendarIcon className={styles["filter__img"]} />
           <div>Year</div>
           <ChevronDown className={styles["filter__chevron"]} />
-        </div>
-        <div className={styles["filter__year-count"]}>
-          <div className={styles["filter__year-count__options"]}>
-            <form>
-              <div className={styles["filter__year-count__options__option"]}>
-                <input
-                  type="radio"
-                  name="year"
-                  id="earlier"
-                  value="earlier"
-                  checked={isYearRadioSelected("earlier")}
-                  onChange={(e) => {
-                    handleYearRadioClick(e);
-                  }}
-                />
-                <label htmlFor="earlier">
-                  <div
-                    className={
-                      styles["filter__year-count__options__option__radio-btn"]
-                    }
-                  ></div>
-                  <div
-                    className={
-                      styles[
-                        "filter__year-count__options__option__radio-btn__text"
-                      ]
-                    }
-                  >
-                    Earlier than
-                  </div>
-                </label>
-              </div>
-              <div className={styles["filter__year-count__options__option"]}>
-                <input
-                  type="radio"
-                  name="year"
-                  id="later"
-                  value="later"
-                  checked={isYearRadioSelected("later")}
-                  onChange={(e) => {
-                    handleYearRadioClick(e);
-                  }}
-                />
-                <label htmlFor="later">
-                  <div
-                    className={
-                      styles["filter__year-count__options__option__radio-btn"]
-                    }
-                  ></div>
-                  <div
-                    className={
-                      styles[
-                        "filter__year-count__options__option__radio-btn__text"
-                      ]
-                    }
-                  >
-                    Later than
-                  </div>
-                </label>
-              </div>
-            </form>
+          <div
+            className={`${styles["filter__year-count"]} ${
+              showYear && styles["filter__year-count--visible"]
+            }`}
+          >
+            <div className={styles["filter__year-count__options"]}>
+              <form theme-filter={theme}>
+                <div className={styles["filter__year-count__options__option"]}>
+                  <input
+                    type="radio"
+                    name="year"
+                    id="earlier"
+                    value="earlier"
+                    checked={isYearRadioSelected("earlier")}
+                    onChange={(e) => {
+                      handleYearRadioClick(e);
+                    }}
+                  />
+                  <label htmlFor="earlier">
+                    <div
+                      className={
+                        styles["filter__year-count__options__option__radio-btn"]
+                      }
+                    ></div>
+                    <div
+                      className={
+                        styles[
+                          "filter__year-count__options__option__radio-btn__text"
+                        ]
+                      }
+                    >
+                      Earlier than
+                    </div>
+                  </label>
+                </div>
+                <div className={styles["filter__year-count__options__option"]}>
+                  <input
+                    type="radio"
+                    name="year"
+                    id="later"
+                    value="later"
+                    checked={isYearRadioSelected("later")}
+                    onChange={(e) => {
+                      handleYearRadioClick(e);
+                    }}
+                  />
+                  <label htmlFor="later">
+                    <div
+                      className={
+                        styles["filter__year-count__options__option__radio-btn"]
+                      }
+                    ></div>
+                    <div
+                      className={
+                        styles[
+                          "filter__year-count__options__option__radio-btn__text"
+                        ]
+                      }
+                    >
+                      Later than
+                    </div>
+                  </label>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
+
         <div
           onClick={() => {
             setURLParams({ categorie: "country" });
           }}
           className={styles["filter__options__option"]}
+          theme-filter-option={theme}
         >
           <CountryIcon className={styles["filter__img"]} />
           <div>Country</div>
@@ -354,6 +377,7 @@ const Filter = () => {
             setURLParams({ categorie: "language" });
           }}
           className={styles["filter__options__option"]}
+          theme-filter-option={theme}
         >
           <LanguageIcon className={styles["filter__img"]} />
           <div>Language</div>
