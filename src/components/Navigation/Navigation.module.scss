@@ -1,0 +1,200 @@
+.navigation {
+  @media screen and (min-width: 1400px) {
+    visibility: hidden;
+    opacity: 0;
+    & * {
+      width: 0;
+    }
+  }
+  &__checkbox {
+    display: none;
+  }
+  &__button {
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6rem;
+    right: 6rem;
+    z-index: 2000;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 3rem rgba($color: #000000, $alpha: 0.4);
+  }
+
+  &__background {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6.5rem;
+    right: 6.5rem;
+    // background-image: radial-gradient(orange, orangered);
+    z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.83, 0, 0.17, 1);
+  }
+
+  &__checkbox:checked ~ &__background {
+    transform: scale(80);
+  }
+  &__nav {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    width: 0;
+    z-index: 1500;
+    transition: all 0.4s cubic-bezier(0.34, 1.275, 0.64, 1);
+    transition-delay: 0.1s;
+  }
+
+  &__checkbox:checked ~ &__nav {
+    opacity: 1;
+    width: 100vw;
+    transition-delay: 0.2s;
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &,
+    &::before,
+    &::after {
+      width: 3rem;
+      height: 2px;
+      display: inline-block;
+      background-color: inherit;
+      transition: all 0.2s;
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+    &::before {
+      top: -0.8rem;
+    }
+    &::after {
+      top: 0.8rem;
+    }
+  }
+  &__list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    list-style: none;
+    text-align: center;
+    z-index: 1500;
+  }
+  &__item {
+    margin: 1rem;
+  }
+  &__link {
+    &:link,
+    &:visited {
+      font-size: 3rem;
+      font-weight: 300;
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      background-size: 225%;
+      transition: all 0.4s;
+      position: relative;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    &:hover,
+    &:active {
+      background-position: 100%;
+      transform: translateX(1rem);
+    }
+  }
+  &__button:hover &__icon::before {
+    top: -1rem;
+  }
+  &__button:hover &__icon::after {
+    top: 1rem;
+  }
+
+  &__checkbox:checked + &__button &__icon {
+    background-color: transparent;
+  }
+  &__checkbox:checked + &__button &__icon::before {
+    top: 0;
+    transform: rotate(135deg);
+  }
+  &__checkbox:checked + &__button &__icon::after {
+    top: 0;
+    transform: rotate(-135deg);
+  }
+}
+
+[theme-nav="light"] {
+  background-color: var(--color-item-theme-light);
+}
+
+[theme-nav="dark"] {
+  background-color: var(--color-item-theme-dark);
+}
+
+[theme-nav-icon="light"] {
+  background-color: var(--color-item-theme-dark);
+  &::before {
+    background-color: var(--color-item-theme-dark);
+  }
+  &::after {
+    background-color: var(--color-item-theme-dark);
+  }
+}
+
+[theme-nav-icon="dark"] {
+  background-color: var(--color-item-theme-light);
+  &::before {
+    background-color: var(--color-item-theme-light);
+  }
+  &::after {
+    background-color: var(--color-item-theme-light);
+  }
+}
+
+[theme-nav-background="light"] {
+  background-image: radial-gradient(
+    var(--color-theme-nav-bg-light),
+    var(--color-item-theme-light)
+  );
+}
+
+[theme-nav-background="dark"] {
+  background-image: radial-gradient(
+    var(--color-theme-nav-bg-dark),
+    var(--color-item-theme-dark)
+  );
+}
+[theme-nav-link-text="light"] {
+  & > li > a {
+    color: var(--color-item-theme-dark);
+    background-image: linear-gradient(
+      120deg,
+      transparent 0%,
+      transparent 50%,
+      var(--color-item-theme-light) 50%
+    );
+  }
+}
+
+[theme-nav-link-text="dark"] {
+  & > li > a {
+    color: var(--color-item-theme-light);
+    background-image: linear-gradient(
+      120deg,
+      transparent 0%,
+      transparent 50%,
+      var(--color-item-theme-dark) 50%
+    );
+  }
+}
