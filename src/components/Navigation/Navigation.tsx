@@ -4,7 +4,8 @@ import { useAppSelector } from "../../hooks/redux";
 
 const Navigation = () => {
   const theme = useAppSelector((state) => state.theme.theme);
-  const scroll = useAppSelector((state) => state.nav.scrolledALittle);
+  const scroll = useAppSelector((state) => state.scroll.scrolledALittle);
+
   return (
     <div className={styles["navigation"]}>
       <form>

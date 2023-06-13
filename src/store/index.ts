@@ -14,7 +14,7 @@ export const store = configureStore({
     theme: themeSlice,
     book: bookSlice,
     pending: pendingSlice,
-    nav: scrollSlice,
+    scroll: scrollSlice,
   },
 });
 

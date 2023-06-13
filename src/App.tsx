@@ -11,11 +11,9 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { autoLogin } from "./store/slices/user-slice";
 import AccDetailsPage from "./pages/AccDetailsPage";
 import { setTheme } from "./store/slices/theme-slice";
-import {
-  fetchPinnedBooks,
-  fetchWishlist,
-  scrollTop,
-} from "./store/slices/book-slice";
+import { fetchPinnedBooks, fetchWishlist } from "./store/slices/book-slice";
+import { setScrollTop } from "./store/slices/scroll-slice";
+
 import BookDetailsPage from "./pages/BookDetailsPage";
 import WishlistPage from "./pages/WishlistPage";
 
@@ -70,11 +68,11 @@ function App() {
   }, [dispatch]);
 
   const scrollableNodeRef = React.useRef<any>(null);
-  const scroll = useAppSelector((state) => state.book.scrollTop);
+  const scroll = useAppSelector((state) => state.scroll.scrollTop);
   React.useEffect(() => {
     if (scroll) {
       scrollableNodeRef.current.scrollTo({ top: 0, behavior: "smooth" });
-      dispatch(scrollTop(false));
+      dispatch(setScrollTop(false));
     }
   }, [scroll, dispatch]);
 

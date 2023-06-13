@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Pagination.module.scss";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { scrollTop } from "../../store/slices/book-slice";
+import { setScrollTop } from "../../store/slices/scroll-slice";
 
 import { ReactComponent as IconPrev } from "../../img/SVG/navigate_before.svg";
 import { ReactComponent as IconNext } from "../../img/SVG/navigate_next.svg";
@@ -71,7 +71,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
           ref={width}
           onClick={() => {
             setCurrent(i);
-            dispatch(scrollTop(true));
+            dispatch(setScrollTop(true));
           }}
           to={{ search: setPage({ current: i }) }}
           className={`${styles["pagination__item"]} ${
@@ -110,7 +110,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
             });
             if (current - 1 > 0) {
               navigate({ search: setPage({ current: current - 1 }) });
-              dispatch(scrollTop(true));
+              dispatch(setScrollTop(true));
             }
           }}
           className={`${styles["pagination__icon--prev"]} ${
@@ -124,7 +124,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
             navigate({ search: setPage({ current: 1 }) });
             setCurrent(1);
             setCurrentOffset(0);
-            dispatch(scrollTop(true));
+            dispatch(setScrollTop(true));
           }}
           theme-pagination-navigation={theme}
           className={`${styles["pagination__navigation--first"]} ${
@@ -166,7 +166,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
         <span
           onClick={() => {
             navigate({ search: setPage({ current: pages }) });
-            dispatch(scrollTop(true));
+            dispatch(setScrollTop(true));
           }}
           theme-pagination-navigation={theme}
           className={`${styles["pagination__navigation--last"]} 
@@ -200,7 +200,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
             });
             if (current + 1 <= pages) {
               navigate({ search: setPage({ current: current + 1 }) });
-              dispatch(scrollTop(true));
+              dispatch(setScrollTop(true));
             }
           }}
           className={`${styles["pagination__icon--next"]} ${
