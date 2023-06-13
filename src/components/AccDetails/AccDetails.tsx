@@ -284,7 +284,9 @@ const AccDetails = () => {
           className={styles["acc-details__row__wrapper"]}
         >
           <div>ID: </div>
-          <div ref={userIDRef}>{accDetails.userID}</div>
+          <div className={styles["acc-details__id"]} ref={userIDRef}>
+            {accDetails.userID}
+          </div>
           <Copy
             className={styles["acc-details__copy-btn"]}
             style={{ width: "18px", height: "18px" }}
