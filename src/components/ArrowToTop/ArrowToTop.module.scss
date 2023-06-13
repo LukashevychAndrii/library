@@ -11,12 +11,25 @@
   z-index: 1000;
   box-shadow: 0 0 3rem rgba($color: #000000, $alpha: 0.4);
   cursor: pointer;
+  @media screen and (max-width: 900px) {
+    bottom: 2.5rem;
+    right: 2.5rem;
+    width: 5rem;
+    height: 5rem;
+  }
+  @media screen and (max-width: 500px) {
+    bottom: 1rem;
+    right: 1rem;
+  }
   &__arrow {
     position: absolute;
     top: 44%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 5rem;
+    @media screen and (max-width: 900px) {
+      font-size: 4rem;
+    }
   }
   &:hover &__arrow {
     animation: moveTopAndBack 0.7s infinite;
