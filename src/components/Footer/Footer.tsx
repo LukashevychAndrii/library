@@ -13,7 +13,7 @@ const Footer = () => {
     <footer className={styles["footer"]} theme-footer={theme}>
       <div className={styles["footer__content-wrapper"]}>
         <div className={styles["footer__top-content"]}>
-          <div>
+          <div className={styles["footer__about"]}>
             <h3 className={styles["footer__heading"]}>About</h3>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad velit
@@ -26,7 +26,7 @@ const Footer = () => {
               Praesentium, minus.
             </p>
           </div>
-          <div>
+          <div className={styles["footer__categories"]}>
             <h3 className={styles["footer__heading"]}>Categories</h3>
             <ul
               theme-footer-list-item={theme}
@@ -40,7 +40,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className={styles["footer__quick-links"]}>
             <h3 className={styles["footer__heading"]}>Quick Links</h3>
             <ul
               theme-footer-list-item={theme}
@@ -69,6 +69,7 @@ const Footer = () => {
             >
               <a href="#">
                 <FaceBookIcon
+                  theme-footer-icon={theme}
                   className={`${styles["footer__bottom-content__links__link"]}`}
                 />
               </a>
@@ -78,6 +79,7 @@ const Footer = () => {
             >
               <a href="#">
                 <TwitterIcon
+                  theme-footer-icon={theme}
                   className={styles["footer__bottom-content__links__link"]}
                 />
               </a>
@@ -89,6 +91,7 @@ const Footer = () => {
             >
               <a href="#">
                 <InstargamIcon
+                  theme-footer-icon={theme}
                   className={styles["footer__bottom-content__links__link"]}
                 />
               </a>
@@ -100,6 +103,7 @@ const Footer = () => {
             >
               <a href="#">
                 <LinkedInIcon
+                  theme-footer-icon={theme}
                   className={styles["footer__bottom-content__links__link"]}
                 />
               </a>
