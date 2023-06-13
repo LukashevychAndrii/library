@@ -4,6 +4,7 @@ import { useAppSelector } from "../../hooks/redux";
 
 const Navigation = () => {
   const theme = useAppSelector((state) => state.theme.theme);
+  const scroll = useAppSelector((state) => state.nav.scrolledALittle);
   return (
     <div className={styles["navigation"]}>
       <form>
@@ -15,7 +16,9 @@ const Navigation = () => {
         <label
           theme-nav={theme}
           htmlFor="navi-toggle"
-          className={styles["navigation__button"]}
+          className={`${styles["navigation__button"]} ${
+            !scroll && styles["navigation__button__indented"]
+          }`}
         >
           <span theme-nav-icon={theme} className={styles["navigation__icon"]}>
             &nbsp;
@@ -23,7 +26,9 @@ const Navigation = () => {
         </label>
         <div
           theme-nav-background={theme}
-          className={styles["navigation__background"]}
+          className={`${styles["navigation__background"]} ${
+            !scroll && styles["navigation__background__indented"]
+          }`}
         >
           &nbsp;
         </div>

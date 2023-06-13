@@ -16,6 +16,12 @@
     cursor: pointer;
     user-select: none;
     box-shadow: 0 0 3rem rgba($color: #000000, $alpha: 0.4);
+    &__indented {
+      top: 12rem;
+      @media screen and (max-width: 800px) {
+        top: 16rem;
+      }
+    }
   }
 
   &__background {
@@ -28,8 +34,17 @@
     // background-image: radial-gradient(orange, orangered);
     z-index: 1000;
     transition: all 0.4s cubic-bezier(0.83, 0, 0.17, 1);
+    transform: scale(0);
+    &__indented {
+      top: 12.5rem;
+      @media screen and (max-width: 800px) {
+        top: 16rem;
+      }
+    }
   }
-
+  &__checkbox:checked ~ &__button {
+    top: 6rem;
+  }
   &__checkbox:checked ~ &__background {
     transform: scale(80);
   }

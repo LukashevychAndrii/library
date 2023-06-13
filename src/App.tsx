@@ -22,6 +22,7 @@ import WishlistPage from "./pages/WishlistPage";
 import SimpleBarCore from "simplebar-react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import { setScrolledALittle } from "./store/slices/scroll-slice";
 
 const router = createBrowserRouter([
   {
@@ -77,11 +78,26 @@ function App() {
     }
   }, [scroll, dispatch]);
 
+  const [scrollALittle, setScrollALittle] = React.useState(false);
+
+  React.useEffect(() => {
+    dispatch(setScrolledALittle(scrollALittle));
+  }, [scrollALittle, dispatch]);
+
+  function handleScroll() {
+    if (scrollableNodeRef.current.scrollTop > 80) {
+      setScrollALittle(true);
+    } else {
+      setScrollALittle(false);
+    }
+  }
+
   return (
     <SimpleBar
       scrollableNodeProps={{ ref: scrollableNodeRef }}
       style={{ maxHeight: "100vh" }}
       autoHide={false}
+      onScrollCapture={handleScroll}
     >
       <RouterProvider router={router}></RouterProvider>
     </SimpleBar>
