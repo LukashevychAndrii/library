@@ -4,9 +4,10 @@ html {
   font-family: "Rubik", sans-serif;
   line-height: 1.6;
   font-size: 62.5%;
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1100px) {
     font-size: 50%;
   }
+  -webkit-tap-highlight-color: transparent;
 }
 
 .heading-1 {

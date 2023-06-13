@@ -148,7 +148,13 @@ const Filter = () => {
         {currentFilter ? (
           <div className={styles["filter__icon"]}>
             {currentFilter.categorieImg}
-            <div>{currentFilter.categorie}</div>
+            <div
+              className={`${styles["filter__heading"]} ${
+                showFilter && styles["filter__heading__expand"]
+              }`}
+            >
+              {currentFilter.categorie}
+            </div>
           </div>
         ) : (
           <div>Set Filter</div>

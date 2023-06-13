@@ -24,6 +24,9 @@
   &__wrapper {
     display: flex;
     position: relative;
+    @media screen and (max-width: 1400px) {
+      display: none;
+    }
   }
   &__pinned-books {
     &__wrapper {
@@ -52,6 +55,9 @@
     align-items: center;
     gap: 1rem;
     text-decoration: none;
+    @media screen and (max-width: 1400px) {
+      // display: none;
+    }
     &:hover {
       opacity: 1;
     }
