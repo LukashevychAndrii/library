@@ -16,9 +16,31 @@
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+  max-width: 800px;
   &:hover {
     transform: scale(1.01) translateY(-0.3rem);
     box-shadow: 0 1rem 2.5rem rgba($color: #000000, $alpha: 0.5);
+  }
+  @media screen and (max-width: 700px) {
+    padding: 0.5rem;
+    column-gap: 1.5rem;
+  }
+  @media screen and (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+
+  &__heading-1,
+  &__heading-2 {
+    white-space: nowrap !important;
+    max-width: 40rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @media screen and (max-width: 1700px) {
+      max-width: 30rem;
+    }
+    @media screen and (max-width: 1500px) {
+      max-width: 25rem;
+    }
   }
 
   &__image {
@@ -26,6 +48,10 @@
     height: 25rem;
     align-self: center;
     justify-self: center;
+    @media screen and (max-width: 700px) {
+      max-width: 15rem;
+      height: 20rem;
+    }
 
     &:hover {
     }
@@ -35,6 +61,10 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    @media screen and (max-width: 700px) {
+      grid-row: 2/3;
+      align-items: center;
+    }
   }
   & a {
     text-decoration: none;
@@ -52,6 +82,10 @@
     height: 3.5rem;
     cursor: pointer;
     opacity: 0.5;
+    @media screen and (max-width: 700px) {
+      max-width: 2.5rem;
+      height: 2.5rem;
+    }
     &:hover {
       opacity: 1;
     }
@@ -91,6 +125,9 @@
   }
   &__btn-more {
     align-self: flex-start;
+    @media screen and (max-width: 700px) {
+      align-self: center;
+    }
   }
 }
 [theme-list-item="light"] {

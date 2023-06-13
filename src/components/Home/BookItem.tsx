@@ -83,7 +83,7 @@ const BookItem: React.FC<props> = ({ book }) => {
           onClick={(e) => {
             authorClickHandle({ name: e.currentTarget.textContent });
           }}
-          className={`heading-2 heading-2--${theme}`}
+          className={`heading-2 heading-2--${theme} ${styles["book__heading-2"]}`}
         >
           {book.author}
         </h2>

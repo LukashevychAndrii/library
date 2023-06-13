@@ -2,14 +2,17 @@
 .books-list {
   width: 90%;
   margin: 0 auto;
-  padding: 2.5rem 4rem;
+  padding: 2.5rem 0rem;
   padding-top: 8rem;
   list-style: none;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(55rem, 1fr));
-
+  grid-template-columns: repeat(auto-fit, minmax(60rem, 1fr));
   gap: 4.5rem;
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+  }
+
   &__empty {
     font-size: calc(#{var(--font-default)} + 1rem);
     display: flex;
