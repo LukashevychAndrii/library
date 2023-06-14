@@ -18,9 +18,9 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
   const page = useLocation();
   const [pages, setPages] = React.useState(0);
 
-  const width = React.useRef<HTMLAnchorElement>(null);
-  let maxOffset = React.useRef<number>();
-  let [offset, setOffset] = React.useState<number>(0);
+  const width = React.useRef(5);
+  const [maxOffset, setMaxOffset] = React.useState<number>(0);
+  // let [offset, setOffset] = React.useState<number>(0);
 
   React.useEffect(() => {
     const searchParams = new URLSearchParams(page.search);
@@ -28,31 +28,33 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
     if (pageParam) {
       setCurrent(+pageParam);
       if (+pageParam > 2) {
-        if (maxOffset.current) {
-          if (-offset * (+pageParam - 2) < maxOffset.current) {
-            setCurrentOffset(maxOffset.current);
-          } else {
-            setCurrentOffset(-offset * (+pageParam - 2));
-          }
+        if (-width.current * (+pageParam - 2) < maxOffset) {
+          console.log("1");
+
+          setCurrentOffset(maxOffset);
+        } else {
+          console.log("2");
+
+          setCurrentOffset(-width.current * (+pageParam - 2));
         }
       }
     } else {
       setCurrent(1);
     }
-  }, [pages, page, offset]);
+  }, [pages, page, maxOffset]);
 
   React.useEffect(() => {
     setPages(Math.ceil(totalLength / 10));
+    // setPages(6);
   }, [totalLength]);
 
   const [currentOffset, setCurrentOffset] = React.useState(0);
   React.useEffect(() => {
-    if (width.current) {
-      maxOffset.current = -((pages - 3) * (width.current.clientWidth / 10 + 2));
-      setOffset(width.current.clientWidth / 10 + 2);
-      console.log(maxOffset.current);
-    }
-  }, [pages]);
+    setMaxOffset(-((pages - 3) * width.current));
+
+    // setOffset(width.current);
+    console.log(maxOffset);
+  }, [pages, maxOffset]);
 
   const setPage = ({ current }: { current: number }): string => {
     const searchParams = new URLSearchParams(page.search);
@@ -68,7 +70,6 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
     for (let i = 1; i < pages + 1; i++) {
       arr.push(
         <NavLink
-          ref={width}
           onClick={() => {
             setCurrent(i);
             dispatch(setScrollTop(true));
@@ -90,129 +91,138 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
     }
   };
 
+  React.useEffect(() => {
+    console.log(currentOffset);
+  }, [currentOffset]);
   const navigate = useNavigate();
   const theme = useAppSelector((state) => state.theme.theme);
 
   return (
-    <div className={styles["pagination__wrapper"]}>
-      <div className={`${styles["pagination__navigation"]}`}>
-        <IconPrev
-          theme-pagination-chevron={theme}
-          onClick={() => {
-            setCurrentOffset((prev) => {
-              if (current === pages) return prev;
+    <>
+      {pages > 1 && (
+        <div className={styles["pagination__wrapper"]}>
+          <div className={`${styles["pagination__navigation"]}`}>
+            <IconPrev
+              theme-pagination-chevron={theme}
+              onClick={() => {
+                setCurrentOffset((prev) => {
+                  if (current === pages) return prev;
 
-              return Math.min(0, (prev += offset));
-            });
-            setCurrent((prev) => {
-              if (prev - 1 > 0) return prev - 1;
-              return prev;
-            });
-            if (current - 1 > 0) {
-              navigate({ search: setPage({ current: current - 1 }) });
-              dispatch(setScrollTop(true));
-            }
-          }}
-          className={`${styles["pagination__icon--prev"]} ${
-            current > 2 && styles["pagination__icon--prev__expand--1"]
-          } 
+                  return Math.min(0, (prev += width.current));
+                });
+                setCurrent((prev) => {
+                  if (prev - 1 > 0) return prev - 1;
+                  return prev;
+                });
+                if (current - 1 > 0) {
+                  navigate({ search: setPage({ current: current - 1 }) });
+                  dispatch(setScrollTop(true));
+                }
+              }}
+              className={`${styles["pagination__icon--prev"]} ${
+                current > 2 && styles["pagination__icon--prev__expand--1"]
+              } 
           ${current > 3 && styles["pagination__icon--prev__expand--2"]} 
           ${current === 1 && styles["pagination__icon--prev__end"]}`}
-        />
-        <span
-          onClick={() => {
-            navigate({ search: setPage({ current: 1 }) });
-            setCurrent(1);
-            setCurrentOffset(0);
-            dispatch(setScrollTop(true));
-          }}
-          theme-pagination-navigation={theme}
-          className={`${styles["pagination__navigation--first"]} ${
-            current > 2 && styles["pagination__navigation--first__visible--1"]
-          } ${
-            current > 3 && styles["pagination__navigation--first__visible--2"]
-          }`}
-        >
-          1
-        </span>
-        <span
-          theme-pagination-navigation={theme}
-          className={`${styles["pagination__three-dots--left"]} ${
-            current > 3 && styles["pagination__three-dots--left__visible"]
-          }`}
-        >
-          ...
-        </span>
-        <div className={styles["pagination__visible-part"]}>
-          <div
-            style={{ transform: `translateX(${currentOffset}rem)` }}
-            theme-pagination={theme}
-            className={styles["pagination"]}
-          >
-            {renderPagination()}
-          </div>
-        </div>
+            />
+            <span
+              onClick={() => {
+                navigate({ search: setPage({ current: 1 }) });
+                setCurrent(1);
+                setCurrentOffset(0);
+                dispatch(setScrollTop(true));
+              }}
+              theme-pagination-navigation={theme}
+              className={`${styles["pagination__navigation--first"]} ${
+                current > 2 &&
+                styles["pagination__navigation--first__visible--1"]
+              } ${
+                current > 3 &&
+                styles["pagination__navigation--first__visible--2"]
+              }`}
+            >
+              1
+            </span>
+            <span
+              theme-pagination-navigation={theme}
+              className={`${styles["pagination__three-dots--left"]} ${
+                current > 3 && styles["pagination__three-dots--left__visible"]
+              }`}
+            >
+              ...
+            </span>
+            <div className={styles["pagination__visible-part"]}>
+              <div
+                style={{ transform: `translateX(${currentOffset}rem)` }}
+                theme-pagination={theme}
+                className={styles["pagination"]}
+              >
+                {renderPagination()}
+              </div>
+            </div>
 
-        <span
-          theme-pagination-navigation={theme}
-          className={`${styles["pagination__three-dots--right"]} 
+            <span
+              theme-pagination-navigation={theme}
+              className={`${styles["pagination__three-dots--right"]} 
           ${
             !(current > pages - 3) &&
             styles["pagination__three-dots--right__visible"]
           }`}
-        >
-          ...
-        </span>
-        <span
-          onClick={() => {
-            navigate({ search: setPage({ current: pages }) });
-            dispatch(setScrollTop(true));
-          }}
-          theme-pagination-navigation={theme}
-          className={`${styles["pagination__navigation--last"]} 
+            >
+              ...
+            </span>
+            <span
+              onClick={() => {
+                navigate({ search: setPage({ current: pages }) });
+                dispatch(setScrollTop(true));
+              }}
+              theme-pagination-navigation={theme}
+              className={`${styles["pagination__navigation--last"]} 
           ${
             !(current > pages - 2) &&
             styles["pagination__navigation--last__visible--1"]
           }  ${
-            !(current > pages - 3) &&
-            styles["pagination__navigation--last__visible--2"]
-          }`}
-        >
-          {pages}
-        </span>
+                !(current > pages - 3) &&
+                styles["pagination__navigation--last__visible--2"]
+              }`}
+            >
+              {pages}
+            </span>
 
-        <IconNext
-          theme-pagination-chevron={theme}
-          onClick={() => {
-            setCurrentOffset((prev) => {
-              if (offset && maxOffset.current) {
-                if (current === 1) return prev;
-                if (prev - offset < maxOffset.current) {
+            <IconNext
+              theme-pagination-chevron={theme}
+              onClick={() => {
+                setCurrentOffset((prev) => {
+                  if (width.current && maxOffset) {
+                    if (current === 1) return prev;
+                    if (prev - width.current < maxOffset) {
+                      return prev;
+                    }
+                    return (prev -= width.current);
+                  }
                   return prev;
+                });
+                setCurrent((prev) => {
+                  if (prev + 1 <= pages) return prev + 1;
+                  return prev;
+                });
+                if (current + 1 <= pages) {
+                  navigate({ search: setPage({ current: current + 1 }) });
+                  dispatch(setScrollTop(true));
                 }
-                return (prev -= offset);
-              }
-              return prev;
-            });
-            setCurrent((prev) => {
-              if (prev + 1 <= pages) return prev + 1;
-              return prev;
-            });
-            if (current + 1 <= pages) {
-              navigate({ search: setPage({ current: current + 1 }) });
-              dispatch(setScrollTop(true));
-            }
-          }}
-          className={`${styles["pagination__icon--next"]} ${
-            !(current > pages - 2) &&
-            styles["pagination__icon--next__expand--1"]
-          } ${
-            !(current > pages - 3) &&
-            styles["pagination__icon--next__expand--2"]
-          }  ${current === pages && styles["pagination__icon--prev__end"]}`}
-        />
-      </div>
-    </div>
+              }}
+              className={`${styles["pagination__icon--next"]} ${
+                !(current > pages - 2) &&
+                styles["pagination__icon--next__expand--1"]
+              } ${
+                !(current > pages - 3) &&
+                styles["pagination__icon--next__expand--2"]
+              }  ${current === pages && styles["pagination__icon--prev__end"]}`}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

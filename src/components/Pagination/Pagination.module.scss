@@ -8,10 +8,10 @@
   padding: 1rem;
   user-select: none;
   line-height: 3rem;
+  margin: auto;
 
   &__wrapper {
-    padding-top: 5rem;
-    padding-bottom: 20rem;
+    padding: 15rem 0;
     position: relative;
   }
   &__visible-part {
@@ -105,7 +105,7 @@
     width: 35rem;
     height: 5rem;
     position: absolute;
-    top: 25%;
+    top: 50%;
     left: 50%;
     transform: translateX(-50%);
     user-select: none;
