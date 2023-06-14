@@ -95,6 +95,7 @@ const Filter = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSelectedBookRadioBtn(e.currentTarget.value);
+    setURLParams({ categorie: "pages" });
     setPagesExtraParameters({ extraParams: e.target.value });
   };
 
@@ -117,6 +118,7 @@ const Filter = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSelectedYearRadioBtn(e.currentTarget.value);
+    setURLParams({ categorie: "year" });
     setYearExtraParameters({ extraParams: e.target.value });
   };
   return (
@@ -187,33 +189,48 @@ const Filter = () => {
           <AuthorIcon className={styles["filter__img"]} />
           <div>Author</div>
         </div>
-
-        <div
-          onMouseEnter={() => {
-            if (!("ontouchstart" in window)) {
-              setShowPageCount(true);
-            }
-          }}
-          onMouseLeave={() => {
-            if (!("ontouchstart" in window)) {
-              setShowPageCount(false);
-            }
-          }}
-          onPointerDown={(e) => {
-            if (!(e.pointerType === "mouse")) {
-              setShowPageCount(!showPageCount);
-            }
-          }}
-          className={styles["filter__options__option"]}
-          theme-filter-option={theme}
-        >
-          <PagesIcon className={styles["filter__img"]} />
-          <div>Page Count</div>
-          <ChevronDown className={styles["filter__chevron"]} />
+        <div style={{ position: "relative" }}>
+          <div
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowPageCount(true);
+              }
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowPageCount(false);
+                setSelectedBookRadioBtn("");
+              }
+            }}
+            onPointerDown={(e) => {
+              if (!(e.pointerType === "mouse")) {
+                setShowPageCount(!showPageCount);
+                setShowYear(false);
+                setSelectedBookRadioBtn("");
+              }
+            }}
+            className={styles["filter__options__option"]}
+            theme-filter-option={theme}
+          >
+            <PagesIcon className={styles["filter__img"]} />
+            <div>Page Count</div>
+            <ChevronDown className={styles["filter__chevron"]} />
+          </div>
           <div
             className={`${styles["filter__page-count"]} ${
               showPageCount && styles["filter__page-count--visible"]
             }`}
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowPageCount(true);
+                setShowYear(false);
+              }
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowPageCount(false);
+              }
+            }}
           >
             <div className={styles["filter__page-count__options"]}>
               <form theme-filter={theme}>
@@ -277,33 +294,49 @@ const Filter = () => {
             </div>
           </div>
         </div>
-
-        <div
-          onPointerDown={(e) => {
-            if (!(e.pointerType === "mouse")) {
-              setShowYear(!showYear);
-            }
-          }}
-          onMouseEnter={() => {
-            if (!("ontouchstart" in window)) {
-              setShowYear(true);
-            }
-          }}
-          onMouseLeave={() => {
-            if (!("ontouchstart" in window)) {
-              setShowYear(false);
-            }
-          }}
-          className={styles["filter__options__option"]}
-          theme-filter-option={theme}
-        >
-          <CalendarIcon className={styles["filter__img"]} />
-          <div>Year</div>
-          <ChevronDown className={styles["filter__chevron"]} />
+        <div style={{ position: "relative" }}>
+          <div
+            onPointerDown={(e) => {
+              if (!(e.pointerType === "mouse")) {
+                setShowYear(!showYear);
+                setShowPageCount(false);
+                setSelectedYearRadioBtn("");
+              }
+            }}
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowYear(true);
+                setShowPageCount(false);
+              }
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowYear(false);
+                setSelectedYearRadioBtn("");
+              }
+            }}
+            className={styles["filter__options__option"]}
+            theme-filter-option={theme}
+          >
+            <CalendarIcon className={styles["filter__img"]} />
+            <div>Year</div>
+            <ChevronDown className={styles["filter__chevron"]} />
+          </div>
           <div
             className={`${styles["filter__year-count"]} ${
               showYear && styles["filter__year-count--visible"]
             }`}
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowYear(true);
+                setShowPageCount(false);
+              }
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") {
+                setShowYear(false);
+              }
+            }}
           >
             <div className={styles["filter__year-count__options"]}>
               <form theme-filter={theme}>
