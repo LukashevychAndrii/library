@@ -29,8 +29,11 @@ const Wishlist = () => {
 
   const handleClickOutside = useClickOutside({ ref: wishlistRef });
 
-  if (wishlistRef && handleClickOutside && hover) {
+  const [touched, setTouched] = React.useState(false);
+
+  if (wishlistRef && handleClickOutside && touched) {
     setHover(false);
+    setTouched(false);
   }
 
   const theme = useAppSelector((state) => state.theme.theme);
@@ -38,13 +41,14 @@ const Wishlist = () => {
   return (
     <div
       ref={wishlistRef}
-      onMouseEnter={() => {
-        if (!("ontouchstart" in window)) {
+      onPointerEnter={(e) => {
+        console.log(e.pointerType);
+        if (e.pointerType === "mouse") {
           setHover(true);
         }
       }}
-      onMouseLeave={() => {
-        if (!("ontouchstart" in window)) {
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") {
           setHover(false);
         }
       }}
@@ -62,6 +66,7 @@ const Wishlist = () => {
       <ChevronDown
         onPointerDown={(e) => {
           if (!(e.pointerType === "mouse")) {
+            setTouched(!touched);
             setHover(!hover);
           }
         }}
