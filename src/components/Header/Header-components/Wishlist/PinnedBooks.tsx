@@ -7,22 +7,62 @@ import { ReactComponent as RightArrow } from "../../../../img/SVG/navigate_next.
 import PinnedBook from "./PinnedBook";
 const PinnedBooks = () => {
   const pinnedBooks = useAppSelector((state) => state.book.pinnedBooks);
-  const [bookWidth, setBookWidth] = React.useState(0);
+  const bookWidth = React.useRef<number>(40);
   const [maxOffset, setMaxOffset] = React.useState(0);
   const [newB, setNewB] = React.useState(-1);
-  React.useEffect(() => {
-    setMaxOffset(-bookWidth * (pinnedBooks.length - 2) + bookWidth);
-  }, [pinnedBooks, bookWidth, setMaxOffset]);
 
   const [offset, setOffset] = React.useState<number>(0);
 
-  const [shown, setShown] = React.useState([0, 1, 2]);
+  const [shown, setShown] = React.useState([0]);
 
   const theme = useAppSelector((state) => state.theme.theme);
 
-  function getWidth(width: number) {
-    setBookWidth(width / 10 + 10);
-  }
+  React.useEffect(() => {
+    console.log(shown);
+    if (shown.length === 3) {
+      setMaxOffset(
+        -bookWidth.current * (pinnedBooks.length - 2) + bookWidth.current
+      );
+    } else if (shown.length === 2) {
+      setMaxOffset(
+        -bookWidth.current * (pinnedBooks.length - 1) + bookWidth.current
+      );
+    } else if (shown.length === 1) {
+      setMaxOffset(-bookWidth.current * pinnedBooks.length + bookWidth.current);
+    }
+  }, [pinnedBooks, setMaxOffset, shown]);
+
+  React.useEffect(() => {
+    if (window.innerWidth <= 1450) {
+      setShown([0]);
+    } else if (window.innerWidth <= 1750) {
+      setShown([0, 1]);
+    } else {
+      setShown([0, 1, 2]);
+    }
+  }, []);
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1450) {
+        setShown([0]);
+      } else if (window.innerWidth <= 1750) {
+        setShown([0, 1]);
+      } else {
+        setShown([0, 1, 2]);
+      }
+      if (window.innerWidth <= 1350) {
+        bookWidth.current = 35;
+      } else {
+        bookWidth.current = 40;
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -35,12 +75,12 @@ const PinnedBooks = () => {
             {pinnedBooks.length > 3 && (
               <LeftArrow
                 onClick={() => {
-                  setOffset((prev) => Math.min(0, (prev += bookWidth)));
+                  setOffset((prev) => Math.min(0, (prev += bookWidth.current)));
                   setShown((prev) => {
                     const newShown: number[] = JSON.parse(JSON.stringify(prev));
                     if (newShown[0] !== 0) {
-                      newShown.pop();
                       newShown.unshift(newShown[0] - 1);
+                      newShown.pop();
                     }
                     console.log(newShown);
                     return newShown;
@@ -80,7 +120,6 @@ const PinnedBooks = () => {
                       index={index}
                       key={el.id}
                       pBook={el}
-                      getWidth={getWidth}
                       newB={newB}
                     />
                   ))}
@@ -90,10 +129,10 @@ const PinnedBooks = () => {
               <RightArrow
                 onClick={() => {
                   setOffset((prev) => {
-                    if (prev - bookWidth < maxOffset) {
+                    if (prev - bookWidth.current < maxOffset) {
                       return prev;
                     }
-                    return (prev -= bookWidth);
+                    return (prev -= bookWidth.current);
                   });
                   setShown((prev) => {
                     const newShown: number[] = JSON.parse(JSON.stringify(prev));
@@ -101,8 +140,8 @@ const PinnedBooks = () => {
                       newShown[newShown.length - 1] !==
                       pinnedBooks.length - 1
                     ) {
-                      newShown.shift();
                       newShown.push(newShown[newShown.length - 1] + 1);
+                      newShown.shift();
                     }
                     setNewB(newShown[0]);
                     setNewB(newShown[newShown.length - 1]);

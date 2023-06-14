@@ -8,7 +8,7 @@ interface props {
   pBook: book;
   index: number;
   shown: number[];
-  getWidth: (width: number) => void;
+
   newB: number;
 }
 
@@ -16,7 +16,7 @@ const PinnedBook: React.FC<props> = ({
   pBook,
   shown,
   index,
-  getWidth,
+
   newB,
 }) => {
   const [image, setImage] = React.useState("");
@@ -29,9 +29,6 @@ const PinnedBook: React.FC<props> = ({
 
   const widthRef = React.useRef<HTMLLIElement>(null);
 
-  React.useEffect(() => {
-    if (widthRef.current) getWidth(widthRef.current.clientWidth);
-  }, [widthRef.current?.clientWidth, getWidth]);
   React.useEffect(() => {
     console.log(newB);
   }, [newB]);
@@ -67,9 +64,6 @@ const PinnedBook: React.FC<props> = ({
             <p className={styles["card__back__description"]}>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit
               illum impedit id modi temporibus reprehenderit. Nisi dolor ullam
-              in, unde voluptatibus ducimus placeat explicabo deserunt
-              cupiditate ratione quaerat omnis, sint a, necessitatibus
-              temporibus. Reiciendis, quam.
             </p>
             <div className={styles["card__back__extra-info"]}>
               <div className={styles["card__back__language"]}>
