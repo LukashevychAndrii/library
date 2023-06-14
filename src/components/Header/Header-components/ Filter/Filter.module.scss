@@ -65,6 +65,8 @@
     visibility: hidden;
     pointer-events: none;
     transform: translate(0.5rem, -1rem);
+    transition: all 0.2s;
+
     @media screen and (max-width: 800px) {
       transform: translate(0.3rem, 0.5rem);
     }
@@ -125,7 +127,7 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-
+    transition: all 0.2s;
     &--visible {
       opacity: 1;
       visibility: visible;
@@ -133,6 +135,7 @@
       pointer-events: all;
     }
     &__options {
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15), inset -5px 0px 0px #fff;
       &__option {
         padding: 1rem 1.5rem;
         &:not(:last-of-type) {

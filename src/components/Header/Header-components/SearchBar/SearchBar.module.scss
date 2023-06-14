@@ -4,6 +4,12 @@
   justify-content: center;
   font-size: var(--font-default);
   position: relative;
+  & > *,
+  *::before,
+  *::after {
+    transition-duration: 0.4s;
+    transition-property: all;
+  }
   &__input {
     font-size: inherit;
     width: 85%;
@@ -20,6 +26,8 @@
     transform: translateY(-50%);
     white-space: nowrap;
     cursor: auto;
+    transition: background var(--time-bg-anim-default), left 0.2s, top 0.2s,
+      padding 0.2s;
   }
   &__input:focus ~ &__label,
   &__input:not(:placeholder-shown) ~ &__label {

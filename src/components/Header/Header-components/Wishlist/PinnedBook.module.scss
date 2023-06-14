@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: all 0.8s !important;
 
     &::before {
       content: "";
@@ -88,12 +89,10 @@
     }
     &__back {
       backface-visibility: hidden;
-      box-shadow: inset 1.5rem 0 300px rgba(0, 0, 0, 0);
-      transition: all 0.8s;
 
       width: 100%;
       height: 100%;
-      background-color: #e0e1dc;
+      background-color: #838480;
       border-right: 1px solid;
 
       position: absolute;
@@ -103,6 +102,7 @@
       transform-origin: right;
 
       transform: rotateY(180deg);
+
       transition: all 0.8s;
       //   border-top-left-radius: 0.5rem;
       //   border-bottom-left-radius: 0.5rem;
@@ -139,7 +139,7 @@
   }
   &:hover &__front__back {
     transform: rotateY(45deg);
-    box-shadow: inset 1.5rem 0 300px rgba(0, 0, 0, 0.5);
+    transition: all 0.8s;
   }
 }
 .pinned-books__item {

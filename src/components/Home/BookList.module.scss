@@ -33,12 +33,10 @@
 [theme-list="light"] {
   background-color: var(--color-theme-light) !important;
   // color: var(--color-theme-dark) !important;
-  transition: all 0.4s;
 }
 [theme-list="dark"] {
   background-color: var(--color-theme-dark) !important;
   // color: var(--color-theme-light) !important;
-  transition: all 0.4s;
 }
 
 [theme-list__empty="light"] {

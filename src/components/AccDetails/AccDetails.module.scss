@@ -76,6 +76,7 @@
     align-items: center;
     justify-content: center;
     opacity: 0.5;
+    transition: all 0.4s;
     &:hover {
       opacity: 1;
     }
@@ -84,12 +85,14 @@
     opacity: 0.4;
     width: 18px;
     height: 18px;
+    transition: all 0.4s;
     &:hover {
       opacity: 1;
     }
   }
   &__copy-btn {
     opacity: 0.4;
+    transition: all 0.4s;
     &:hover {
       opacity: 1;
     }

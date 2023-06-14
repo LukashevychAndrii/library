@@ -32,7 +32,7 @@
     letter-spacing: 0.05rem;
     box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.2);
 
-    transition: all 0.2s;
+    transition: all 0.4s;
     position: relative;
     &:hover {
       transform: translateY(-0.6rem);
@@ -83,7 +83,7 @@
     font-weight: 600;
     padding: 0.7rem 1.3rem;
     border-bottom: 2.5px solid var(--color-theme-dark);
-    transition: all 0.2s;
+    transition: all 0.4s;
     &:hover {
       transform: translateY(-0.3rem);
       background-color: var(--color-theme-dark);
@@ -106,7 +106,7 @@
     font-weight: 600;
     padding: 0.7rem 1.3rem;
     border-bottom: 2.5px solid var(--color-theme-light);
-    transition: all 0.2s;
+    transition: all 0.4s;
     &:hover {
       transform: translateY(-0.3rem);
       background-color: var(--color-theme-light);
@@ -121,7 +121,7 @@
 }
 
 .link {
-  transition: all 0.2s;
+  transition: all 0.4s;
   display: inline-block;
   &:hover {
     transform: scale(1.1) translateY(-0.3rem);

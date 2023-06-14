@@ -14,6 +14,23 @@ html {
   &--light {
     color: var(--color-item-theme-light) !important;
     -webkit-text-stroke: 1px var(--color-item-theme-dark);
+    background-image: linear-gradient(
+      to right,
+      var(--color-item-theme-dark),
+      var(--color-item-theme-dark) 50%,
+      var(--color-item-theme-light) 50%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-position: 100%;
+    background-size: 200% 100%;
+    position: relative;
+    transition: all 0.4s;
+    &:hover {
+      background-position: 0%;
+    }
+
     &::after {
       position: absolute;
       top: 0;
@@ -23,6 +40,7 @@ html {
       color: var(--color-item-theme-dark);
       content: attr(data-hover);
       white-space: nowrap;
+      transition: all 0.4s;
     }
     &::before {
       content: "";
@@ -34,11 +52,28 @@ html {
       background-color: var(--color-item-theme-dark);
       transform: scaleX(0);
       transform-origin: left;
+      transition: all 0.4s;
     }
   }
   &--dark {
     color: var(--color-theme-dark) !important;
-    -webkit-text-stroke: 1px var(--color-item-theme-light);
+    -webkit-text-stroke: 0.5px var(--color-item-theme-light);
+    background-image: linear-gradient(
+      to right,
+      var(--color-item-theme-light),
+      var(--color-item-theme-light) 50%,
+      var(--color-item-theme-dark) 50%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-position: 100%;
+    background-size: 200% 100%;
+    position: relative;
+    transition: all 0.4s;
+    &:hover {
+      background-position: 0%;
+    }
     &::after {
       position: absolute;
       top: 0;
@@ -48,17 +83,19 @@ html {
       color: var(--color-item-theme-light);
       content: attr(data-hover);
       white-space: nowrap;
+      transition: all 0.4s;
     }
     &::before {
       content: "";
       width: 100%;
       height: 0.1rem;
       position: absolute;
-      top: 100%;
+      top: 95%;
       left: 0;
       background-color: var(--color-item-theme-light);
       transform: scaleX(0);
       transform-origin: left;
+      transition: all 0.4s;
     }
   }
   &,
@@ -105,7 +142,8 @@ html {
     background-position: -100%;
     background-size: 200% 100%;
     position: relative;
-    transition: inherit !important;
+    transition: all 4s;
+
     &:hover {
       background-position: 0;
     }
@@ -115,11 +153,11 @@ html {
       height: 0.1rem;
       background-color: var(--color-item-theme-light);
       position: absolute;
-      top: 100%;
+      top: 95%;
       left: 0;
       transform: scaleX(0);
       transform-origin: right;
-      transition: inherit;
+      transition: all 0.4s;
     }
     &:hover::after {
       transform: scaleX(1);
@@ -139,7 +177,7 @@ html {
     background-position: -100%;
     background-size: 200% 100%;
     position: relative;
-    transition: inherit !important;
+    transition: all 0.4s;
     &:hover {
       background-position: 0;
     }
@@ -153,7 +191,7 @@ html {
       left: 0;
       transform: scaleX(0);
       transform-origin: right;
-      transition: inherit;
+      transition: all 0.4s;
     }
     &:hover::after {
       transform: scaleX(1);
@@ -162,7 +200,7 @@ html {
   &,
   &:link,
   &:visited {
-    transition: all 0.2s;
+    transition: all 0.4s;
     cursor: pointer;
     text-shadow: 0 0.5rem 1rem rgba($color: #000000, $alpha: 0.2);
     letter-spacing: 0.2rem;
