@@ -20,6 +20,8 @@ const SearchBar = () => {
     const searchParams = new URLSearchParams(location.search);
     const categorie = searchParams.get("categorie");
     const enteredValue = searchParams.get("enteredValue");
+    const comparison = searchParams.get("comparison");
+
     if (enteredValue) setEnteredValue(enteredValue);
     if (categorie) {
       switch (categorie) {
@@ -30,10 +32,18 @@ const SearchBar = () => {
           setPlaceholder("Enter author name...");
           break;
         case "pages":
-          setPlaceholder("Enter pages count...");
+          if (comparison === "less") {
+            setPlaceholder("Enter pages count (less than) ...");
+          } else if (comparison === "more") {
+            setPlaceholder("Enter pages count (more than) ...");
+          }
           break;
         case "year":
-          setPlaceholder("Enter years...");
+          if (comparison === "earlier") {
+            setPlaceholder("Enter years (earlier) ...");
+          } else if (comparison === "later") {
+            setPlaceholder("Enter years (later) ...");
+          }
           break;
         case "country":
           setPlaceholder("Enter country name...");
