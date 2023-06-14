@@ -1,10 +1,13 @@
 import React from "react";
 import styles from "./Navigation.module.scss";
 import { useAppSelector } from "../../hooks/redux";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const theme = useAppSelector((state) => state.theme.theme);
   const scroll = useAppSelector((state) => state.scroll.scrolledALittle);
+
+  const [checked, setChecked] = React.useState(false);
 
   return (
     <div className={styles["navigation"]}>
@@ -13,6 +16,10 @@ const Navigation = () => {
           type="checkbox"
           id="navi-toggle"
           className={styles["navigation__checkbox"]}
+          checked={checked}
+          onChange={() => {
+            setChecked(!checked);
+          }}
         />
         <label
           theme-nav={theme}
@@ -39,19 +46,37 @@ const Navigation = () => {
             className={styles["navigation__list"]}
           >
             <li className={styles["navigation__item"]}>
-              <a href="#" className={styles["navigation__link"]}>
+              <Link
+                onClick={() => {
+                  setChecked(false);
+                }}
+                to="/library"
+                className={styles["navigation__link"]}
+              >
+                All Books
+              </Link>
+            </li>
+            <li className={styles["navigation__item"]}>
+              <Link
+                onClick={() => {
+                  setChecked(false);
+                }}
+                to="/acc-detail"
+                className={styles["navigation__link"]}
+              >
                 Account Details
-              </a>
+              </Link>
             </li>
             <li className={styles["navigation__item"]}>
-              <a href="#" className={styles["navigation__link"]}>
+              <Link
+                onClick={() => {
+                  setChecked(false);
+                }}
+                to="/wishlist"
+                className={styles["navigation__link"]}
+              >
                 Wishlist
-              </a>
-            </li>
-            <li className={styles["navigation__item"]}>
-              <a href="#" className={styles["navigation__link"]}>
-                Wishlist
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
