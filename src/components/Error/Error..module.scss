@@ -1,0 +1,44 @@
+@use "../../styles/animations";
+.error {
+  height: 70vh;
+  width: 100vw;
+  font-size: var(--font-default);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__icon {
+    width: 50rem;
+    animation: appearance 5s forwards;
+    @media screen and (max-width: 900px) {
+      width: 40rem;
+    }
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding-top: 5rem;
+  }
+  &__heading {
+    font-size: 3rem;
+    padding-bottom: 7.5rem;
+  }
+  &__home-link {
+    color: inherit;
+    font-size: 3rem;
+    opacity: 0.6;
+    transition: opacity 0.4s;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+[theme-error-page="light"] {
+  background-color: var(--color-theme-light);
+  color: var(--color-item-theme-dark);
+}
+[theme-error-page="dark"] {
+  background-color: var(--color-theme-dark);
+  color: var(--color-item-theme-light);
+}

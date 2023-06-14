@@ -21,10 +21,12 @@ import SimpleBarCore from "simplebar-react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import { setScrolledALittle } from "./store/slices/scroll-slice";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/library",
