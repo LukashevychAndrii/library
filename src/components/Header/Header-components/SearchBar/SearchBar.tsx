@@ -24,38 +24,37 @@ const SearchBar = () => {
     const comparison = searchParams.get("comparison");
 
     if (enteredValue) setEnteredValue(enteredValue);
-    if (categorie) {
-      switch (categorie) {
-        case "title":
-          setPlaceholder("Enter title...");
-          break;
-        case "author":
-          setPlaceholder("Enter author name...");
-          break;
-        case "pages":
-          if (comparison === "less") {
-            setPlaceholder("Enter pages count (less than) ...");
-          } else if (comparison === "more") {
-            setPlaceholder("Enter pages count (more than) ...");
-          }
-          break;
-        case "year":
-          if (comparison === "earlier") {
-            setPlaceholder("Enter years (earlier) ...");
-          } else if (comparison === "later") {
-            setPlaceholder("Enter years (later) ...");
-          }
-          break;
-        case "country":
-          setPlaceholder("Enter country name...");
-          break;
-        case "language":
-          setPlaceholder("Enter language...");
-          break;
-        default:
-          setPlaceholder("Enter author name...");
-          break;
-      }
+
+    switch (categorie) {
+      case "title":
+        setPlaceholder("Enter title...");
+        break;
+      case "author":
+        setPlaceholder("Enter author name...");
+        break;
+      case "pages":
+        if (comparison === "less") {
+          setPlaceholder("Enter pages count (less than) ...");
+        } else if (comparison === "more") {
+          setPlaceholder("Enter pages count (more than) ...");
+        }
+        break;
+      case "year":
+        if (comparison === "earlier") {
+          setPlaceholder("Enter years (earlier) ...");
+        } else if (comparison === "later") {
+          setPlaceholder("Enter years (later) ...");
+        }
+        break;
+      case "country":
+        setPlaceholder("Enter country name...");
+        break;
+      case "language":
+        setPlaceholder("Enter language...");
+        break;
+      default:
+        setPlaceholder("Enter title name...");
+        break;
     }
   }, [location]);
 
