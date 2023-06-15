@@ -9,6 +9,8 @@ import { ReactComponent as CalendarIcon } from "../../../../img/SVG/calendar.svg
 import { ReactComponent as CountryIcon } from "../../../../img/SVG/country.svg";
 import { ReactComponent as LanguageIcon } from "../../../../img/SVG/language.svg";
 import { ReactComponent as PagesIcon } from "../../../../img/SVG/pages.svg";
+import { ReactComponent as DefaultFilterIcon } from "../../../../img/SVG//filter_list.svg";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import useClickOutside from "../../../../hooks/useClickOutside";
 
@@ -147,6 +149,7 @@ const Filter = () => {
         }}
         className={styles["filter__icon"]}
       >
+        {!currentFilter && <DefaultFilterIcon />}
         {currentFilter ? (
           <div className={styles["filter__icon"]}>
             {currentFilter.categorieImg}
@@ -159,7 +162,13 @@ const Filter = () => {
             </div>
           </div>
         ) : (
-          <div>Set Filter</div>
+          <div
+            className={`${styles["filter__heading"]} ${
+              showFilter && styles["filter__heading__expand"]
+            }`}
+          >
+            Filter
+          </div>
         )}
         <ChevronDown className={styles["filter__chevron"]} />
       </div>
