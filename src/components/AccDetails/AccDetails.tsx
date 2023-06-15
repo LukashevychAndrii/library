@@ -20,7 +20,7 @@ import {
 import { stringToAsterisc } from "../../utils/stringToAsterisc";
 
 const AccDetails = () => {
-  const [copied, SetCopied] = React.useState(false);
+  const [copied, SetCopied] = React.useState("end");
   const accDetails = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const userIDRef = React.useRef<HTMLDivElement>(null);
@@ -34,6 +34,8 @@ const AccDetails = () => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const dispatch = useAppDispatch();
+
+  const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
   React.useEffect(() => {
     if (!accDetails.userID) {
       navigate("/library");
@@ -43,10 +45,15 @@ const AccDetails = () => {
 
   React.useEffect(() => {
     let timeout: NodeJS.Timeout;
-    if (copied) {
+    console.log(copied);
+    if (copied === "start" || copied === "restart") {
       timeout = setTimeout(() => {
-        SetCopied(false);
-      }, 5000);
+        SetCopied("end");
+      }, 7500);
+      if (copied === "restart") {
+        clearTimeout(timeout);
+        SetCopied("start");
+      }
     }
     return () => {
       clearTimeout(timeout);
@@ -56,6 +63,11 @@ const AccDetails = () => {
   function copyClickHandler() {
     if (userIDRef.current)
       navigator.clipboard.writeText(userIDRef.current.innerText);
+    if (copied === "start") {
+      SetCopied("restart");
+    } else if (copied === "end") {
+      SetCopied("start");
+    }
   }
 
   const theme = useAppSelector((state) => state.theme.theme);
@@ -291,7 +303,6 @@ const AccDetails = () => {
             className={styles["acc-details__copy-btn"]}
             style={{ width: "18px", height: "18px" }}
             onClick={() => {
-              SetCopied(true);
               copyClickHandler();
             }}
           />
@@ -309,9 +320,9 @@ const AccDetails = () => {
         </button>
       </div>
       <div
-        theme-acc-details={theme}
+        theme-copy-alert-window={theme}
         className={`${styles["acc-details__copy"]} ${
-          copied && styles["acc-details__copy__animation"]
+          copied === "start" && styles["acc-details__copy__animation"]
         }`}
       >
         Copied to clipboard

@@ -51,12 +51,12 @@
     font-size: var(--font-default);
     padding: 1rem 2rem;
     border-radius: 0.3rem;
-    position: absolute;
+    position: fixed;
     bottom: 3.5rem;
     left: 2rem;
     opacity: 0;
     &__animation {
-      animation: 5s linear moveInTop;
+      animation: 7.5s cubic-bezier(0, 1.09, 0.28, 0.93) moveInTop;
     }
   }
   &__btns {
@@ -167,4 +167,13 @@
 [theme-acc-details__input="dark"] {
   background-color: var(--color-theme-dark);
   color: var(--color-theme-light);
+}
+
+[theme-copy-alert-window="light"] {
+  background-color: var(--color-theme-dark);
+  color: var(--color-item-theme-light);
+}
+[theme-copy-alert-window="dark"] {
+  background-color: var(--color-theme-light);
+  color: var(--color-item-theme-dark);
 }
