@@ -22,6 +22,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    transition: all 0.4s;
     overflow: hidden;
   }
   &__icon {
@@ -34,11 +35,13 @@
       width: 3.5rem;
       height: 3.5rem;
       opacity: 0.6;
+      transition: all 0.4s;
       &:hover {
         opacity: 1;
       }
       &__end {
         opacity: 0.3;
+        transition: all 0.4s;
         &:hover {
           opacity: 0.3;
         }
@@ -46,6 +49,7 @@
     }
     &--prev {
       left: 20%;
+      transition: all 0.2s;
       &__expand {
         &--1 {
           left: 10%;
@@ -57,6 +61,7 @@
     }
     &--next {
       right: 20%;
+      transition: all 0.2s;
       &__expand {
         &--1 {
           right: 10%;
@@ -127,6 +132,7 @@
           transform: translate(4rem, -50%);
           opacity: 0.6;
           cursor: pointer;
+          transition: all 0.4s;
           &:hover {
             opacity: 1;
           }
@@ -137,6 +143,7 @@
           transform: translate(0rem, -50%);
           opacity: 0.6;
           cursor: pointer;
+          transition: all 0.4s;
           &:hover {
             opacity: 1;
           }
@@ -161,6 +168,7 @@
           transform: translate(-3.5rem, -50%);
           opacity: 0.6;
           cursor: pointer;
+          transition: all 0.4s;
           &:hover {
             opacity: 1;
           }
@@ -171,6 +179,7 @@
           transform: translate(0rem, -50%);
           cursor: pointer;
           opacity: 0.6;
+          transition: all 0.4s;
           &:hover {
             opacity: 1;
           }
@@ -191,6 +200,7 @@
     text-decoration: none;
     opacity: 0.6;
     position: relative;
+    transition: all 0.4s;
     &::before {
       content: "";
       width: 100%;
@@ -208,6 +218,7 @@
       transform: scale(1.2);
     }
     &--disabled {
+      transition: all 0.4s;
       &:hover::before {
         opacity: 1;
         transform: scale(1);

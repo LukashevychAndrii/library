@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Pagination.module.scss";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { setScrollTop } from "../../store/slices/scroll-slice";
+// import { setScrollTop } from "../../store/slices/scroll-slice";
 
 import { ReactComponent as IconPrev } from "../../img/SVG/navigate_before.svg";
 import { ReactComponent as IconNext } from "../../img/SVG/navigate_next.svg";
@@ -45,7 +45,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
 
   React.useEffect(() => {
     setPages(Math.ceil(totalLength / 10));
-    // setPages(6);
+    // setPages(4);
   }, [totalLength]);
 
   const [currentOffset, setCurrentOffset] = React.useState(0);
@@ -72,7 +72,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
         <NavLink
           onClick={() => {
             setCurrent(i);
-            dispatch(setScrollTop(true));
+            // dispatch(setScrollTop(true));
           }}
           to={{ search: setPage({ current: i }) }}
           className={`${styles["pagination__item"]} ${
@@ -116,37 +116,48 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
                 });
                 if (current - 1 > 0) {
                   navigate({ search: setPage({ current: current - 1 }) });
-                  dispatch(setScrollTop(true));
+                  // dispatch(setScrollTop(true));
                 }
               }}
               className={`${styles["pagination__icon--prev"]} ${
-                current > 2 && styles["pagination__icon--prev__expand--1"]
+                pages > 3 &&
+                current > 2 &&
+                styles["pagination__icon--prev__expand--1"]
               } 
-          ${current > 3 && styles["pagination__icon--prev__expand--2"]} 
+          ${
+            pages > 4 &&
+            current > 3 &&
+            styles["pagination__icon--prev__expand--2"]
+          } 
           ${current === 1 && styles["pagination__icon--prev__end"]}`}
             />
-            <span
-              onClick={() => {
-                navigate({ search: setPage({ current: 1 }) });
-                setCurrent(1);
-                setCurrentOffset(0);
-                dispatch(setScrollTop(true));
-              }}
-              theme-pagination-navigation={theme}
-              className={`${styles["pagination__navigation--first"]} ${
-                current > 2 &&
-                styles["pagination__navigation--first__visible--1"]
-              } ${
-                current > 3 &&
-                styles["pagination__navigation--first__visible--2"]
-              }`}
-            >
-              1
-            </span>
+            {pages > 3 && (
+              <span
+                onClick={() => {
+                  navigate({ search: setPage({ current: 1 }) });
+                  setCurrent(1);
+                  setCurrentOffset(0);
+                  // dispatch(setScrollTop(true));
+                }}
+                theme-pagination-navigation={theme}
+                className={`${styles["pagination__navigation--first"]} ${
+                  current > 2 &&
+                  styles["pagination__navigation--first__visible--1"]
+                } ${
+                  pages > 4 &&
+                  current > 3 &&
+                  styles["pagination__navigation--first__visible--2"]
+                }`}
+              >
+                1
+              </span>
+            )}
             <span
               theme-pagination-navigation={theme}
               className={`${styles["pagination__three-dots--left"]} ${
-                current > 3 && styles["pagination__three-dots--left__visible"]
+                pages > 4 &&
+                current > 3 &&
+                styles["pagination__three-dots--left__visible"]
               }`}
             >
               ...
@@ -165,29 +176,33 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
               theme-pagination-navigation={theme}
               className={`${styles["pagination__three-dots--right"]} 
           ${
+            pages > 4 &&
             !(current > pages - 3) &&
             styles["pagination__three-dots--right__visible"]
           }`}
             >
               ...
             </span>
-            <span
-              onClick={() => {
-                navigate({ search: setPage({ current: pages }) });
-                dispatch(setScrollTop(true));
-              }}
-              theme-pagination-navigation={theme}
-              className={`${styles["pagination__navigation--last"]} 
+            {pages > 3 && (
+              <span
+                onClick={() => {
+                  navigate({ search: setPage({ current: pages }) });
+                  // dispatch(setScrollTop(true));
+                }}
+                theme-pagination-navigation={theme}
+                className={`${styles["pagination__navigation--last"]} 
           ${
             !(current > pages - 2) &&
             styles["pagination__navigation--last__visible--1"]
           }  ${
-                !(current > pages - 3) &&
-                styles["pagination__navigation--last__visible--2"]
-              }`}
-            >
-              {pages}
-            </span>
+                  pages > 4 &&
+                  !(current > pages - 3) &&
+                  styles["pagination__navigation--last__visible--2"]
+                }`}
+              >
+                {pages}
+              </span>
+            )}
 
             <IconNext
               theme-pagination-chevron={theme}
@@ -208,14 +223,16 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
                 });
                 if (current + 1 <= pages) {
                   navigate({ search: setPage({ current: current + 1 }) });
-                  dispatch(setScrollTop(true));
+                  // dispatch(setScrollTop(true));
                 }
               }}
               className={`${styles["pagination__icon--next"]} ${
+                pages > 3 &&
                 !(current > pages - 2) &&
                 styles["pagination__icon--next__expand--1"]
               } ${
                 !(current > pages - 3) &&
+                pages > 4 &&
                 styles["pagination__icon--next__expand--2"]
               }  ${current === pages && styles["pagination__icon--prev__end"]}`}
             />
