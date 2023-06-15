@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[7864],{7864:function(e,a,i){e.exports=i.p+"static/media/the-magic-mountain.61bdee225e05d7fdb757.jpg"}}]);

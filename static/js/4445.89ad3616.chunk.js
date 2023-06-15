@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[4445],{4445:function(e,a,r){e.exports=r.p+"static/media/the-decameron.1bee570d1f888789b7a2.jpg"}}]);

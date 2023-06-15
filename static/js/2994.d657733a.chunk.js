@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[2994],{2994:function(e,a,i){e.exports=i.p+"static/media/middlemarch.977f5a2994831f56260e.jpg"}}]);

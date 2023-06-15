@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[294],{294:function(a,e,c){a.exports=c.p+"static/media/madame-bovary.3f8a80c9660534aa7a3c.jpg"}}]);

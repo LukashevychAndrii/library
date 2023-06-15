@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[2268],{2268:function(a,e,r){a.exports=r.p+"static/media/the-brothers-karamazov.a6d98e6ad2604dcc6e9b.jpg"}}]);

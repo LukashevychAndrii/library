@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[9873],{9873:function(e,a,i){e.exports=i.p+"static/media/the-iliad-of-homer.2faca9ee785c99ef789e.jpg"}}]);

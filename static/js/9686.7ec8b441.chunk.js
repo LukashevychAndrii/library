@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[9686],{9686:function(a,e,t){a.exports=t.p+"static/media/season-of-migration-to-the-north.6e52059a8abadfc3c818.jpg"}}]);

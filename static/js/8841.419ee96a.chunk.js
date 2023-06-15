@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[8841],{8841:function(e,r,a){e.exports=a.p+"static/media/le-pere-goriot.51be146124144456640a.jpg"}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[3652],{3652:function(a,b,c){a.exports=c.p+"static/media/moby-dick.42c448067f9d7566a1bb.jpg"}}]);

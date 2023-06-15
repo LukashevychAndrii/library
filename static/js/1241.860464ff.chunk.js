@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[1241],{1241:function(e,t,a){e.exports=a.p+"static/media/the-golden-notebook.cf107055b7eae9b318f7.jpg"}}]);

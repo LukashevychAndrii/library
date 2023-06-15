@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[8148],{8148:function(a,e,s){a.exports=s.p+"static/media/stories-of-franz-kafka.4d4f47ac82c522e10d2c.jpg"}}]);

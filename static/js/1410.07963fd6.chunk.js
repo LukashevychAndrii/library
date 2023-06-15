@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[1410],{1410:function(a,e,i){a.exports=i.p+"static/media/the-idiot.f936afaca32cbfd1d241.jpg"}}]);

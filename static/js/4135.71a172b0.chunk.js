@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[4135],{4135:function(a,e,t){a.exports=t.p+"static/media/the-recognition-of-shakuntala.167c4cdd669395a30893.jpg"}}]);

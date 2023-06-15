@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[3182],{3182:function(a,e,p){a.exports=p.p+"static/media/pedro-paramo.4f1a0b1bdc1378feb60c.jpg"}}]);

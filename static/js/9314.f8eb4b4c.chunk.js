@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[9314],{9314:function(e,a,t){e.exports=t.p+"static/media/the-canterbury-tales.b1e2e94d2d01a11916f4.jpg"}}]);

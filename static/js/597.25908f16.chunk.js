@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[597],{597:function(e,a,s){e.exports=s.p+"static/media/the-metamorphoses-of-ovid.02b41a416fa032661ddc.jpg"}}]);

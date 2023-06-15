@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[9288],{9288:function(e,s,a){e.exports=a.p+"static/media/buddenbrooks.81388a63ef0f28d46833.jpg"}}]);

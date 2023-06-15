@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[1521],{1521:function(e,a,c){e.exports=c.p+"static/media/one-hundred-years-of-solitude.ada1d67fbcd950bccce0.jpg"}}]);

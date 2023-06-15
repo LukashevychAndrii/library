@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[657],{657:function(a,e,i){a.exports=i.p+"static/media/the-life-and-opinions-of-tristram-shandy.df7e863a355b42cf1ea0.jpg"}}]);

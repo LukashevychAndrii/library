@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[4164],{408:function(e,a,r){e.exports=r.p+"static/media/le-rouge-et-le-noir.7668cda9bf83a9d61b90.jpg"}}]);

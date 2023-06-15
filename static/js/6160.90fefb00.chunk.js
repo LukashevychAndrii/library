@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[6160],{6160:function(e,a,t){e.exports=t.p+"static/media/the-tale-of-genji.563f6080da942e0d1474.jpg"}}]);

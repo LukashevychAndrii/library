@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[4400],{4400:function(a,e,c){a.exports=c.p+"static/media/gargantua-and-pantagruel.998a6e80cce3321ec0e1.jpg"}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[2656],{2656:function(a,e,n){a.exports=n.p+"static/media/anna-karenina.9c7804709db673f4ed11.jpg"}}]);

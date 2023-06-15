@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[288],{288:function(e,a,s){e.exports=s.p+"static/media/the-old-man-and-the-sea.b0635a8ff1fe63c916d5.jpg"}}]);

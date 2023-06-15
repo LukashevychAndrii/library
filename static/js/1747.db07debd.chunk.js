@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[1747],{1747:function(i,p,e){i.exports=e.p+"static/media/pippi-longstocking.7fed398a4d6c56352b6f.jpg"}}]);

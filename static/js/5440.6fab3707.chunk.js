@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklibrary=self.webpackChunklibrary||[]).push([[5440],{5440:function(a,c,e){a.exports=e.p+"static/media/diary-of-a-madman.72114bcc0c1300cb1cdf.jpg"}}]);
