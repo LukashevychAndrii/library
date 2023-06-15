@@ -8,11 +8,15 @@ import Pagination from "../Pagination/Pagination";
 
 import books_nout_found from "../../img/PNG/books_not_found.png";
 import ArrowToTop from "../ArrowToTop/ArrowToTop";
+import { removeSearchParams } from "../../utils/removeSearchParams";
+
 const BookList: React.FC<{ books: book[]; count: number }> = ({
   books,
   count,
 }) => {
   const theme = useAppSelector((state) => state.theme.theme);
+  const pathname = removeSearchParams();
+
   return (
     <>
       <ArrowToTop />
@@ -33,7 +37,7 @@ const BookList: React.FC<{ books: book[]; count: number }> = ({
                 src={books_nout_found}
                 alt="no books found"
               />
-              <Link className={styles["books-list__empty__link"]} to="/library">
+              <Link className={styles["books-list__empty__link"]} to={pathname}>
                 Back to all
               </Link>
             </div>
