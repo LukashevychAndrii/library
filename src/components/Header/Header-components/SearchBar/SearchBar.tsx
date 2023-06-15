@@ -7,6 +7,7 @@ import {
   getBooksLength,
 } from "../../../../store/slices/book-slice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { removeSearchParams } from "../../../../utils/removeSearchParams";
 
 const SearchBar = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +61,8 @@ const SearchBar = () => {
 
   const theme = useAppSelector((state) => state.theme.theme);
 
+  const pathname = removeSearchParams();
+
   const handleSubmit = (): void => {
     if (enteredValue.trim().length > 0) {
       const searchParams = new URLSearchParams(location.search);
@@ -79,12 +82,7 @@ const SearchBar = () => {
       }
       navigate(`?${searchParams}`);
     } else {
-      const queryParams = new URLSearchParams(location.search);
-      queryParams.delete("enteredValue");
-      navigate(`/library`);
-
-      dispatch(fetchBooks({ start: "0", end: "9" }));
-      dispatch(getBooksLength());
+      navigate(pathname);
     }
   };
   return (
