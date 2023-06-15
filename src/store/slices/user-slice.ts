@@ -212,7 +212,7 @@ export const userSignOut = createAsyncThunk<null, undefined, {}>(
           createAlert({
             alertTitle: "Success!",
             alertText: "Successfully signed out",
-            alertType: "success",
+            alertType: "success-sign-out",
           })
         );
         dispatch(removeUserData());
