@@ -59,49 +59,39 @@ const SearchBar = () => {
   }, [location]);
 
   const theme = useAppSelector((state) => state.theme.theme);
+
+  const handleSubmit = (): void => {
+    if (enteredValue.trim().length > 0) {
+      const searchParams = new URLSearchParams(location.search);
+      const pathName = new URLSearchParams(location.pathname);
+
+      const categorie = searchParams.get("categorie");
+      searchParams.set("enteredValue", enteredValue);
+      searchParams.delete("page");
+      if (!categorie) {
+        searchParams.set("categorie", "title");
+      }
+
+      if (pathName.toString().includes("wishlist")) {
+        navigate("/wishlist");
+      } else {
+        navigate("/library");
+      }
+      navigate(`?${searchParams}`);
+    } else {
+      const queryParams = new URLSearchParams(location.search);
+      queryParams.delete("enteredValue");
+      navigate(`/library`);
+
+      dispatch(fetchBooks({ start: "0", end: "9" }));
+      dispatch(getBooksLength());
+    }
+  };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-
-        if (enteredValue.trim().length > 0) {
-          const searchParams = new URLSearchParams(location.search);
-
-          // const comparison = searchParams.get("comparison");
-          const categorie = searchParams.get("categorie");
-          // const page = searchParams.get("page");
-          if (!categorie) {
-            searchParams.set("categorie", "title");
-          }
-          searchParams.set("enteredValue", enteredValue);
-          searchParams.delete("page");
-          // if (comparison) {
-          //   dispatch(
-          //     fetchFilteredBooks({
-          //       filter: categorie ? categorie : "title",
-          //       enteredValue: enteredValue,
-          //       comparison: comparison,
-          //       page: page ? +page : 1,
-          //     })
-          //   );
-          // } else {
-          //   dispatch(
-          //     fetchFilteredBooks({
-          //       filter: categorie ? categorie : "title",
-          //       enteredValue: enteredValue,
-          //       page: page ? +page : 1,
-          //     })
-          //   );
-          // }
-          navigate(`?${searchParams}`);
-        } else {
-          const queryParams = new URLSearchParams(location.search);
-          queryParams.delete("enteredValue");
-          navigate(`/library`);
-
-          dispatch(fetchBooks({ start: "0", end: "9" }));
-          dispatch(getBooksLength());
-        }
+        handleSubmit();
       }}
       className={styles["search-bar"]}
     >

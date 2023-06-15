@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
   get,
@@ -63,6 +63,9 @@ const bookSlice = createSlice({
     setBooksLength(state, action) {
       state.totalLength = action.payload.totalLength;
     },
+    setWishlistLength(state, action: PayloadAction<number>) {
+      state.totalWishlistLength = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchBooks.fulfilled, (state, action) => {
@@ -122,12 +125,24 @@ const bookSlice = createSlice({
         (el) => el.id !== action.payload.bookID
       );
     });
+    // builder.addCase(fetchFilteredWishlistBooks.fulfilled, (state, action) => {
+    //   const end = +action.payload.page * 10;
+    //   const start = end - 10;
+    //   const fetchedBooks = action.payload.books.filter((el) => el);
+    //   state.wishlist = fetchedBooks.slice(start, end);
+    //   console.log(fetchedBooks.slice(start, end));
+    //   state.totalWishlistLength = fetchedBooks.length;
+    // });
   },
 });
 
 export default bookSlice.reducer;
-export const { setBooks, clearCurrentBookDetails, setBooksLength } =
-  bookSlice.actions;
+export const {
+  setBooks,
+  clearCurrentBookDetails,
+  setBooksLength,
+  setWishlistLength,
+} = bookSlice.actions;
 
 export const fetchBooks = createAsyncThunk<
   book[],
@@ -310,6 +325,23 @@ export const fetchFilteredBooks = createAsyncThunk<
     return { books: filteredBooks, page: page };
   }
 );
+
+// export const fetchFilteredWishlistBooks = createAsyncThunk<
+//   { books: book[]; page: number },
+//   { categorie: string; property: string; page: number; comparison?: string },
+//   {}
+// >(
+//   "book/fetchFilteredWishlistBooks",
+//   async function ({ categorie, property, page }, { getState }) {
+//     let filteredBooks: book[] = [];
+//     const appState = getState() as RootState;
+//     filteredBooks = appState.book.wishlist.filter((el: book) =>
+//       el[categorie as keyof book].toString().includes(property)
+//     );
+//     console.log(filteredBooks);
+//     return { books: filteredBooks, page: page };
+//   }
+// );
 
 export const addBookToWishlist = createAsyncThunk<
   { bookData: book },

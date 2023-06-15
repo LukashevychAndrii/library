@@ -17,14 +17,7 @@ const HomePage = () => {
   }, [location.search]);
   const pageParam = searchParams.get("page");
   const categorie = searchParams.get("categorie");
-  const authorParams = searchParams.get("author");
   const books = useAppSelector((state) => state.book.books);
-
-  React.useEffect(() => {
-    if (!authorParams) {
-      dispatch(getBooksLength());
-    }
-  }, [dispatch, authorParams]);
 
   React.useEffect(() => {
     const enteredValue = searchParams.get("enteredValue");
@@ -63,7 +56,7 @@ const HomePage = () => {
         dispatch(getBooksLength());
       }
     }
-  }, [pageParam, dispatch, authorParams, categorie, searchParams]);
+  }, [pageParam, dispatch, categorie, searchParams]);
 
   React.useEffect(() => {
     dispatch(clearCurrentBookDetails());
