@@ -51,7 +51,22 @@ const WishlistPage = () => {
     if (categorie && enteredValue) {
       if (page) {
         if (comparison) {
-          //
+          let filteredBooks: book[] = [];
+
+          if (categorie === "year" && comparison === "later") {
+            filteredBooks = books.filter((el) => el.year > +enteredValue);
+          } else if (categorie === "year" && comparison === "earlier") {
+            filteredBooks = books.filter((el) => el.year < +enteredValue);
+          } else if (categorie === "pages" && comparison === "more") {
+            filteredBooks = books.filter((el) => el.pages > +enteredValue);
+          } else if (categorie === "pages" && comparison === "less") {
+            filteredBooks = books.filter((el) => el.pages < +enteredValue);
+          }
+
+          const end = +page * 10;
+          const start = end - 10;
+          setSlicesBooks(filteredBooks.slice(start, end));
+          dispatch(setWishlistLength(filteredBooks.length));
         } else {
           const filteredBooks = books.filter((el) =>
             el[categorie as keyof book].toString().includes(enteredValue)
@@ -62,11 +77,28 @@ const WishlistPage = () => {
           dispatch(setWishlistLength(filteredBooks.length));
         }
       } else {
-        const filteredBooks = books.filter((el) =>
-          el[categorie as keyof book].toString().includes(enteredValue)
-        );
-        setSlicesBooks(filteredBooks.slice(0, 10));
-        dispatch(setWishlistLength(filteredBooks.length));
+        if (comparison) {
+          let filteredBooks: book[] = [];
+
+          if (categorie === "year" && comparison === "later") {
+            filteredBooks = books.filter((el) => el.year > +enteredValue);
+          } else if (categorie === "year" && comparison === "earlier") {
+            filteredBooks = books.filter((el) => el.year < +enteredValue);
+          } else if (categorie === "pages" && comparison === "more") {
+            filteredBooks = books.filter((el) => el.pages > +enteredValue);
+          } else if (categorie === "pages" && comparison === "less") {
+            filteredBooks = books.filter((el) => el.pages < +enteredValue);
+          }
+
+          setSlicesBooks(filteredBooks.slice(0, 10));
+          dispatch(setWishlistLength(filteredBooks.length));
+        } else {
+          const filteredBooks = books.filter((el) =>
+            el[categorie as keyof book].toString().includes(enteredValue)
+          );
+          setSlicesBooks(filteredBooks.slice(0, 10));
+          dispatch(setWishlistLength(filteredBooks.length));
+        }
       }
     } else {
       if (page) {
@@ -89,3 +121,4 @@ const WishlistPage = () => {
 };
 
 export default WishlistPage;
+//remove page
