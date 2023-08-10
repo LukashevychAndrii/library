@@ -23,7 +23,7 @@ const BookList: React.FC<{ books: book[]; count: number }> = ({
       <div theme-list={theme}>
         <ul className={styles["books-list"]}>
           {books.length > 0 ? (
-            books.map((el, index) => {
+            books.map((el) => {
               return <BookItem key={el.id} book={el}></BookItem>;
             })
           ) : (

@@ -17,7 +17,6 @@ import { setScrollTop } from "./store/slices/scroll-slice";
 import BookDetailsPage from "./pages/BookDetailsPage";
 import WishlistPage from "./pages/WishlistPage";
 
-import SimpleBarCore from "simplebar-react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import { setScrolledALittle } from "./store/slices/scroll-slice";

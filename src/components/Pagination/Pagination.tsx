@@ -6,6 +6,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { ReactComponent as IconPrev } from "../../img/SVG/navigate_before.svg";
 import { ReactComponent as IconNext } from "../../img/SVG/navigate_next.svg";
+import { setScrollTop } from "../../store/slices/scroll-slice";
 
 export const getStyle = ({ isActive }: { isActive: boolean }) =>
   isActive
@@ -72,7 +73,7 @@ const Pagination: React.FC<{ totalLength: number }> = ({ totalLength }) => {
         <NavLink
           onClick={() => {
             setCurrent(i);
-            // dispatch(setScrollTop(true));
+            dispatch(setScrollTop(true));
           }}
           to={{ search: setPage({ current: i }) }}
           className={`${styles["pagination__item"]} ${

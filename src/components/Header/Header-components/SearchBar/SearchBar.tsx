@@ -1,16 +1,10 @@
 import React from "react";
 import styles from "./SearchBar.module.scss";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import {
-  fetchBooks,
-  fetchFilteredBooks,
-  getBooksLength,
-} from "../../../../store/slices/book-slice";
+import { useAppSelector } from "../../../../hooks/redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { removeSearchParams } from "../../../../utils/removeSearchParams";
 
 const SearchBar = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 

@@ -5,7 +5,7 @@
   padding: 2.5rem 0rem;
   padding-top: 8rem;
   list-style: none;
-
+  min-height: 50vh;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(60rem, 1fr));
   gap: 4.5rem;
