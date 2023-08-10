@@ -9,11 +9,11 @@ import Navigation from "../../components/Navigation/Navigation";
 
 const RootLayout = () => {
   const alert = useAppSelector((state) => state.alert.alertTitle);
-  const pending = useAppSelector((state) => state.pending.pending);
+  const pending = useAppSelector((state) => state.pending.pendingQueue);
 
   return (
     <>
-      {pending && <LoadingBar />}
+      {pending > 0 && <LoadingBar />}
       {alert && <Alert />}
       <Navigation />
       <MainHeader />

@@ -16,7 +16,7 @@ import {
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
 import { NavigateFunction } from "react-router-dom";
-import { clearPending, setPending } from "./pending-slice";
+import { pendingUpdateQueueUp, pendingUpdateQueueDown } from "./pending-slice";
 import { RootState } from "..";
 
 export interface book {
@@ -151,7 +151,7 @@ export const fetchBooks = createAsyncThunk<
 >("book/fetchBooks", async function ({ start, end }, { getState, dispatch }) {
   const db = getDatabase(app);
   const dbRef = ref(db, `/books`);
-  dispatch(setPending());
+  dispatch(pendingUpdateQueueUp());
 
   let booksData: book[] = [];
 
@@ -176,7 +176,7 @@ export const fetchBooks = createAsyncThunk<
       );
     })
     .then(() => {
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
     });
   return booksData;
 });
@@ -216,7 +216,7 @@ export const fetchBookDetails = createAsyncThunk<
     const db = getDatabase(app);
     const dbRef = ref(db, `/books/${bookID}`);
     let bookData: book | undefined = undefined;
-    dispatch(setPending());
+    dispatch(pendingUpdateQueueUp());
 
     await get(dbRef)
       .then((s) => {
@@ -233,7 +233,7 @@ export const fetchBookDetails = createAsyncThunk<
         }
       })
       .then(() => {
-        dispatch(clearPending());
+        dispatch(pendingUpdateQueueDown());
       })
       .catch(() => {
         dispatch(
@@ -352,7 +352,7 @@ export const addBookToWishlist = createAsyncThunk<
   async function ({ bookData }, { getState, dispatch }) {
     const appState = getState() as RootState;
     const db = getDatabase(app);
-    dispatch(setPending());
+    dispatch(pendingUpdateQueueUp());
     const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
     if (appState.user.userID) {
       if (!appState.book.wishlist.find((el) => el.id === bookData.id)) {
@@ -384,7 +384,7 @@ export const addBookToWishlist = createAsyncThunk<
       );
     }
 
-    dispatch(clearPending());
+    dispatch(pendingUpdateQueueDown());
     return { bookData };
   }
 );
@@ -407,7 +407,7 @@ export const removeBookFromWishlist = createAsyncThunk<
         db,
         `usersDATA/${appState.user.userID}/wishlist/books/${id}`
       );
-      dispatch(setPending());
+      dispatch(pendingUpdateQueueUp());
       remove(dbRef).catch(() => {
         dispatch(
           createAlert({
@@ -417,7 +417,7 @@ export const removeBookFromWishlist = createAsyncThunk<
           })
         );
       });
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return { bookID: bookID };
     } else {
       return null;
@@ -433,7 +433,7 @@ export const fetchWishlist = createAsyncThunk<
   const appState = getState() as RootState;
   const db = getDatabase(app);
   const dbRef = ref(db, `usersDATA/${appState.user.userID}/wishlist/books`);
-  dispatch(setPending());
+  dispatch(pendingUpdateQueueUp());
   let wishlist: book[] = [];
   let wishlistIDs: string[] = [];
   await get(dbRef)
@@ -448,7 +448,7 @@ export const fetchWishlist = createAsyncThunk<
       console.log(e);
     });
 
-  dispatch(clearPending());
+  dispatch(pendingUpdateQueueDown());
 
   return { wishlistIDs, wishlist };
 });
@@ -465,7 +465,7 @@ export const fetchPinnedBooks = createAsyncThunk<
     db,
     `usersDATA/${appState.user.userID}/wishlist/pinnedBooks`
   );
-  dispatch(setPending());
+  dispatch(pendingUpdateQueueUp());
   await get(dbRef)
     .then((s) => {
       if (s.exists()) pinnedBooks = Object.values(s.val());
@@ -480,7 +480,7 @@ export const fetchPinnedBooks = createAsyncThunk<
         })
       );
     });
-  dispatch(clearPending());
+  dispatch(pendingUpdateQueueDown());
   return { pinnedBooks };
 });
 
@@ -497,7 +497,7 @@ export const pinBook = createAsyncThunk<
     `usersDATA/${appState.user.userID}/wishlist/pinnedBooks`
   );
 
-  dispatch(setPending());
+  dispatch(pendingUpdateQueueUp());
 
   const pBooksLength = appState.book.pinnedBooks.length;
   if (appState.user.userID) {
@@ -518,7 +518,7 @@ export const pinBook = createAsyncThunk<
         });
       });
     }
-    dispatch(clearPending());
+    dispatch(pendingUpdateQueueDown());
 
     if (pBooksLength <= 5) {
       return { newPinnedBook };
@@ -532,7 +532,7 @@ export const pinBook = createAsyncThunk<
       })
     );
   }
-  dispatch(clearPending());
+  dispatch(pendingUpdateQueueDown());
 
   return null;
 });
@@ -549,7 +549,7 @@ export const unpinBook = createAsyncThunk<
     `usersDATA/${appState.user.userID}/wishlist/pinnedBooks/${bookID}`
   );
 
-  dispatch(setPending());
+  dispatch(pendingUpdateQueueUp());
 
   await remove(dbRef).catch(() => {
     createAlert({
@@ -559,7 +559,7 @@ export const unpinBook = createAsyncThunk<
     });
   });
 
-  dispatch(clearPending());
+  dispatch(pendingUpdateQueueDown());
 
   return { bookID };
 });

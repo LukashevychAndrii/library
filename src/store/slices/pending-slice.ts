@@ -1,23 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface initialStateI {
-  pending: boolean;
+  pendingQueue: 0;
 }
+
 const initialState: initialStateI = {
-  pending: false,
+  pendingQueue: 0,
 };
+
 const pendingSlice = createSlice({
   name: "pending",
   initialState: initialState,
   reducers: {
-    setPending(state) {
-      state.pending = true;
+    pendingUpdateQueueUp(state) {
+      state.pendingQueue++;
     },
-    clearPending(state) {
-      state.pending = false;
+    pendingUpdateQueueDown(state) {
+      if (state.pendingQueue > 0) state.pendingQueue--;
     },
   },
 });
 
 export default pendingSlice.reducer;
-export const { setPending, clearPending } = pendingSlice.actions;
+export const { pendingUpdateQueueUp, pendingUpdateQueueDown } =
+  pendingSlice.actions;

@@ -16,7 +16,7 @@ import { NavigateFunction } from "react-router-dom";
 import { app } from "../../firebase";
 import { createAlert } from "./alert-slice";
 import getErrorDetails from "../../utils/getErrorDetails";
-import { clearPending, setPending } from "./pending-slice";
+import { pendingUpdateQueueUp, pendingUpdateQueueDown } from "./pending-slice";
 import { RootState } from "..";
 
 interface initialStateI {
@@ -276,7 +276,7 @@ export const changeUserEmail = createAsyncThunk<
     const user = auth.currentUser;
     const appState = getState() as RootState;
     const currentEmail = appState.user.email;
-    dispatch(setPending());
+    dispatch(pendingUpdateQueueUp());
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(newEmail)) {
@@ -287,7 +287,7 @@ export const changeUserEmail = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     } else if (newEmail.trim().length > 30) {
       dispatch(
@@ -297,7 +297,7 @@ export const changeUserEmail = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     }
     if (currentEmail === newEmail) {
@@ -308,7 +308,7 @@ export const changeUserEmail = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     }
     if (user) {
@@ -359,7 +359,7 @@ export const changeUserEmail = createAsyncThunk<
         })
       );
     }
-    dispatch(clearPending());
+    dispatch(pendingUpdateQueueDown());
     return { newEmail };
   }
 );
@@ -372,7 +372,7 @@ export const changeUserPassword = createAsyncThunk<
   "user/changeUserPassword",
   async function ({ newPassword }, { dispatch, getState }) {
     const appState = getState() as RootState;
-    dispatch(setPending());
+    dispatch(pendingUpdateQueueUp());
 
     const auth = getAuth();
     const user = auth.currentUser;
@@ -387,7 +387,7 @@ export const changeUserPassword = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
 
       return null;
     } else if (newPassword.trim().length > 20) {
@@ -398,7 +398,7 @@ export const changeUserPassword = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     }
     if (currentPassword === newPassword) {
@@ -409,7 +409,7 @@ export const changeUserPassword = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
 
       return null;
     } else {
@@ -459,7 +459,7 @@ export const changeUserPassword = createAsyncThunk<
       }
     }
 
-    dispatch(clearPending());
+    dispatch(pendingUpdateQueueDown());
     return { newPassword };
   }
 );
@@ -482,7 +482,7 @@ export const changeUsername = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     } else if (newUsername.trim().length > 10) {
       dispatch(
@@ -492,7 +492,7 @@ export const changeUsername = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     }
     if (appState.user.userName === newUsername) {
@@ -503,13 +503,13 @@ export const changeUsername = createAsyncThunk<
           alertType: "error",
         })
       );
-      dispatch(clearPending());
+      dispatch(pendingUpdateQueueDown());
       return null;
     }
     const db = getDatabase();
     const dbRef = ref(db, `usersDATA/${userID}/userDATA/userName`);
     if (userID) {
-      dispatch(setPending());
+      dispatch(pendingUpdateQueueUp());
       set(dbRef, newUsername)
         .then(() => {
           dispatch(
@@ -519,7 +519,7 @@ export const changeUsername = createAsyncThunk<
               alertType: "success",
             })
           );
-          dispatch(clearPending());
+          dispatch(pendingUpdateQueueDown());
         })
         .catch(() => {
           dispatch(
@@ -529,7 +529,7 @@ export const changeUsername = createAsyncThunk<
               alertType: "error",
             })
           );
-          dispatch(clearPending());
+          dispatch(pendingUpdateQueueDown());
         });
     }
 
