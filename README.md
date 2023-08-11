@@ -15,6 +15,7 @@ In this project i have used react, sass and typescript. I have also used redux t
 
 ### Additional Resources
 
+- [logo](https://www.hiclipart.com/free-transparent-background-png-clipart-mdnlp)
 - [icons](https://icomoon.io/)
 - [books data](https://github.com/benoitvallon/100-best-books/blob/master/books.json)
 - [fonts](https://fonts.google.com/)
